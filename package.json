@@ -19,20 +19,29 @@
   },
   "license": "MIT",
   "scripts": {
-    "prebuild": "run-p flow test",
+    "prebuild": "run-p flow test lint",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "npm run develop",
     "format": "prettier --write \"src/**/*.js\"",
     "flow": "flow",
+    "lint": "eslint --ext .jsx,.js src/",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "devDependencies": {
     "@babel/preset-flow": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "babel-preset-gatsby": "^0.1.6",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.12.3",
     "flow-bin": "^0.89.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.15.2"
+    "prettier": "^1.15.2",
+    "undefined": "^0.1.0"
   },
   "repository": {
     "type": "git",
