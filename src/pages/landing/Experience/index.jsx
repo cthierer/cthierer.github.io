@@ -5,12 +5,12 @@
 import React from 'react'
 import { Item } from 'semantic-ui-react'
 import { DateTime } from 'luxon'
-import Section from '../components/Section'
-import WorkExperience from '../components/WorkExperience'
+import NavigableSection from '../../../containers/NavigableSection'
+import WorkExperience from './WorkExperience'
 
 function ExperienceSection() {
   return (
-    <Section title="Experience">
+    <NavigableSection id="experience" title="Experience">
       <Item.Group>
         <WorkExperience
           title="Senior Web Engineer"
@@ -19,7 +19,7 @@ function ExperienceSection() {
           responsibilities={['thing1', 'thing2', 'thing3']}
         />
       </Item.Group>
-    </Section>
+    </NavigableSection>
   )
 }
 

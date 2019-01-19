@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react'
-import type { Node } from 'react'
+import type { Node, Element } from 'react'
 import {
   Container,
   Menu,
@@ -12,13 +12,12 @@ import {
   Visibility,
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
-import NavMenu from './NavMenu'
 import breakpoints from '../../theme/breakpoints'
 import { important } from '../../theme/utils'
 
 const styles = {
   topBar: {
-    borderRadius: important(0),
+    borderRadius: important('0'),
   },
 }
 
@@ -26,6 +25,7 @@ type TopbarPageContainerProps = {
   children: Node,
   siteTitle: string,
   classes: { [string]: string },
+  navMenu: Element<*>,
 }
 
 type TopbarPageContainerState = {
@@ -43,7 +43,12 @@ class TopbarPageContainer extends Component<
   showFixedMenu = () => this.setState({ fixed: true })
 
   render() {
-    const { children, classes, siteTitle } = this.props
+    const {
+      children,
+      classes,
+      siteTitle,
+      navMenu,
+    } = this.props
     const { fixed } = this.state
 
     return (
@@ -57,7 +62,6 @@ class TopbarPageContainer extends Component<
             <Menu
               fixed={fixed ? 'top' : null}
               inverted
-              // inverted={!fixed}
               pointing={!fixed}
               secondary={!fixed}
               size="large"
@@ -66,7 +70,7 @@ class TopbarPageContainer extends Component<
                 <Menu.Item>
                   <Menu.Header content={siteTitle} />
                 </Menu.Item>
-                <NavMenu />
+                {navMenu}
               </Container>
             </Menu>
           </Segment>

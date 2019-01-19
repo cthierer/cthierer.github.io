@@ -4,13 +4,13 @@
 
 import React from 'react'
 import { Grid } from 'semantic-ui-react'
+import NavigableSection from '../../../containers/NavigableSection'
+import LeadParagraph from '../../../components/Content/LeadParagraph'
 import SkillsExplorer from './SkillsExplorer'
-import Section from '../components/Section'
-import LeadParagraph from '../components/Content/LeadParagraph'
 
 export default function SkillsSection() {
   return (
-    <Section title="Skills">
+    <NavigableSection id="skills" title="Skills">
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>
           <Grid.Column width={8}>
@@ -25,6 +25,6 @@ export default function SkillsSection() {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    </Section>
+    </NavigableSection>
   )
 }

@@ -12,7 +12,7 @@ import {
   Menu,
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
-import NavMenu from './PageContainer/NavMenu'
+import NavMenu from './NavMenu'
 import { important } from '../theme/utils'
 
 const styles = {

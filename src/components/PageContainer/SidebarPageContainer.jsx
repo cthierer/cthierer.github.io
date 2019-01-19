@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react'
-import type { Node } from 'react'
+import type { Node, Element } from 'react'
 import {
   Container,
   Icon,
@@ -12,12 +12,12 @@ import {
   Segment,
   Sidebar,
 } from 'semantic-ui-react'
-import NavMenu from './NavMenu'
 import breakpoints from '../../theme/breakpoints'
 
 type SidebarPageContainerProps = {
   children: Node,
   siteTitle: string,
+  navMenu: Element<*>,
 }
 
 type SidebarPageContainerState = {
@@ -33,7 +33,7 @@ export default class SidebarPageContainer
   handleToggle = () => this.setState({ sidebarOpened: true })
 
   render() {
-    const { children, siteTitle } = this.props
+    const { children, siteTitle, navMenu } = this.props
     const { sidebarOpened } = this.state
 
     return (
@@ -49,7 +49,7 @@ export default class SidebarPageContainer
           vertical
           visible={sidebarOpened}
         >
-          <NavMenu />
+          {navMenu}
         </Sidebar>
         <Sidebar.Pusher dimmed={sidebarOpened}>
           <Segment inverted vertical>

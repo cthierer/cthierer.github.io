@@ -19,7 +19,7 @@ type LeadParagraphProps = {
   children: Node,
 }
 
-function LeadParagraph({ as: ContentElement, classes, children }: LeadParagraphProps) {
+function LeadParagraph({ as: ContentElement = 'p', classes, children }: LeadParagraphProps) {
   return (
     <ContentElement className={classes.lead}>
       {children}

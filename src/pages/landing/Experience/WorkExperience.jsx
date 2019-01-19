@@ -5,14 +5,14 @@
 import React from 'react'
 import { Item } from 'semantic-ui-react'
 import type { DateTime } from 'luxon'
-import Duration from '../Duration'
-import BethesdaLogo from '../../../content/experience/bethesda_logo.jpg'
+import Duration from '../../../components/Content/Duration'
+import BethesdaLogo from '../../../../content/experience/bethesda_logo.jpg'
 
 type WorkExperienceProps = {
   title: string,
   organization: string,
   dateStart: ?DateTime,
-  dateEnd: ?DateTime,
+  dateEnd?: ?DateTime,
   responsibilities: string[],
 }
 
@@ -35,12 +35,18 @@ function WorkExperience({
         </Item.Meta>
         <Item.Description>
           <ul>
-            {responsibilities.map(responsibility => (<li>{responsibility}</li>))}
+            {responsibilities.map(responsibility => (
+              <li key={responsibility}>{responsibility}</li>
+            ))}
           </ul>
         </Item.Description>
       </Item.Content>
     </Item>
   )
+}
+
+WorkExperience.defaultProps = {
+  dateEnd: undefined,
 }
 
 export default WorkExperience

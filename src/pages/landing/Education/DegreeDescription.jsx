@@ -23,8 +23,8 @@ function DegreeDescription({
   program,
   date,
   gpa,
-  honors,
-  relatedCoursework,
+  honors = [],
+  relatedCoursework = [],
 }: DegreeDescriptionProps) {
   return (
     <Item.Content>
@@ -46,7 +46,9 @@ function DegreeDescription({
             <List.Item>
               <List.Header>Honors</List.Header>
               <List>
-                {honors.map(honor => (<List.Item>{honor}</List.Item>))}
+                {honors.map(honor => (
+                  <List.Item key={honor}>{honor}</List.Item>
+                ))}
               </List>
             </List.Item>
           )}
@@ -54,7 +56,9 @@ function DegreeDescription({
             <List.Item>
               <List.Header>Related coursework</List.Header>
               <List>
-                {relatedCoursework.map(course => (<List.Item>{course}</List.Item>))}
+                {relatedCoursework.map(course => (
+                  <List.Item key={course}>{course}</List.Item>
+                ))}
               </List>
             </List.Item>
           )}

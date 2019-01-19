@@ -5,6 +5,8 @@
 import React, { Component } from 'react'
 import { Segment, Accordion } from 'semantic-ui-react'
 
+/* global Event */
+
 type SkillsExplorerProps = {}
 
 type SkillsExplorerState = {
@@ -14,7 +16,7 @@ type SkillsExplorerState = {
 class SkillsExplorer extends Component<SkillsExplorerProps, SkillsExplorerState> {
   state = { activeIndex: 0 }
 
-  handleClick = (e, { index }) => {
+  handleClick = (e: Event, { index }: { index: number }) => {
     const { activeIndex } = this.state
     const newIndex = activeIndex === index ? -1 : index
 

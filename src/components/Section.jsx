@@ -6,7 +6,7 @@ import React from 'react'
 import type { Node } from 'react'
 import { Segment, Header, Container } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
-import { important } from '../../theme/utils'
+import { important } from '../theme/utils'
 
 const styles = {
   section: {
@@ -17,7 +17,7 @@ const styles = {
   },
 }
 
-type SectionProps = {
+export type SectionProps = {
   children: Node,
   classes: { [string]: string },
   title: string,

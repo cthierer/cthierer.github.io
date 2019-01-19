@@ -12,7 +12,7 @@ import {
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
 import type { DateTime } from 'luxon'
-import Duration from '../Duration'
+import Duration from '../../../components/Content/Duration'
 
 const styles = {
   projectLogoWrapper: {
@@ -40,7 +40,7 @@ function ProjectCard({
   name,
   dateStart,
   dateEnd,
-  tags,
+  tags = [],
 }: ProjectCardProps) {
   return (
     <Card>
@@ -58,7 +58,7 @@ function ProjectCard({
       </Card.Content>
       <Card.Content extra>
         <List horizontal>
-          {tags.map(tag => (<List.Item><Label>{tag}</Label></List.Item>))}
+          {tags.map(tag => (<List.Item key={tag}><Label>{tag}</Label></List.Item>))}
         </List>
       </Card.Content>
     </Card>

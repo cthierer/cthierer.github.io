@@ -3,17 +3,15 @@
  */
 
 import React from 'react'
-// import { Link } from 'gatsby'
 import { Container, Header, Button } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
-import Layout from '../components/layout'
-// import Image from '../components/image'
-import SEO from '../components/seo'
-import HeroContainer from '../components/HeroContainer'
-import SkillsSection from '../sections/Skills'
-import ProjectsSection from '../sections/Projects'
-import ExperienceSection from '../sections/Experience'
-import EducationSection from '../sections/Education'
+import Layout from '../containers/Layout'
+import SEO from '../components/SEO'
+import Hero from '../containers/NavigableHero'
+import SkillsSection from './landing/Skills'
+import ProjectsSection from './landing/Projects'
+import ExperienceSection from './landing/Experience'
+import EducationSection from './landing/Education'
 import breakpoints from '../theme/breakpoints'
 import { important } from '../theme/utils'
 
@@ -21,7 +19,7 @@ const styles = {
   mainTitle: {
     fontSize: important('2em'),
     fontWeight: important('normal'),
-    marginBottom: important(0),
+    marginBottom: important('0'),
     marginTop: important('1.5em'),
   },
   subTitle: {
@@ -48,7 +46,7 @@ type IndexPageProps = {
 const IndexPage = ({ classes }: IndexPageProps) => (
   <Layout>
     <SEO title="Home" keywords={['gatsby', 'application', 'react']} />
-    <HeroContainer>
+    <Hero id="home">
       <Container text>
         <Header as="h1" inverted className={classes.mainTitle}>
           developer. baltimore local. cat owner.
@@ -88,7 +86,7 @@ const IndexPage = ({ classes }: IndexPageProps) => (
           />
         </Button.Group>
       </Container>
-    </HeroContainer>
+    </Hero>
     <SkillsSection />
     <ProjectsSection />
     <ExperienceSection />

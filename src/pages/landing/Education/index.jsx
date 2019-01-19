@@ -5,13 +5,13 @@
 import React from 'react'
 import { Item } from 'semantic-ui-react'
 import { DateTime } from 'luxon'
-import Section from '../components/Section'
-import umbcLogo from '../../content/experience/umbc_logo.jpg'
-import DegreeDescription from '../components/DegreeDescription'
+import NavigableSection from '../../../containers/NavigableSection'
+import umbcLogo from '../../../../content/experience/umbc_logo.jpg'
+import DegreeDescription from './DegreeDescription'
 
 function EducationSection() {
   return (
-    <Section title="Education">
+    <NavigableSection id="education" title="Education">
       <Item.Group>
         <Item>
           <Item.Image size="tiny" src={umbcLogo} />
@@ -46,7 +46,7 @@ function EducationSection() {
           </DegreeDescription>
         </Item>
       </Item.Group>
-    </Section>
+    </NavigableSection>
   )
 }
 

@@ -6,8 +6,8 @@ import React from 'react'
 import type { Node } from 'react'
 import { Segment } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
-import breakpoints from '../../theme/breakpoints'
-import { important } from '../../theme/utils'
+import breakpoints from '../theme/breakpoints'
+import { important } from '../theme/utils'
 
 const styles = {
   heroContainer: {

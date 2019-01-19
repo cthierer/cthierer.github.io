@@ -13,8 +13,9 @@ type DurationProps = {
 
 function Duration({ dateStart, dateEnd, dateEndDefault }: DurationProps) {
   const dateStartStr = dateStart ? `${dateStart.monthShort}. ${dateStart.year}` : null
+  // $FlowFixMe doesn't allow comparison of DateTime < DateTime, but this is recommended by luxon
   const showDateEnd = dateEnd && (!dateStart || (!(dateStart.hasSame(dateEnd, 'month') && dateStart.hasSame(dateEnd, 'year')) && dateStart < dateEnd))
-  const dateEndStr = showDateEnd ? `${dateEnd.monthShort}. ${dateEnd.year}` : dateEndDefault
+  const dateEndStr = showDateEnd && dateEnd ? `${dateEnd.monthShort}. ${dateEnd.year}` : dateEndDefault
   const separator = dateStartStr && dateEndStr ? ' - ' : ''
 
   return (
