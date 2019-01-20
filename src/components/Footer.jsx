@@ -11,8 +11,8 @@ import {
   List,
   Menu,
 } from 'semantic-ui-react'
+import { navigate } from 'gatsby'
 import injectStyles from 'react-jss'
-import NavMenu from './NavMenu'
 import { important } from '../theme/utils'
 
 const styles = {
@@ -23,9 +23,10 @@ const styles = {
 
 type FooterProps = {
   classes: { [string]: string },
+  navItems?: Array<{ id: string, route: string, title: string }>,
 }
 
-function Footer({ classes }: FooterProps) {
+function Footer({ classes, navItems = [] }: FooterProps) {
   return (
     <Segment inverted vertical className={classes.siteFooter}>
       <Container>
@@ -51,7 +52,13 @@ function Footer({ classes }: FooterProps) {
             <Grid.Column width={4}>
               <Header inverted as="h4">Links</Header>
               <Menu compact inverted vertical borderless>
-                <NavMenu />
+                <List link inverted>
+                  {navItems.map(({ id, title, route }) => (
+                    <List.Item key={id} as="a" onClick={() => navigate(route)}>
+                      {title}
+                    </List.Item>
+                  ))}
+                </List>
               </Menu>
             </Grid.Column>
           </Grid.Row>
@@ -59,6 +66,10 @@ function Footer({ classes }: FooterProps) {
       </Container>
     </Segment>
   )
+}
+
+Footer.defaultProps = {
+  navItems: [],
 }
 
 export default injectStyles(styles)(Footer)

@@ -4,7 +4,7 @@
 
 import React from 'react'
 import type { Node } from 'react'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Visibility } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
 import breakpoints from '../theme/breakpoints'
 import { important } from '../theme/utils'
@@ -16,7 +16,7 @@ const styles = {
   },
   [`@media (min-width: ${breakpoints.sm.minWidth}px)`]: {
     heroContainer: {
-      minHeight: 700,
+      minHeight: 625,
       padding: important('1em 0'),
     },
   },
@@ -25,14 +25,34 @@ const styles = {
 type HeroContainerProps = {
   children: Node,
   classes: { [string]: string },
+  onPass?: () => void,
+  onPassReverse?: () => void,
 }
 
-function HeroContainer({ children, classes }: HeroContainerProps) {
+function HeroContainer({
+  children,
+  classes,
+  onPass = () => undefined,
+  onPassReverse = () => undefined,
+}: HeroContainerProps) {
   return (
-    <Segment inverted textAlign="center" vertical className={classes.heroContainer}>
-      {children}
-    </Segment>
+    <Visibility
+      once={false}
+      onBottomPassed={onPass}
+      onBottomPassedReverse={onPassReverse}
+      offset={125}
+      updateOn="repaint"
+    >
+      <Segment inverted textAlign="center" vertical className={classes.heroContainer}>
+        {children}
+      </Segment>
+    </Visibility>
   )
+}
+
+HeroContainer.defaultProps = {
+  onPass: () => null,
+  onPassReverse: () => null,
 }
 
 export default injectStyles(styles)(HeroContainer)

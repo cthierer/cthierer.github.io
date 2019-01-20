@@ -8,16 +8,20 @@ import { ACTION_DEREGISTER_SECTION } from './actions/deregisterSection'
 import type { DeregisterSectionAction } from './actions/deregisterSection'
 import { ACTION_REGISTER_SECTION } from './actions/registerSection'
 import type { RegisterSectionAction, SectionConfig } from './actions/registerSection'
+import { ACTION_AFFIX_NAV_MENU } from './actions/affixNavMenu'
+import type { AffixNavMenuType } from './actions/affixNavMenu'
 
 export type NavState = {
   +activeSection?: string,
   +sections?: { [string]: SectionConfig },
+  +navMenuAffixed?: boolean,
 }
 
 export type NavAction =
   SetActiveSectionAction
   | DeregisterSectionAction
   | RegisterSectionAction
+  | AffixNavMenuType
 
 export default function navReducer(
   state: NavState = {},
@@ -56,6 +60,14 @@ export default function navReducer(
       return {
         ...state,
         sections: otherSections,
+      }
+    }
+    case ACTION_AFFIX_NAV_MENU: {
+      const { affixed } = data
+
+      return {
+        ...state,
+        navMenuAffixed: affixed,
       }
     }
     default:

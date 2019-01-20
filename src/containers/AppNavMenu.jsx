@@ -2,12 +2,44 @@
  * @flow
  */
 
+import React from 'react'
 import { connect } from 'react-redux'
-import NavMenu from '../components/NavMenu'
+import { StaticQuery, graphql } from 'gatsby'
+import TopbarNavMenu from '../components/TopbarNavMenu'
 import type { State } from '../store'
 
-function mapStateToProps({ nav: { activeSection = 'home' } = {} }: State) {
-  return { active: activeSection }
+function mapStateToProps({
+  nav: {
+    activeSection = 'home',
+    navMenuAffixed = false,
+  } = {},
+}: State) {
+  return {
+    activeNavItem: activeSection,
+    affixNavMenu: navMenuAffixed,
+  }
 }
 
-export default connect(mapStateToProps)(NavMenu)
+function select({ allNavYaml: { edges = [] } = {} } = {}) {
+  return edges.map(({ node }) => node)
+}
+
+export default connect(mapStateToProps)(({ children, ...props }) => (
+  <StaticQuery
+    query={graphql`
+    {
+      allNavYaml {
+        edges {
+          node {
+            id
+            route
+            title
+          }
+        }
+      }
+    }`}
+    render={data => (
+      <TopbarNavMenu navItems={select(data)} {...props} />
+    )}
+  />
+))
