@@ -3,19 +3,18 @@
  */
 
 import React, { Component } from 'react'
-import type { AbstractComponent, ElementRef } from 'react'
+import type { AbstractComponent } from 'react'
 import { connect } from 'react-redux'
-import { Visibility } from 'semantic-ui-react'
+import { Visibility, Divider } from 'semantic-ui-react'
 import setActiveSection from '../store/nav/actions/setActiveSection'
 import registerSection from '../store/nav/actions/registerSection'
 import deregisterSection from '../store/nav/actions/deregisterSection'
 
-/* global HTMLElement */
-
 type NavigableProps = {
   id: string,
+  routable?: boolean,
   setActive: (string) => void,
-  register: (string, HTMLElement) => void,
+  register: (string, boolean) => void,
   deregister: (string) => void,
 }
 
@@ -24,8 +23,8 @@ function mapDispatchToProps(dispatch) {
     setActive: (section) => {
       dispatch(setActiveSection(section))
     },
-    register: (section, element) => {
-      dispatch(registerSection(section, element))
+    register: (section, routable) => {
+      dispatch(registerSection(section, { routable }))
     },
     deregister: (section) => {
       dispatch(deregisterSection(section))
@@ -37,23 +36,26 @@ function navigable<Config: {}>(
   WrappedComponent: AbstractComponent<Config>,
 ) {
   class NavigableComponent extends Component<NavigableProps & Config> {
-    constructor(props: NavigableProps & Config) {
-      super(props)
-      this.elementRef = React.createRef()
+    static defaultProps = {
+      routable: false,
     }
 
     componentDidMount() {
-      const { id, register } = this.props
-      const { current } = this.elementRef
-
-      if (current) {
-        register(id, current)
-      }
+      this.registerSection()
     }
 
     componentWillUnmount() {
+      this.deregisterSection()
+    }
+
+    deregisterSection = () => {
       const { id, deregister } = this.props
       deregister(id)
+    }
+
+    registerSection = () => {
+      const { id, routable = false, register } = this.props
+      register(id, routable)
     }
 
     setActive = () => {
@@ -61,18 +63,20 @@ function navigable<Config: {}>(
       setActive(id)
     }
 
-    elementRef: ElementRef<typeof Visibility>
-
     render() {
       const { props } = this
+      const id = props.routable ? `/${props.id}` : undefined
 
       return (
         <Visibility
           once={false}
           onTopPassed={this.setActive}
           onBottomPassedReverse={this.setActive}
-          ref={this.elementRef}
+          offset={100}
+          fireOnMount={false}
+          updateOn="repaint"
         >
+          {id && <Divider id={id} />}
           <WrappedComponent {...props} />
         </Visibility>
       )

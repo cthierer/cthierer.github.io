@@ -9,6 +9,8 @@ export type SetActiveSectionAction = {
   section: string,
 }
 
-export default function setActiveSection(section: string): SetActiveSectionAction {
+export default function setActiveSection(
+  section: string,
+): SetActiveSectionAction {
   return { type: ACTION_SET_ACTIVE_SECTION, section }
 }

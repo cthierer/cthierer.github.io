@@ -10,7 +10,7 @@ import WorkExperience from './WorkExperience'
 
 function ExperienceSection() {
   return (
-    <NavigableSection id="experience" title="Experience">
+    <NavigableSection id="experience" title="Experience" routable>
       <Item.Group>
         <WorkExperience
           title="Senior Web Engineer"

@@ -12,7 +12,7 @@ import wallabyIcon from '../../../../content/projects/wallaby/wallaby.svg'
 
 function ProjectsSection() {
   return (
-    <NavigableSection id="projects" title="Projects">
+    <NavigableSection id="projects" title="Projects" routable>
       <LeadParagraph>
         Lorem ipsum.
       </LeadParagraph>

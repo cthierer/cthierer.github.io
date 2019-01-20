@@ -10,7 +10,7 @@ import SkillsExplorer from './SkillsExplorer'
 
 export default function SkillsSection() {
   return (
-    <NavigableSection id="skills" title="Skills">
+    <NavigableSection id="skills" title="Skills" routable>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>
           <Grid.Column width={8}>

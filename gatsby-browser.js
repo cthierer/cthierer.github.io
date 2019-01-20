@@ -4,4 +4,6 @@
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
 
-// You can delete this file if you're not using it
+/* eslint-disable import/prefer-default-export */
+
+export { wrapRootElement } from './src/hooks'

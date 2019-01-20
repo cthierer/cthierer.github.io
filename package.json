@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "author": "Chris Thierer <chris@christhierer.com>",
   "dependencies": {
+    "debounce": "^1.2.0",
     "gatsby": "^2.0.76",
     "gatsby-image": "^2.0.20",
     "gatsby-plugin-manifest": "^2.0.9",
@@ -20,6 +21,8 @@
     "react-jss": "^8.6.1",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.7",
+    "redux-logger": "^3.0.6",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.84.0"
   },

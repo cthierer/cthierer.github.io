@@ -2,19 +2,29 @@
  * @flow
  */
 
-/* global HTMLElement */
-
 export const ACTION_REGISTER_SECTION = 'REGISTER_SECTION'
+
+export type SectionConfig = {
+  routable: boolean,
+}
 
 export type RegisterSectionAction = {
   type: string,
   section: string,
-  element: HTMLElement,
+  config: SectionConfig,
 }
 
 export default function registerSection(
   section: string,
-  element: HTMLElement,
+  {
+    routable = false,
+  }: {
+    routable?: boolean,
+  } = {},
 ): RegisterSectionAction {
-  return { type: ACTION_REGISTER_SECTION, section, element }
+  return {
+    type: ACTION_REGISTER_SECTION,
+    section,
+    config: { routable },
+  }
 }

@@ -5,7 +5,11 @@ module.exports = {
   extends: ['airbnb'],
   rules : {
     semi: [2, 'never'],
-    'no-unused-vars': [2, {'args': 'after-used', 'argsIgnorePattern': '^_'}],
+    'no-unused-vars': [2, {
+        'args': 'after-used',
+        'argsIgnorePattern': '^_',
+        'ignoreRestSiblings': true,
+    }],
     'no-unused-expressions': [2, { allowShortCircuit: true, allowTernary: true }],
   },
   plugins : []

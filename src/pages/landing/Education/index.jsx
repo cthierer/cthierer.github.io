@@ -11,7 +11,7 @@ import DegreeDescription from './DegreeDescription'
 
 function EducationSection() {
   return (
-    <NavigableSection id="education" title="Education">
+    <NavigableSection id="education" title="Education" routable>
       <Item.Group>
         <Item>
           <Item.Image size="tiny" src={umbcLogo} />

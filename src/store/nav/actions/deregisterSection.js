@@ -9,6 +9,11 @@ export type DeregisterSectionAction = {
   section: string,
 }
 
-export default function registerSection(section: string): DeregisterSectionAction {
-  return { type: ACTION_DEREGISTER_SECTION, section }
+export default function deregisterSection(
+  section: string,
+): DeregisterSectionAction {
+  return {
+    type: ACTION_DEREGISTER_SECTION,
+    section,
+  }
 }

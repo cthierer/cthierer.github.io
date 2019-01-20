@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import { navigate } from 'gatsby'
 import { Menu } from 'semantic-ui-react'
 
 export type NavMenuProps = {
@@ -14,21 +15,11 @@ function NavMenu({
 }: NavMenuProps) {
   return (
     <>
-      <Menu.Item
-        as="a"
-        active={active === 'home'}
-      >
-        Home
-      </Menu.Item>
-      <Menu.Item as="a" active={active === 'skills'}>Skills</Menu.Item>
-      <Menu.Item as="a" active={active === 'projects'}>Projects</Menu.Item>
-      <Menu.Item as="a" active={active === 'experience'}>Experience</Menu.Item>
-      <Menu.Item
-        as="a"
-        active={active === 'education'}
-      >
-        Education
-      </Menu.Item>
+      <Menu.Item active={active === 'home'} link content="Home" onClick={() => navigate('/#/')} />
+      <Menu.Item active={active === 'skills'} link content="Skills" onClick={() => navigate('/#/skills')} />
+      <Menu.Item active={active === 'projects'} link content="Projects" onClick={() => navigate('/#/projects')} />
+      <Menu.Item active={active === 'experience'} link content="Experience" onClick={() => navigate('/#/experience')} />
+      <Menu.Item active={active === 'education'} link content="Education" onClick={() => navigate('/#/education')} />
     </>
   )
 }
