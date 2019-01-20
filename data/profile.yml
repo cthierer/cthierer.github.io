@@ -1,0 +1,9 @@
+- name: "Chris Thierer"
+  icon: "code"
+  contact:
+    email_main: "hello@christhierer.com"
+  address:
+    street: ""
+    city: "Catonsville"
+    state: "MD"
+    zip: ""

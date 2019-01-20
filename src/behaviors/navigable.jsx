@@ -76,7 +76,7 @@ function navigable<Config: {}>(
           fireOnMount={false}
           updateOn="repaint"
         >
-          {id && <Divider id={id} />}
+          {id && <Divider id={id} style={{ paddingTop: '73px' }} />}
           <WrappedComponent {...props} />
         </Visibility>
       )

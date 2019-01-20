@@ -41,6 +41,7 @@ export type TopbarNavMenuProps = {
   activeNavItem?: string,
   navItems?: Array<{ id: string, route: string, title: string }>,
   affixNavMenu?: boolean,
+  icon?: string,
 }
 
 type TopbarNavMenuState = {
@@ -52,6 +53,7 @@ class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
     activeNavItem: 'home',
     navItems: [],
     affixNavMenu: false,
+    icon: undefined,
   }
 
   state = { navMenuExpanded: false }
@@ -77,6 +79,7 @@ class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
       activeNavItem = 'home',
       navItems = [],
       affixNavMenu = false,
+      icon,
     } = this.props
     const { navMenuExpanded = false } = this.state
 
@@ -91,6 +94,8 @@ class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
         >
           <Container>
             <Menu.Item>
+              {icon && <Icon name={icon} />}
+              &nbsp;
               <Menu.Header content={siteTitle} />
             </Menu.Item>
             <Responsive as={Fragment} minWidth={breakpoints.sm.minWidth}>

@@ -17,11 +17,17 @@ type LeadParagraphProps = {
   as?: string,
   classes: { [string]: string },
   children: Node,
+  className?: string,
 }
 
-function LeadParagraph({ as: ContentElement = 'p', classes, children }: LeadParagraphProps) {
+function LeadParagraph({
+  as: ContentElement = 'p',
+  classes,
+  children,
+  className = '',
+}: LeadParagraphProps) {
   return (
-    <ContentElement className={classes.lead}>
+    <ContentElement className={`${classes.lead} ${className}`}>
       {children}
     </ContentElement>
   )
@@ -29,6 +35,7 @@ function LeadParagraph({ as: ContentElement = 'p', classes, children }: LeadPara
 
 LeadParagraph.defaultProps = {
   as: 'p',
+  className: '',
 }
 
 export default injectStyles(styles)(LeadParagraph)

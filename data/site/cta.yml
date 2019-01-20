@@ -1,0 +1,22 @@
+- taglines:
+    - content: "developer."
+      icon: "terminal"
+    - content: "baltimore local."
+      icon: "building"
+    - content: "cat lover."
+      icon: "paw"
+  description: |
+    Full-stack web application developer, with a focus on NodeJS and Javascript.
+  links:
+    - title: "Email"
+      href: "mailto:hello@christhierer.com"
+      icon: "mail"
+    - title: "Resume"
+      href: "/resume"
+      icon: "file"
+    - title: "GitHub"
+      href: "https://github.com/cthierer"
+      icon: "github"
+    - title: "LinkedIn"
+      href: "https://www.linkedin.com/in/christopher-thierer-8919731a"
+      icon: "linkedin"

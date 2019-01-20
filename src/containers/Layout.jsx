@@ -25,9 +25,9 @@ const Layout = ({ children }: LayoutProps) => (
         }
       }
     `}
-    render={data => (
+    render={() => (
       <>
-        <AppNavMenu siteTitle={data.site.siteMetadata.title} />
+        <AppNavMenu />
         {children}
         <AppFooter />
       </>

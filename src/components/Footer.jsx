@@ -10,43 +10,56 @@ import {
   Header,
   List,
   Menu,
+  Icon,
 } from 'semantic-ui-react'
 import { navigate } from 'gatsby'
 import injectStyles from 'react-jss'
+import Address from './Content/Address'
+import type { AddressProps } from './Content/Address'
 import { important } from '../theme/utils'
 
 const styles = {
   siteFooter: {
     padding: important('5em 0'),
   },
+  address: {
+    fontStyle: important('normal'),
+  },
 }
 
 type FooterProps = {
   classes: { [string]: string },
   navItems?: Array<{ id: string, route: string, title: string }>,
+  address?: AddressProps,
+  email?: string,
+  cta?: Array<{ title: string, href: string, icon: string}>,
 }
 
-function Footer({ classes, navItems = [] }: FooterProps) {
+function Footer({
+  classes,
+  navItems = [],
+  address,
+  email,
+  cta = [],
+}: FooterProps) {
   return (
     <Segment inverted vertical className={classes.siteFooter}>
       <Container>
         <Grid divided inverted stackable>
           <Grid.Row>
-            <Grid.Column width={4}>
-              <Header inverted as="h4">Chris Thierer</Header>
-              <List inverted>
-                <List.Item>
-                  <p>Catonsville, MD</p>
-                </List.Item>
-                <List.Item>
-                  <p>hello@christhierer.com</p>
-                </List.Item>
-                <List.Item>
-                  <List link horizontal inverted>
-                    <List.Item>GitHub</List.Item>
-                    <List.Item>LinkedIn</List.Item>
-                  </List>
-                </List.Item>
+            <Grid.Column as="address" width={4} className={classes.address}>
+              <Header size="large" inverted as="h4">Chris Thierer</Header>
+              <List inverted relaxed>
+                {address && (
+                  <List.Item>
+                    <Address {...address} />
+                  </List.Item>
+                )}
+                {email && (
+                  <List.Item>
+                    <a href={`mailto:${email}`}>{email}</a>
+                  </List.Item>
+                )}
               </List>
             </Grid.Column>
             <Grid.Column width={4}>
@@ -61,6 +74,16 @@ function Footer({ classes, navItems = [] }: FooterProps) {
                 </List>
               </Menu>
             </Grid.Column>
+            <Grid.Column width={8}>
+              <List size="huge" inverted relaxed animated>
+                {cta.map(({ title, href, icon }) => (
+                  <List.Item key={href} as="a" href={href}>
+                    {icon && <Icon name={icon} />}
+                    <List.Content>{title}</List.Content>
+                  </List.Item>
+                ))}
+              </List>
+            </Grid.Column>
           </Grid.Row>
         </Grid>
       </Container>
@@ -70,6 +93,9 @@ function Footer({ classes, navItems = [] }: FooterProps) {
 
 Footer.defaultProps = {
   navItems: [],
+  address: undefined,
+  email: undefined,
+  cta: [],
 }
 
 export default injectStyles(styles)(Footer)

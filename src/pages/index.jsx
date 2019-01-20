@@ -3,38 +3,77 @@
  */
 
 import React from 'react'
-import { Container, Header, Button } from 'semantic-ui-react'
+import {
+  Container,
+  Button,
+  Icon,
+  List,
+} from 'semantic-ui-react'
 import injectStyles from 'react-jss'
+import { StaticQuery, graphql } from 'gatsby'
 import Layout from '../containers/Layout'
 import SEO from '../components/SEO'
 import Hero from '../containers/NavigableHero'
-import SkillsSection from './landing/Skills'
-import ProjectsSection from './landing/Projects'
-import ExperienceSection from './landing/Experience'
-import EducationSection from './landing/Education'
+import SkillsSection from '../partials/landing/Skills'
+import ProjectsSection from '../partials/landing/Projects'
+import ExperienceSection from '../partials/landing/Experience'
+import EducationSection from '../partials/landing/Education'
 import breakpoints from '../theme/breakpoints'
 import { important } from '../theme/utils'
+import selectCtaLinks from '../data/ctaLinks'
+import formatMarkdown from '../content/formatMarkdown'
+import LeadParagraph from '../components/Content/LeadParagraph'
 
 const styles = {
-  mainTitle: {
-    fontSize: important('2em'),
-    fontWeight: important('normal'),
-    marginBottom: important('0'),
-    marginTop: important('1.5em'),
+  landingHero: {
+    minHeight: important('calc(100vh - 72px)'),
   },
-  subTitle: {
-    fontSize: important('1.5em'),
-    fontWeight: important('normal'),
-    marginTop: important('0.5em'),
+  descriptionContainer: {
+    marginTop: important('1.5em'),
+    marginBottom: important('1.5em'),
   },
   [`@media (min-width: ${breakpoints.sm.minWidth}px)`]: {
-    mainTitle: {
-      fontSize: important('4em'),
-      marginTop: important('3em'),
+    taglineContainer: {
+      marginTop: important('25%'),
     },
-    subTitle: {
-      fontSize: important('1.7em'),
-      marginTop: important('1.5em'),
+    descriptionContainer: {
+      marginTop: important('3em'),
+      marginBottom: important('3em'),
+    },
+    ctaButtonContainer: {
+      position: important('absolute'),
+      bottom: important('28px'),
+      left: important('50%'),
+      transform: important(('translateX(-50%)')),
+    },
+  },
+  [`@media (max-width: ${breakpoints.sm.minWidth}px)`]: {
+    taglineContainer: {
+      '& > .item': {
+        width: important('100%'),
+        margin: important('0'),
+        padding: important('0'),
+        marginTop: important('.5em'),
+        marginBottom: important('.5em'),
+      },
+    },
+    ctaButtonContainer: {
+      display: important('block'),
+      paddingLeft: important('10%'),
+      paddingRight: important('10%'),
+      '& > .button': {
+        display: important('block'),
+        borderRadius: important('0'),
+        textAlign: important('left'),
+        '&:first-child': {
+          borderTopLeftRadius: important('4px'),
+          borderTopRightRadius: important('4px'),
+        },
+        '&:last-child': {
+          borderBottomLeftRadius: important('4px'),
+          borderBottomRightRadius: important('4px'),
+        },
+      },
     },
   },
 }
@@ -45,48 +84,56 @@ type IndexPageProps = {
 
 const IndexPage = ({ classes }: IndexPageProps) => (
   <Layout>
-    <SEO title="Home" keywords={['gatsby', 'application', 'react']} />
-    <Hero id="home">
-      <Container text>
-        <Header as="h1" inverted className={classes.mainTitle}>
-          developer. baltimore local. cat owner.
-        </Header>
-        <Header as="h2" inverted className={classes.subTitle}>
-          Full-stack web application developer, with a focus on NodeJS and Javascript.
-          Passionate about finding creative ways to use and integrate technology.
-        </Header>
-        <Button.Group>
-          <Button
-            primary
-            size="huge"
-            icon="mail"
-            labelPosition="left"
-            content="Email"
-          />
-          <Button
-            primary
-            size="huge"
-            icon="file"
-            labelPosition="left"
-            content="Resume"
-          />
-          <Button
-            primary
-            size="huge"
-            icon="github"
-            labelPosition="left"
-            content="GitHub"
-          />
-          <Button
-            primary
-            size="huge"
-            icon="linkedin"
-            labelPosition="left"
-            content="LinkedIn"
-          />
-        </Button.Group>
-      </Container>
-    </Hero>
+    <StaticQuery
+      query={graphql`{
+        site {
+          siteMetadata {
+            title
+          }
+        }
+        ctaYaml {
+            taglines {
+              content
+              icon
+            }
+            description
+            ...CtaLinks
+          }
+      }`}
+      render={data => (
+        <>
+          <SEO title={data.site.siteMetadata.title} />
+          <Hero id="home" className={classes.landingHero}>
+            <Container text>
+              <List className={classes.taglineContainer} relaxed size="massive" horizontal>
+                {data.ctaYaml.taglines.map(({ content, icon }) => (
+                  <List.Item key={icon}>
+                    <Icon size="large" name={icon} />
+                    <List.Content>{content}</List.Content>
+                  </List.Item>
+                ))}
+              </List>
+              <LeadParagraph as="div" className={classes.descriptionContainer}>
+                {formatMarkdown(data.ctaYaml.description)}
+              </LeadParagraph>
+              <Button.Group className={classes.ctaButtonContainer}>
+                {selectCtaLinks(data).map(({ title, href, icon }) => (
+                  <Button
+                    key={href}
+                    primary
+                    size="huge"
+                    icon={icon}
+                    labelPosition="left"
+                    content={title}
+                    href={href}
+                  />
+                ))}
+              </Button.Group>
+            </Container>
+          </Hero>
+        </>
+      )}
+    />
     <SkillsSection />
     <ProjectsSection />
     <ExperienceSection />

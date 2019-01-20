@@ -20,11 +20,31 @@ function mapStateToProps({
   }
 }
 
-function select({ allNavYaml: { edges = [] } = {} } = {}) {
+function selectNavItems({ allNavYaml: { edges = [] } = {} } = {}) {
   return edges.map(({ node }) => node)
 }
 
-export default connect(mapStateToProps)(({ children, ...props }) => (
+function selectProfileName({
+  allProfileYaml: {
+    edges: [{
+      node: { name } = {},
+    } = {}] = [],
+  } = {},
+} = {}) {
+  return name
+}
+
+function selectProfileIcon({
+  allProfileYaml: {
+    edges: [{
+      node: { icon } = {},
+    } = {}] = [],
+  } = {},
+} = {}) {
+  return icon
+}
+
+export default connect(mapStateToProps)(props => (
   <StaticQuery
     query={graphql`
     {
@@ -37,9 +57,22 @@ export default connect(mapStateToProps)(({ children, ...props }) => (
           }
         }
       }
+      allProfileYaml {
+        edges {
+          node {
+            name
+            icon
+          }
+        }
+      }
     }`}
     render={data => (
-      <TopbarNavMenu navItems={select(data)} {...props} />
+      <TopbarNavMenu
+        navItems={selectNavItems(data)}
+        siteTitle={selectProfileName(data)}
+        icon={selectProfileIcon(data)}
+        {...props}
+      />
     )}
   />
 ))
