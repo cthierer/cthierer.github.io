@@ -86,11 +86,6 @@ const IndexPage = ({ classes }: IndexPageProps) => (
   <Layout>
     <StaticQuery
       query={graphql`{
-        site {
-          siteMetadata {
-            title
-          }
-        }
         ctaYaml {
             taglines {
               content
@@ -102,7 +97,7 @@ const IndexPage = ({ classes }: IndexPageProps) => (
       }`}
       render={data => (
         <>
-          <SEO title={data.site.siteMetadata.title} />
+          <SEO title="Home" />
           <Hero id="home" className={classes.landingHero}>
             <Container text>
               <List className={classes.taglineContainer} relaxed size="massive" horizontal>
