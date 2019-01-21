@@ -3,17 +3,19 @@
  */
 
 import React from 'react'
-import { Item } from 'semantic-ui-react'
+import type { Node } from 'react'
+import { Item, Label } from 'semantic-ui-react'
 import type { DateTime } from 'luxon'
 import Duration from '../../../components/Content/Duration'
-import BethesdaLogo from '../../../../content/experience/bethesda_logo.jpg'
 
 type WorkExperienceProps = {
   title: string,
   organization: string,
   dateStart: ?DateTime,
   dateEnd?: ?DateTime,
-  responsibilities: string[],
+  logo?: string,
+  children: Node,
+  tags?: string[],
 }
 
 function WorkExperience({
@@ -21,12 +23,14 @@ function WorkExperience({
   organization,
   dateStart,
   dateEnd,
-  responsibilities,
+  logo,
+  children,
+  tags = [],
 }: WorkExperienceProps) {
   return (
     <Item>
-      <Item.Image size="tiny" src={BethesdaLogo} />
-      <Item.Content>
+      {logo && <Item.Image size="tiny" src={logo} />}
+      <Item.Content verticalAlign="middle">
         <Item.Header>
           {`${title}, ${organization}`}
         </Item.Header>
@@ -34,19 +38,24 @@ function WorkExperience({
           <Duration dateStart={dateStart} dateEnd={dateEnd} dateEndDefault="present" />
         </Item.Meta>
         <Item.Description>
-          <ul>
-            {responsibilities.map(responsibility => (
-              <li key={responsibility}>{responsibility}</li>
-            ))}
-          </ul>
+          {children}
         </Item.Description>
+        <Item.Extra>
+          <Label.Group>
+            {tags.map(tag => (
+              <Label key={tag}>{tag}</Label>
+            ))}
+          </Label.Group>
+        </Item.Extra>
       </Item.Content>
     </Item>
   )
 }
 
 WorkExperience.defaultProps = {
+  logo: undefined,
   dateEnd: undefined,
+  tags: [],
 }
 
 export default WorkExperience
