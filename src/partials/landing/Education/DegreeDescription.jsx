@@ -12,7 +12,6 @@ type DegreeDescriptionProps = {
   level: string,
   program: string,
   date: DateTime,
-  gpa?: number,
   honors?: string[],
   relatedCoursework?: string[],
 }
@@ -22,57 +21,51 @@ function DegreeDescription({
   level,
   program,
   date,
-  gpa,
   honors = [],
   relatedCoursework = [],
 }: DegreeDescriptionProps) {
   return (
-    <Item.Content>
-      <Item.Header>
-        {`${level}, ${program}`}
-      </Item.Header>
-      <Item.Meta>
-        {`${date.monthShort}. ${date.year}`}
-      </Item.Meta>
-      <Item.Description>
-        <List>
-          {gpa && (
-            <List.Item>
-              <List.Header>GPA</List.Header>
-              {`${gpa} / 4.0`}
-            </List.Item>
-          )}
-          {honors.length > 0 && (
-            <List.Item>
-              <List.Header>Honors</List.Header>
-              <List>
-                {honors.map(honor => (
-                  <List.Item key={honor}>{honor}</List.Item>
-                ))}
-              </List>
-            </List.Item>
-          )}
-          {relatedCoursework.length > 0 && (
-            <List.Item>
-              <List.Header>Related coursework</List.Header>
-              <List>
-                {relatedCoursework.map(course => (
-                  <List.Item key={course}>{course}</List.Item>
-                ))}
-              </List>
-            </List.Item>
-          )}
-        </List>
-      </Item.Description>
-      <Item.Description>
-        {children}
-      </Item.Description>
-    </Item.Content>
+    <Item>
+      <Item.Content>
+        <Item.Header as="h4" style={{ marginBottom: 0 }}>
+          {`${level}, ${program}`}
+        </Item.Header>
+        <Item.Meta>
+          {`${date.monthShort} ${date.year}`}
+        </Item.Meta>
+        <Item.Description>
+          <List>
+            {honors.length > 0 && (
+              <List.Item>
+                <List.Header>Honors</List.Header>
+                <List>
+                  {honors.map(honor => (
+                    <List.Item key={honor}><em>{honor}</em></List.Item>
+                  ))}
+                </List>
+              </List.Item>
+            )}
+            {relatedCoursework.length > 0 && (
+              <List.Item>
+                <List.Header>Related coursework</List.Header>
+                <List>
+                  {relatedCoursework.map(course => (
+                    <List.Item key={course}>{course}</List.Item>
+                  ))}
+                </List>
+              </List.Item>
+            )}
+          </List>
+        </Item.Description>
+        <Item.Description style={{ marginTop: '2em' }}>
+          {children}
+        </Item.Description>
+      </Item.Content>
+    </Item>
   )
 }
 
 DegreeDescription.defaultProps = {
-  gpa: 0,
   honors: [],
   relatedCoursework: [],
 }

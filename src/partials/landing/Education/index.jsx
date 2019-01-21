@@ -3,51 +3,128 @@
  */
 
 import React from 'react'
-import { Item } from 'semantic-ui-react'
+import { StaticQuery, graphql } from 'gatsby'
+import { Item, Grid } from 'semantic-ui-react'
 import { DateTime } from 'luxon'
+import injectStyles from 'react-jss'
 import NavigableSection from '../../../containers/NavigableSection'
-import umbcLogo from '../../../../content/experience/umbc_logo.jpg'
 import DegreeDescription from './DegreeDescription'
 
-function EducationSection() {
+const styles = {
+  schoolList: {
+    marginTop: '3em',
+  },
+}
+
+type EducationSectionProps = {
+  classes: { [string]: string },
+}
+
+function EducationSection({
+  classes,
+}: EducationSectionProps) {
   return (
-    <NavigableSection id="education" title="Education" routable>
-      <Item.Group>
-        <Item>
-          <Item.Image size="tiny" src={umbcLogo} />
-          <DegreeDescription
-            level="Bachelors of Science"
-            program="Computer Science"
-            date={DateTime.fromObject({ month: 5, year: 2011 })}
-            gpa={3.8}
-            honors={['Magna cum laude']}
-            relatedCoursework={['course1', 'course2', 'course3', 'course4']}
-          >
-            <p>Lorem ipsum</p>
-            <ul>
-              <li>item1</li>
-              <li>item2</li>
-              <li>item3</li>
-            </ul>
-          </DegreeDescription>
-          <DegreeDescription
-            level="Masters of Science"
-            program="Information Systems"
-            date={DateTime.fromObject({ month: 5, year: 2015 })}
-            gpa={3.73}
-            relatedCoursework={['course1', 'course2', 'course3']}
-          >
-            <p>Lorem ipsum</p>
-            <ul>
-              <li>item1</li>
-              <li>item2</li>
-              <li>item3</li>
-            </ul>
-          </DegreeDescription>
-        </Item>
-      </Item.Group>
-    </NavigableSection>
+    <StaticQuery
+      query={graphql`{
+        markdownRemark(frontmatter: { slug: { eq: "education" } feed:{ eq: "landing" } }) {
+          frontmatter {
+            title
+          }
+          html
+        }
+        allMarkdownRemark(
+          filter: { frontmatter: { feed: { eq: "education" } } }
+          sort: { fields: frontmatter___end_date order: ASC }
+        ) {
+          group(field:frontmatter___affiliation) {
+            fieldValue
+            edges {
+              node {
+                html
+                frontmatter {
+                  title
+                  degree
+                  program
+                  honors
+                  end_date
+                  coursework {
+                    title
+                  }
+                  logo {
+                    link {
+                      childImageSharp {
+                        resize(width:100 height:100 quality:100) {
+                          src
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`}
+      render={({
+        markdownRemark: {
+          frontmatter: {
+            title: sectionTitle,
+          } = {},
+        } = {},
+        allMarkdownRemark: {
+          // $FlowFixMe doesn't support grouped properties here
+          group: schools = [],
+        } = [],
+      }) => (
+        <NavigableSection id="education" title={sectionTitle} routable>
+          <div className={classes.schoolList}>
+            {schools.map(({
+              fieldValue,
+              edges: degrees = [],
+            }) => (
+              <Item.Group key={fieldValue}>
+                <Item>
+                  <Item.Image size="tiny" src={degrees[0].node.frontmatter.logo.link.childImageSharp.resize.src} />
+                  <Item.Content>
+                    <Grid stackable>
+                      <Grid.Row columns={degrees.length}>
+                        {degrees.map(({
+                          node: {
+                            frontmatter: {
+                              title: degreeTitle,
+                              degree,
+                              program,
+                              honors = [],
+                              end_date: endDate,
+                              coursework = [],
+                            } = {},
+                            html: description,
+                          } = {},
+                        }) => (
+                          <Grid.Column key={degreeTitle}>
+                            <DegreeDescription
+                              level={degree}
+                              program={program}
+                              date={DateTime.fromISO(endDate)}
+                              honors={honors || []}
+                              relatedCoursework={coursework.map(({ title }) => title)}
+                            >
+                              {/* eslint-disable-next-line react/no-danger */}
+                              <div dangerouslySetInnerHTML={{ __html: description }} />
+                            </DegreeDescription>
+                          </Grid.Column>
+                        ))}
+                      </Grid.Row>
+                    </Grid>
+                  </Item.Content>
+                </Item>
+              </Item.Group>
+            ))}
+          </div>
+        </NavigableSection>
+      )}
+    />
   )
 }
 
-export default EducationSection
+export default injectStyles(styles)(EducationSection)
