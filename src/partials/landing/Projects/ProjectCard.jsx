@@ -7,7 +7,6 @@ import type { Node } from 'react'
 import {
   Card,
   Image,
-  List,
   Label,
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
@@ -45,7 +44,7 @@ function ProjectCard({
   return (
     <Card>
       <div className={classes.projectLogoWrapper} style={{ backgroundColor: color }}>
-        {logo && <Image size="tiny" centered src={logo} />}
+        {logo && <Image style={{ height: '100%', maxHeight: '100%' }} centered src={logo} />}
       </div>
       <Card.Content>
         <Card.Header>{name}</Card.Header>
@@ -57,9 +56,9 @@ function ProjectCard({
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <List horizontal>
-          {tags.map(tag => (<List.Item key={tag}><Label>{tag}</Label></List.Item>))}
-        </List>
+        <Label.Group>
+          {tags.map(tag => (<Label key={tag}>{tag}</Label>))}
+        </Label.Group>
       </Card.Content>
     </Card>
   )

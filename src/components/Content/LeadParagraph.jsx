@@ -10,6 +10,10 @@ import { important } from '../../theme/utils'
 const styles = {
   lead: {
     fontSize: important('1.33em'),
+    '&, & p': {
+      marginTop: '.5em',
+      marginBottom: '.5em',
+    },
   },
 }
 
