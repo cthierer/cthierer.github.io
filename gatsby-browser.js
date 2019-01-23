@@ -6,4 +6,4 @@
 
 /* eslint-disable import/prefer-default-export */
 
-export { wrapRootElement } from './src/hooks'
+exports.wrapRootElement = require('./src/hooks').wrapRootElement

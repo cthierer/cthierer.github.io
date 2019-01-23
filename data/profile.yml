@@ -1,7 +1,9 @@
 - name: "Chris Thierer"
+  title: "Senior web application developer"
   icon: "code"
   contact:
     email_main: "hello@christhierer.com"
+    website_main: "https://www.christhierer.com"
   address:
     street: ""
     city: "Catonsville"

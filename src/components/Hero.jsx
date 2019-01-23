@@ -2,7 +2,7 @@
  * @flow
  */
 
-import React from 'react'
+import React, { Component } from 'react'
 import type { Node } from 'react'
 import { Segment, Visibility } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
@@ -30,32 +30,41 @@ type HeroContainerProps = {
   className?: string,
 }
 
-function HeroContainer({
-  children,
-  classes,
-  onPass = () => undefined,
-  onPassReverse = () => undefined,
-  className = '',
-}: HeroContainerProps) {
-  return (
-    <Visibility
-      once={false}
-      onBottomPassed={onPass}
-      onBottomPassedReverse={onPassReverse}
-      offset={125}
-      updateOn="repaint"
-    >
-      <Segment inverted textAlign="center" vertical className={`${classes.heroContainer} ${className}`}>
-        {children}
-      </Segment>
-    </Visibility>
-  )
-}
+class HeroContainer extends Component<HeroContainerProps> {
+  static defaultProps = {
+    onPass: () => null,
+    onPassReverse: () => null,
+    className: '',
+  }
 
-HeroContainer.defaultProps = {
-  onPass: () => null,
-  onPassReverse: () => null,
-  className: '',
+  componentWillUnmount() {
+    const { onPassReverse = () => undefined } = this.props
+    onPassReverse()
+  }
+
+  render() {
+    const {
+      children,
+      classes,
+      onPass = () => undefined,
+      onPassReverse = () => undefined,
+      className = '',
+    } = this.props
+
+    return (
+      <Visibility
+        once={false}
+        onBottomPassed={onPass}
+        onBottomPassedReverse={onPassReverse}
+        offset={125}
+        updateOn="repaint"
+      >
+        <Segment inverted textAlign="center" vertical className={`${classes.heroContainer} ${className}`}>
+          {children}
+        </Segment>
+      </Visibility>
+    )
+  }
 }
 
 export default injectStyles(styles)(HeroContainer)

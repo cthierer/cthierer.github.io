@@ -3,6 +3,33 @@ title: Skills
 slug: skills
 feed:
   - landing
+  - resume
+featuredSkills:
+  - title: Languages
+    values:
+      - Javascript/ES6
+      - Node.js
+      - JavaEE
+      - PHP
+  - title: Frameworks
+    values:
+      - React
+      - Redux
+      - Angular (1.2)
+      - Koa2
+      - Material UI
+  - title: Data
+    values:
+      - Redis
+      - MySQL
+      - MongoDB
+  - title: Concepts
+    values:
+      - Serverless
+      - Responsive design
+      - Semantic HTML
+      - Section 508/Accessibility
+      - REST
 skillsExplorer:
   - title: Client
     skills:
@@ -11,7 +38,7 @@ skillsExplorer:
           - React
           - Redux
           - Riot
-          - Angular (pre 1.2)
+          - Angular (1.2)
           - jQuery
       - title: CSS3
         libraries:

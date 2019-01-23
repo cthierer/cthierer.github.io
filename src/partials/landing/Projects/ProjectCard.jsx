@@ -4,6 +4,7 @@
 
 import React from 'react'
 import type { Node } from 'react'
+import { navigate } from 'gatsby'
 import {
   Card,
   Image,
@@ -29,6 +30,7 @@ type ProjectCardProps = {
   dateStart?: ?DateTime,
   dateEnd?: ?DateTime,
   tags?: string[],
+  route: string,
 }
 
 function ProjectCard({
@@ -40,9 +42,10 @@ function ProjectCard({
   dateStart,
   dateEnd,
   tags = [],
+  route,
 }: ProjectCardProps) {
   return (
-    <Card>
+    <Card link onClick={() => navigate(route)}>
       <div className={classes.projectLogoWrapper} style={{ backgroundColor: color }}>
         {logo && <Image style={{ height: '100%', maxHeight: '100%' }} centered src={logo} />}
       </div>

@@ -10,12 +10,16 @@ import type { State } from '../store'
 
 function mapStateToProps({
   nav: {
-    activeSection = 'home',
+    activeSection,
     navMenuAffixed = false,
   } = {},
-}: State) {
+}: State, {
+  activeSection: defaultSection = 'home',
+}: {
+  activeSection?: string,
+}) {
   return {
-    activeNavItem: activeSection,
+    activeNavItem: activeSection || defaultSection,
     affixNavMenu: navMenuAffixed,
   }
 }

@@ -8,6 +8,7 @@ description: |
   reader.
 start_date: 2017-01-15
 end_date: 2017-02-04
+publish_date: 2017-01-15
 color:
   bg: "#2b76cb"
 logo:
@@ -17,7 +18,6 @@ repo:
   host: github
   link: https://github.com/cthierer/wallaby
 ci:
-  host: travis
   link: https://travis-ci.org/cthierer/wallaby
   status: https://travis-ci.org/cthierer/wallaby.svg?branch=master
 docs:
@@ -32,7 +32,7 @@ tags:
   - heroku
 ---
 
-### Problem
+## Problem
 
 Although present in the mobile applications, the [Marvel comics][marvel] web
 reader does not have the capability to save your spot in a comic. This is
@@ -42,7 +42,7 @@ later.
 
 ---
 
-### Solution
+## Solution
 
 The **wallaby** application can be injected into the Marvel web reader,
 "scrape" metadata about the comic and the user's current position in the comic,
@@ -62,25 +62,23 @@ When executed, the bookmarklet will inject the **wallaby** client application
 into the Marvel reader toolbar, creating a seamless experience with the rest of
 the reader.
 
-![Marvel reader with wallaby loaded][wallaby-toolbar]
-{: .text-center }
+![Marvel reader with wallaby loaded](toolbar.png)
 
 Clicking the icon in the toolbar sends an API request to the **wallaby** API,
 which persists the data. The next time the user visits the **wallaby**
 homepage, they will see the bookmark in the "Recent Bookmarks" listing, as
 well as a link to take them right back to where they left off.
 
-[![Wallaby homepage showing user's library][wallaby-library]][wallaby-library]
-{: .text-center }
+![Wallaby homepage showing user's library](library.png)
 
 ---
 
-### Implementation
+## Implementation
 
 The **wallaby** application is a Javascript client application, backed by a
 RESTful JSON API.
 
-#### Client
+### Client
 
 The client application has two parts:
 
@@ -94,7 +92,7 @@ insert a single script, which injects the appropriate tags to tie into the
 Marvel client. The client code is transpiled using [Babel][babel], packaged
 using [Webpack][webpack], and hosted on [Netlify][netlify].
 
-#### Server
+### Server
 
 The server application is implemented using [Koa2][koa], is backed by
 a [Redis][redis] database, and runs on [Heroku][heroku].
@@ -123,7 +121,7 @@ The API exposes the following [endpoints][code-router]:
 
 ---
 
-### Points of interest
+## Points of interest
 
 * Uses Redis as a persistence tier, mainly because it is easy to use, and I was
   looking to play around with it a bit. However, [in some places][todo-branching]
@@ -168,6 +166,4 @@ The API exposes the following [endpoints][code-router]:
 [riot]: http://riotjs.com/
 [todo-branching]: https://github.com/cthierer/wallaby/blob/f7f67fa453d68e4caebabd2dff182e68017aac98/src/modules/bookmarks/middleware/list.js#L42
 [wallaby]: https://wallaby.builds.solutions
-[wallaby-library]: ./library.png
-[wallaby-toolbar]: ./toolbar.png
 [webpack]: https://webpack.github.io/

@@ -76,8 +76,13 @@ function Footer({
             </Grid.Column>
             <Grid.Column width={8}>
               <List size="huge" inverted relaxed animated>
-                {cta.map(({ title, href, icon }) => (
-                  <List.Item key={href} as="a" href={href}>
+                {cta.map(({
+                  title,
+                  href,
+                  route,
+                  icon,
+                }) => (
+                  <List.Item key={href} as="a" href={href} onClick={route ? () => navigate(route) : undefined}>
                     {icon && <Icon name={icon} />}
                     <List.Content>{title}</List.Content>
                   </List.Item>

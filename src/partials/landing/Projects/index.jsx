@@ -107,6 +107,7 @@ function ProjectsSection({ classes }: ProjectsSectionProps) {
                   dateStart={startDate ? DateTime.fromISO(startDate) : null}
                   dateEnd={endDate ? DateTime.fromISO(endDate) : null}
                   tags={tags}
+                  route={route}
                 >
                   {formatMarkdown(description)}
                 </ProjectCard>

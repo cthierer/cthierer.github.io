@@ -6,11 +6,13 @@ feed:
 description: |
   A full-stack data application for tracking rodent infestations near food
   establishments in Baltimore City.
+publish_date: 2016-11-20
 start_date: 2016-11-20
 color:
   bg: "#6d0e0e"
 logo:
   link: ./redtail.svg
+link: http://redtail.builds.solutions
 repo:
   host: github
   link: https://github.com/cthierer/redtail
@@ -26,7 +28,7 @@ tags:
   - heroku
 ---
 
-### Problem
+## Problem
 
 To extract, transform, and normalize data from [_Open Baltimore_][data-baltimore],
 and build a Javascript application that:
@@ -39,7 +41,7 @@ and build a Javascript application that:
 
 ---
 
-### Solution
+## Solution
 
 The **redtail** application pulls data about Baltimore
 [neighborhoods][data-neighborhoods], [restaurants][data-restaurants], and
@@ -53,12 +55,11 @@ filter data to only show results from certain neighborhoods. The application
 also provides the capability for users to report, edit, and delete rodent
 sightings.
 
-[![Redtail application with active filter][redtail-filtered]][redtail-filtered]
-{: .text-center }
+![Redtail application with active filter](filtered.png)
 
 ---
 
-### Implementation
+## Implementation
 
 The application can be broken down into four core parts:
 
@@ -83,7 +84,7 @@ and run on [Heroku][heroku].
 
 ---
 
-### Points of interest
+## Points of interest
 
 * [State management][src-state] is pretty basic, and would benefit from either
   a refactor, or replacing with a library.
@@ -136,7 +137,6 @@ and run on [Heroku][heroku].
 [leaflet]: http://leafletjs.com/
 [mapbox]: https://www.mapbox.com/
 [mysql]: https://www.mysql.com/
-[redtail-filtered]: ./landing.png
 [riot]: http://riotjs.com/
 [sequelize]: http://docs.sequelizejs.com/en/v3/
 [src-client]: https://github.com/cthierer/redtail/blob/master/src/client.js

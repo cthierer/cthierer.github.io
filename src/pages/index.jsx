@@ -10,7 +10,7 @@ import {
   List,
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
-import { StaticQuery, graphql } from 'gatsby'
+import { StaticQuery, graphql, navigate } from 'gatsby'
 import Layout from '../containers/Layout'
 import SEO from '../components/SEO'
 import Hero from '../containers/NavigableHero'
@@ -103,7 +103,7 @@ const IndexPage = ({ classes }: IndexPageProps) => (
               <List className={classes.taglineContainer} relaxed size="massive" horizontal>
                 {data.ctaYaml.taglines.map(({ content, icon }) => (
                   <List.Item key={icon}>
-                    <Icon size="large" name={icon} />
+                    <Icon size="large" name={icon} fitted />
                     <List.Content>{content}</List.Content>
                   </List.Item>
                 ))}
@@ -112,7 +112,12 @@ const IndexPage = ({ classes }: IndexPageProps) => (
                 {formatMarkdown(data.ctaYaml.description)}
               </LeadParagraph>
               <Button.Group className={classes.ctaButtonContainer}>
-                {selectCtaLinks(data).map(({ title, href, icon }) => (
+                {selectCtaLinks(data).map(({
+                  title,
+                  href,
+                  route,
+                  icon,
+                }) => (
                   <Button
                     key={href}
                     primary
@@ -121,6 +126,7 @@ const IndexPage = ({ classes }: IndexPageProps) => (
                     labelPosition="left"
                     content={title}
                     href={href}
+                    onClick={route ? () => navigate(route) : undefined}
                   />
                 ))}
               </Button.Group>

@@ -3,6 +3,7 @@ title: Intern at Aquilent
 feed:
   - experience
 company: Aquilent, Inc.
+location: Laurel, MD
 logo:
   link: ./logo.jpg
 role: Intern

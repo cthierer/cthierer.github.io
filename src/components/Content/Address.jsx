@@ -18,7 +18,7 @@ function Address({
   zip,
 }: AddressProps) {
   return (
-    <div>
+    <p>
       {street}
       {street && <br />}
       {city}
@@ -26,7 +26,7 @@ function Address({
       {state}
       {state && ' '}
       {zip}
-    </div>
+    </p>
   )
 }
 

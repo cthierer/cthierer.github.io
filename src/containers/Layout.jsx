@@ -11,10 +11,11 @@ import AppNavMenu from './AppNavMenu'
 import AppFooter from './AppFooter'
 
 type LayoutProps = {
+  activeSection?: string,
   children: Node,
 }
 
-const Layout = ({ children }: LayoutProps) => (
+const Layout = ({ children, activeSection }: LayoutProps) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {
@@ -27,12 +28,16 @@ const Layout = ({ children }: LayoutProps) => (
     `}
     render={() => (
       <>
-        <AppNavMenu />
+        <AppNavMenu activeSection={activeSection} />
         {children}
         <AppFooter />
       </>
     )}
   />
 )
+
+Layout.defaultProps = {
+  activeSection: 'home',
+}
 
 export default Layout

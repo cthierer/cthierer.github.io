@@ -3,9 +3,10 @@ title: Senior Developer at Aquilent
 feed:
   - experience
 company: Aquilent, Inc.
+location: Laurel, MD
 logo:
   link: ./logo.jpg
-role: Senior Developer
+role: Sr. Developer
 start_date: 2011-05-31
 end_date: 2016-07-22
 tags:
@@ -27,7 +28,10 @@ tags:
 
 * Supported **full-stack application development** across several projects
   for the Federal government; most recently, on **HealthCare.gov**.
+
 * Utilized technologies such as **Node.js**, **PHP**, **Java EE**, and
   **Angular.js**.
+
 * Integrated complex systems using **REST** and **SOAP** based APIs.
+
 * Led a team of 4 developers.

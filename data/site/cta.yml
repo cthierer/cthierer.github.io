@@ -12,7 +12,7 @@
       href: "mailto:hello@christhierer.com"
       icon: "mail"
     - title: "Resume"
-      href: "/resume"
+      route: "/resume"
       icon: "file"
     - title: "GitHub"
       href: "https://github.com/cthierer"

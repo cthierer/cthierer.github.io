@@ -1,9 +1,10 @@
 ---
 title: '#BersteinWithLove'
-route: /projects/bersteinwithlove
+route: /project/bersteinwithlove
 description: |
   Cristina and Zachary Berstein's wedding website.
 link: https://typesetter-knob-12134.netlify.com/
+publish_date: 2016-01-13
 start_date: 2016-01-13
 feed:
   - projects
@@ -25,11 +26,6 @@ for quite some time, and it was for two of the most incredible people I know!
 It is a static, Jekyll-based website, using Bootstrap as the front-end
 framework, and supporting bilingual content (both English and Spanish).
 
-[![Landing page][landing-page]][landing-page]
-{: .text-center }
+![Landing page](landing.png)
 
-[!["Our Story" page][content-page]][content-page]
-{: .text-center }
-
-[landing-page]: ./landing.png
-[content-page]: ./content.png
+!["Our Story" page](content.png)

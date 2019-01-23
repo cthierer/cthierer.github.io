@@ -4,11 +4,9 @@
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
 
-export { wrapRootElement } from './src/hooks'
+exports.wrapRootElement = require('./src/hooks').wrapRootElement
 
-export const onRenderBody = (
-  { setBodyAttributes },
-) => {
+exports.onRenderBody = ({ setBodyAttributes }) => {
   setBodyAttributes({
     style: { scrollBehavior: 'smooth' },
   })

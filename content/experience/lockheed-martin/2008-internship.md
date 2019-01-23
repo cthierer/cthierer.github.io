@@ -3,6 +3,7 @@ title: Intern at Lockheed Martin ITS-ESE program
 feed:
   - experience
 company: Lockeed Martin
+location: Arlington, VA
 logo:
   link: ./logo.jpg
 role: Intern
