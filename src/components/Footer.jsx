@@ -32,7 +32,7 @@ type FooterProps = {
   navItems?: Array<{ id: string, route: string, title: string }>,
   address?: AddressProps,
   email?: string,
-  cta?: Array<{ title: string, href: string, icon: string}>,
+  cta?: Array<{ title: string, href?: string, route?: string, icon: string}>,
 }
 
 function Footer({
