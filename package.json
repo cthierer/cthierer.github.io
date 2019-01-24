@@ -27,7 +27,6 @@
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
-    "redux-logger": "^3.0.6",
     "remark": "^10.0.1",
     "remark-react": "^5.0.1",
     "semantic-ui-css": "^2.4.1",

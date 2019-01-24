@@ -4,7 +4,6 @@
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import logger from 'redux-logger'
 import navReducer from './nav'
 import type { NavState, NavAction } from './nav'
 
@@ -22,7 +21,7 @@ const appReducer: Reducer = combineReducers({
 
 const store = createStore<State, Action, Dispatch>(
   appReducer,
-  composeWithDevTools(applyMiddleware(logger)),
+  composeWithDevTools(),
 )
 
 export default store
