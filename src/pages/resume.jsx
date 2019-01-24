@@ -2,9 +2,20 @@
  * @flow
  */
 
+/* global window */
+
 import React from 'react'
 import injectStyles from 'react-jss'
-import { Grid, List, Divider } from 'semantic-ui-react'
+import {
+  Grid,
+  List,
+  Divider,
+  Rail,
+  Segment,
+  Button,
+  Icon,
+  Sticky,
+} from 'semantic-ui-react'
 import { StaticQuery, graphql } from 'gatsby'
 import { DateTime } from 'luxon'
 import Address from '../components/Content/Address'
@@ -26,13 +37,13 @@ const styles = {
   },
   container: {
     margin: 'auto',
+    position: 'relative',
     '@media screen': {
       backgroundColor: '#fff',
       boxShadow: '#e8e8e8 0 0 20px',
       border: '1px solid #e8e8e8',
       padding: '12.7mm',
-      overflow: 'hidden',
-      height: '291mm',
+      minHeight: '271mm',
       width: '215.9mm',
     },
   },
@@ -108,6 +119,22 @@ function Resume({ classes }: ResumeProps) {
     <div className={classes.printable}>
       <SEO title="Resume" />
       <div className={classes.container}>
+        <Rail position="right" size="mini" attached>
+          <Sticky>
+            <Segment compact basic>
+              <Button.Group vertical>
+                <Button animated primary onClick={() => window.history.back()}>
+                  <Button.Content visible><Icon name="arrow left" /></Button.Content>
+                  <Button.Content hidden>Back</Button.Content>
+                </Button>
+                <Button animated onClick={() => window.print()}>
+                  <Button.Content visible><Icon name="print" /></Button.Content>
+                  <Button.Content hidden>Print</Button.Content>
+                </Button>
+              </Button.Group>
+            </Segment>
+          </Sticky>
+        </Rail>
         <StaticQuery
           query={graphql`{
             profileYaml {
