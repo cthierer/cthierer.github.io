@@ -35,7 +35,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "prebuild": "run-p flow test lint",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "start": "npm run develop",
