@@ -5,7 +5,7 @@
   "author": "Chris Thierer <chris@christhierer.com>",
   "dependencies": {
     "debounce": "^1.2.0",
-    "gatsby": "^2.0.76",
+    "gatsby": "^2.0.93",
     "gatsby-image": "^2.0.20",
     "gatsby-plugin-jss": "^2.0.6",
     "gatsby-plugin-manifest": "^2.0.9",

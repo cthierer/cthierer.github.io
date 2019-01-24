@@ -22,7 +22,7 @@ import Address from '../components/Content/Address'
 import RenderedMarkdown from '../components/Content/RenderedMarkdown'
 import Duration from '../components/Content/Duration'
 import FullDate from '../components/Content/FullDate'
-import SEO from '../components/SEO'
+import Meta from '../components/Meta'
 import { important } from '../theme/utils'
 
 const styles = {
@@ -117,7 +117,7 @@ type ResumeProps = {
 function Resume({ classes }: ResumeProps) {
   return (
     <div className={classes.printable}>
-      <SEO title="Resume" />
+      <Meta title="Resume" />
       <div className={classes.container}>
         <Rail position="right" size="mini" attached>
           <Sticky>

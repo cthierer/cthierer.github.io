@@ -6,7 +6,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { StaticQuery, graphql } from 'gatsby'
 
-type SEOProps = {
+type MetaProps = {
   description?: ?string,
   lang?: string,
   meta?: Array<*>,
@@ -15,7 +15,7 @@ type SEOProps = {
 }
 
 const detailsQuery = graphql`
-  query DefaultSEOQuery {
+  query DefaultMetaQuery {
     site {
       siteMetadata {
         title
@@ -26,9 +26,9 @@ const detailsQuery = graphql`
   }
 `
 
-function SEO({
+function Meta({
   description, lang, meta, keywords = [], title,
-}: SEOProps) {
+}: MetaProps) {
   return (
     <StaticQuery
       query={detailsQuery}
@@ -91,11 +91,11 @@ function SEO({
   )
 }
 
-SEO.defaultProps = {
+Meta.defaultProps = {
   description: undefined,
   lang: 'en',
   meta: [],
   keywords: [],
 }
 
-export default SEO
+export default Meta

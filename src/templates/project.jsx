@@ -13,7 +13,7 @@ import {
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
 import Layout from '../containers/Layout'
-import SEO from '../components/SEO'
+import Meta from '../components/Meta'
 import RenderedMarkdown from '../components/Content/RenderedMarkdown'
 import LogoCard from '../components/Project/LogoCard'
 import LeadParagraph from '../components/Content/LeadParagraph'
@@ -96,7 +96,7 @@ function ProjectTemplate({
 }: ProjectTemplateProps) {
   return (
     <Layout activeSection="projects">
-      <SEO title={title} />
+      <Meta title={title} />
       <div className={classes.projectWrapper}>
         <Container>
           <Grid reversed="computer tablet" stackable>

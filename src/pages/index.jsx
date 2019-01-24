@@ -12,7 +12,7 @@ import {
 import injectStyles from 'react-jss'
 import { StaticQuery, graphql, navigate } from 'gatsby'
 import Layout from '../containers/Layout'
-import SEO from '../components/SEO'
+import Meta from '../components/Meta'
 import Hero from '../containers/NavigableHero'
 import SkillsSection from '../partials/landing/Skills'
 import ProjectsSection from '../partials/landing/Projects'
@@ -97,7 +97,7 @@ const IndexPage = ({ classes }: IndexPageProps) => (
       }`}
       render={data => (
         <>
-          <SEO title="Home" />
+          <Meta title="Home" />
           <Hero id="home" className={classes.landingHero}>
             <Container text>
               <List className={classes.taglineContainer} relaxed size="massive" horizontal>
