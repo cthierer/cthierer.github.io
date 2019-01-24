@@ -20,7 +20,7 @@ export default function registerSection(
     routable = false,
   }: {
     routable?: boolean,
-  } = {}
+  } = {},
 ): RegisterSectionAction {
   return {
     type: ACTION_REGISTER_SECTION,

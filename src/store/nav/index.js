@@ -29,7 +29,7 @@ export type NavAction =
 export default function navReducer(
   state: NavState = {},
   // $FlowFixMe
-  { type, ...data }: NavAction
+  { type, ...data }: NavAction,
 ): NavState {
   if (!type) {
     return state

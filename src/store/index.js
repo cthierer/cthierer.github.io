@@ -22,7 +22,7 @@ const appReducer: Reducer = combineReducers({
 
 const store = createStore<State, Action, Dispatch>(
   appReducer,
-  composeWithDevTools(applyMiddleware(logger))
+  composeWithDevTools(applyMiddleware(logger)),
 )
 
 export default store
