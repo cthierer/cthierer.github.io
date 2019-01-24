@@ -373,7 +373,7 @@ function Resume({ classes }: ResumeProps) {
                         <h3 className={classes.entryHeader}>{`${degree}, ${program}`}</h3>
                         <p className={classes.narrow}>{affiliation}</p>
                         <p className={classes.narrow}>
-                          <FullDate value={awardDate} format="MMMM y" />
+                          <FullDate as="span" value={awardDate} format="MMMM y" />
                         </p>
                       </Grid.Column>
                     ))}
