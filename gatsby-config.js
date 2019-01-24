@@ -34,6 +34,7 @@ module.exports = {
         ],
       },
     },
+    'gatsby-plugin-jss',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
