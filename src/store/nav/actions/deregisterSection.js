@@ -10,7 +10,7 @@ export type DeregisterSectionAction = {
 }
 
 export default function deregisterSection(
-  section: string,
+  section: string
 ): DeregisterSectionAction {
   return {
     type: ACTION_DEREGISTER_SECTION,

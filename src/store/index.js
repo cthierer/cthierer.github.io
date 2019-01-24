@@ -2,11 +2,7 @@
  * @flow
  */
 
-import {
-  createStore,
-  combineReducers,
-  applyMiddleware,
-} from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import logger from 'redux-logger'
 import navReducer from './nav'
@@ -18,7 +14,7 @@ export type State = {
 
 type Action = NavAction
 type Reducer = (State | void, Action) => State
-type Dispatch = (Action) => void
+type Dispatch = Action => void
 
 const appReducer: Reducer = combineReducers({
   nav: navReducer,
@@ -26,9 +22,7 @@ const appReducer: Reducer = combineReducers({
 
 const store = createStore<State, Action, Dispatch>(
   appReducer,
-  composeWithDevTools(
-    applyMiddleware(logger),
-  ),
+  composeWithDevTools(applyMiddleware(logger))
 )
 
 export default store

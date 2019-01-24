@@ -7,7 +7,10 @@ import type { SetActiveSectionAction } from './actions/setActiveSection'
 import { ACTION_DEREGISTER_SECTION } from './actions/deregisterSection'
 import type { DeregisterSectionAction } from './actions/deregisterSection'
 import { ACTION_REGISTER_SECTION } from './actions/registerSection'
-import type { RegisterSectionAction, SectionConfig } from './actions/registerSection'
+import type {
+  RegisterSectionAction,
+  SectionConfig,
+} from './actions/registerSection'
 import { ACTION_AFFIX_NAV_MENU } from './actions/affixNavMenu'
 import type { AffixNavMenuType } from './actions/affixNavMenu'
 
@@ -18,7 +21,7 @@ export type NavState = {
 }
 
 export type NavAction =
-  SetActiveSectionAction
+  | SetActiveSectionAction
   | DeregisterSectionAction
   | RegisterSectionAction
   | AffixNavMenuType
@@ -26,7 +29,7 @@ export type NavAction =
 export default function navReducer(
   state: NavState = {},
   // $FlowFixMe
-  { type, ...data }: NavAction,
+  { type, ...data }: NavAction
 ): NavState {
   if (!type) {
     return state
@@ -55,7 +58,9 @@ export default function navReducer(
     }
     case ACTION_DEREGISTER_SECTION: {
       const { section } = data
-      const { sections: { [section]: currSection, ...otherSections } = {} } = state
+      const {
+        sections: { [section]: currSection, ...otherSections } = {},
+      } = state
 
       return {
         ...state,

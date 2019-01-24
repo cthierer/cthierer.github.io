@@ -10,7 +10,7 @@ export type SetActiveSectionAction = {
 }
 
 export default function setActiveSection(
-  section: string,
+  section: string
 ): SetActiveSectionAction {
   return { type: ACTION_SET_ACTIVE_SECTION, section }
 }
