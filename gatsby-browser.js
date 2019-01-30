@@ -6,4 +6,6 @@
 
 /* eslint-disable import/prefer-default-export */
 
+require('semantic-ui-css/semantic.min.css')
+
 exports.wrapRootElement = require('./src/hooks').wrapRootElement
