@@ -72,7 +72,7 @@
     "*.{js,jsx}": [
       "prettier --write",
       "eslint --fix",
-      "flow",
+      "flow focus-check",
       "git add"
     ]
   }

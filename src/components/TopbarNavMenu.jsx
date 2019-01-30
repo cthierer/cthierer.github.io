@@ -50,7 +50,7 @@ type TopbarNavMenuState = {
 
 class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
   static defaultProps = {
-    activeNavItem: 'home',
+    activeNavItem: undefined,
     navItems: [],
     affixNavMenu: false,
     icon: undefined,
@@ -76,7 +76,7 @@ class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
     const {
       classes,
       siteTitle,
-      activeNavItem = 'home',
+      activeNavItem,
       navItems = [],
       affixNavMenu = false,
       icon,
@@ -84,7 +84,10 @@ class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
     const { navMenuExpanded = false } = this.state
 
     return (
-      <Segment inverted className={`${classes.topBar} ${affixNavMenu ? classes.fixed : ''}`}>
+      <Segment
+        inverted
+        className={`${classes.topBar} ${affixNavMenu ? classes.fixed : ''}`}
+      >
         <Menu
           className={classes.navMenu}
           inverted
@@ -112,13 +115,22 @@ class TopbarNavMenu extends Component<TopbarNavMenuProps, TopbarNavMenuState> {
             </Responsive>
             <Responsive as={Fragment} maxWidth={breakpoints.xs.maxWidth}>
               <Menu.Item onClick={this.toggleNavMenu} position="right">
-                <Icon size="large" name={navMenuExpanded ? 'caret up' : 'caret down'} />
+                <Icon
+                  size="large"
+                  name={navMenuExpanded ? 'caret up' : 'caret down'}
+                />
               </Menu.Item>
             </Responsive>
           </Container>
         </Menu>
         <Responsive as={Fragment} maxWidth={breakpoints.xs.maxWidth}>
-          <Transition as={Fragment} duration={100} unmountOnHide visible={navMenuExpanded} animation="slide down">
+          <Transition
+            as={Fragment}
+            duration={100}
+            unmountOnHide
+            visible={navMenuExpanded}
+            animation="slide down"
+          >
             <Container>
               <Menu
                 className={classes.fullWidth}

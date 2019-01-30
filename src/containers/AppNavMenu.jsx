@@ -8,16 +8,14 @@ import { StaticQuery, graphql } from 'gatsby'
 import TopbarNavMenu from '../components/TopbarNavMenu'
 import type { State } from '../store'
 
-function mapStateToProps({
-  nav: {
-    activeSection,
-    navMenuAffixed = false,
-  } = {},
-}: State, {
-  activeSection: defaultSection = 'home',
-}: {
-  activeSection?: string,
-}) {
+function mapStateToProps(
+  { nav: { activeSection, navMenuAffixed = false } = {} }: State,
+  {
+    activeSection: defaultSection,
+  }: {
+    activeSection?: string,
+  },
+) {
   return {
     activeNavItem: activeSection || defaultSection,
     affixNavMenu: navMenuAffixed,
@@ -29,21 +27,13 @@ function selectNavItems({ allNavYaml: { edges = [] } = {} } = {}) {
 }
 
 function selectProfileName({
-  allProfileYaml: {
-    edges: [{
-      node: { name } = {},
-    } = {}] = [],
-  } = {},
+  allProfileYaml: { edges: [{ node: { name } = {} } = {}] = [] } = {},
 } = {}) {
   return name
 }
 
 function selectProfileIcon({
-  allProfileYaml: {
-    edges: [{
-      node: { icon } = {},
-    } = {}] = [],
-  } = {},
+  allProfileYaml: { edges: [{ node: { icon } = {} } = {}] = [] } = {},
 } = {}) {
   return icon
 }
@@ -51,25 +41,26 @@ function selectProfileIcon({
 export default connect(mapStateToProps)(props => (
   <StaticQuery
     query={graphql`
-    {
-      allNavYaml {
-        edges {
-          node {
-            id
-            route
-            title
+      {
+        allNavYaml {
+          edges {
+            node {
+              id
+              route
+              title
+            }
+          }
+        }
+        allProfileYaml {
+          edges {
+            node {
+              name
+              icon
+            }
           }
         }
       }
-      allProfileYaml {
-        edges {
-          node {
-            name
-            icon
-          }
-        }
-      }
-    }`}
+    `}
     render={data => (
       <TopbarNavMenu
         navItems={selectNavItems(data)}

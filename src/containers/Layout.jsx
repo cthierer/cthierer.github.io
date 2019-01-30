@@ -37,7 +37,7 @@ const Layout = ({ children, activeSection }: LayoutProps) => (
 )
 
 Layout.defaultProps = {
-  activeSection: 'home',
+  activeSection: undefined,
 }
 
 export default Layout
