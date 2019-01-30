@@ -4,10 +4,7 @@
 
 import React from 'react'
 import {
-  Container,
-  Button,
-  Icon,
-  List,
+  Container, Button, Icon, List,
 } from 'semantic-ui-react'
 import injectStyles from 'react-jss'
 import { StaticQuery, graphql, navigate } from 'gatsby'
@@ -44,7 +41,7 @@ const styles = {
       position: important('absolute'),
       bottom: important('28px'),
       left: important('50%'),
-      transform: important(('translateX(-50%)')),
+      transform: important('translateX(-50%)'),
     },
   },
   [`@media (max-width: ${breakpoints.sm.minWidth}px)`]: {
@@ -85,8 +82,9 @@ type IndexPageProps = {
 const IndexPage = ({ classes }: IndexPageProps) => (
   <Layout>
     <StaticQuery
-      query={graphql`{
-        ctaYaml {
+      query={graphql`
+        {
+          ctaYaml {
             taglines {
               content
               icon
@@ -94,13 +92,19 @@ const IndexPage = ({ classes }: IndexPageProps) => (
             description
             ...CtaLinks
           }
-      }`}
+        }
+      `}
       render={data => (
         <>
           <Meta title="Home" />
           <Hero id="home" className={classes.landingHero}>
             <Container text>
-              <List className={classes.taglineContainer} relaxed size="massive" horizontal>
+              <List
+                className={classes.taglineContainer}
+                relaxed
+                size="massive"
+                horizontal
+              >
                 {data.ctaYaml.taglines.map(({ content, icon }) => (
                   <List.Item key={icon}>
                     <Icon size="large" name={icon} fitted />
@@ -113,13 +117,11 @@ const IndexPage = ({ classes }: IndexPageProps) => (
               </LeadParagraph>
               <Button.Group className={classes.ctaButtonContainer}>
                 {selectCtaLinks(data).map(({
-                  title,
-                  href,
-                  route,
-                  icon,
+                  title, href, route, icon,
                 }) => (
                   <Button
                     key={href}
+                    as="a"
                     primary
                     size="huge"
                     icon={icon}
