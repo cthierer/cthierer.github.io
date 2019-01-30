@@ -1,3 +1,9 @@
 [build]
   publish = "public/"
   command = "npm run build"
+
+# redirect old /projects/ path to new structure
+[[redirects]]
+  from = "/projects/*"
+  to = "/project/:splat"
+  status = 302
