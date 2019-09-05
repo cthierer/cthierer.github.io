@@ -4,10 +4,7 @@
 
 import React, { Component, Fragment } from 'react'
 import {
-  Segment,
-  Accordion,
-  List,
-  Icon,
+  Segment, Accordion, List, Icon,
 } from 'semantic-ui-react'
 
 /* global Event */
@@ -32,7 +29,10 @@ type SkillsExplorerState = {
   activeIndex: number,
 }
 
-class SkillsExplorer extends Component<SkillsExplorerProps, SkillsExplorerState> {
+class SkillsExplorer extends Component<
+  SkillsExplorerProps,
+  SkillsExplorerState,
+> {
   state = { activeIndex: 0 }
 
   handleClick = (e: Event, { index }: { index: number }) => {
@@ -61,14 +61,16 @@ class SkillsExplorer extends Component<SkillsExplorerProps, SkillsExplorerState>
               </Accordion.Title>
               <Accordion.Content active={activeIndex === idx}>
                 <List inverted celled>
-                  {skills.map(({ title: skillTitle, libraries }) => (
+                  {skills.map(({ title: skillTitle, libraries = [] }) => (
                     <List.Item key={skillTitle}>
                       <List.Header>{skillTitle}</List.Header>
-                      <List.List>
-                        {libraries.map(library => (
-                          <List.Item key={library} content={library} />
-                        ))}
-                      </List.List>
+                      {libraries && libraries.length > 0 && (
+                        <List.List>
+                          {libraries.map(library => (
+                            <List.Item key={library} content={library} />
+                          ))}
+                        </List.List>
+                      )}
                     </List.Item>
                   ))}
                 </List>

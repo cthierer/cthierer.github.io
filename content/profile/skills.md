@@ -7,15 +7,13 @@ feed:
 featuredSkills:
   - title: Languages
     values:
-      - Javascript/ES6
+      - Javascript/ES10
       - Node.js
-      - JavaEE
-      - PHP
-  - title: Frameworks
+      - Golang
+  - title: Frameworks & libraries
     values:
       - React
       - Redux
-      - Angular (1.2)
       - Koa2
       - Material UI
   - title: Data
@@ -33,17 +31,17 @@ featuredSkills:
 skillsExplorer:
   - title: Client
     skills:
-      - title: Javascript/ES6
+      - title: Javascript/ES10
         libraries:
           - React
           - Redux
+          - Material UI
           - Riot
           - Angular (1.2)
           - jQuery
       - title: CSS3
         libraries:
           - Bootstrap
-          - Material UI
           - LESS
   - title: Server
     skills:
@@ -53,17 +51,12 @@ skillsExplorer:
           - Express.js
           - Babel
           - Grunt
-      - title: JavaEE
-        libraries:
-          - Hibernate
-          - Spring
-      - title: PHP
-        libraries:
-          - CakePHP
+      - title: Golang
   - title: Data
     skills:
       - title: API
         libraries:
+          - gRPC
           - REST
           - SOAP
       - title: Relational
@@ -88,6 +81,7 @@ skillsExplorer:
         libraries:
           - Linux
           - Windows
+          - Mac OSX
 ---
 
 * Experienced with designing, implementing, and maintaining

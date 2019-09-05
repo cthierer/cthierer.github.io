@@ -32,6 +32,4 @@ tags:
 * Utilized technologies such as **Node.js**, **PHP**, **Java EE**, and
   **Angular.js**.
 
-* Integrated complex systems using **REST** and **SOAP** based APIs.
-
 * Led a team of 4 developers.

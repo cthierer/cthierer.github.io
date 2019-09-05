@@ -1,17 +1,20 @@
 ---
-title: Senior Web Developer for Bethesda.net
+title: Senior Web Engineer for Bethesda.net
 feed:
   - experience
 company: Bethesda.net
 location: Rockville, MD
 logo:
   link: ./logo.jpg
-role: Sr. Web Developer
+role: Sr. Web Engineer
 start_date: 2016-07-25
 tags:
+  - golang
+  - grpc
+  - rest
   - nodejs
   - koa
-  - riot
+  - js
   - react
   - aws
   - serverless
@@ -19,15 +22,17 @@ tags:
   - git
 ---
 
-* Developed reusable web components using **Riot.js** and **ES6** to support
+I have held a few roles at Bethesda.net, including as a **web developer**, a
+platform **reliability engineer**, and a development **team lead**. During that
+time, I have:
+
+* Designed and implemented a management tool for the platform, using **gRPC**
+  and **Go** for the service layer, and **Node.js**/**Javascript** for the
+  browser-based UI.
+
+* Built an ephemeral load testing tool using **Locust**, **AWS ECS**, and
+  **serverless.io** that allows developers to schedule load tests on an integrated
+  environment via a Slack interface.
+
+* Developed reusable web components using **React** and **Javascript** to support
   multiple client-facing single-page applications.
-
-* Created a proof-of-concept **isomorphic application** for sharing common
-  components across the client and server, with the goal of improving search
-  engine and social media experiences.
-
-* Deployed an **AWS Lambda** task to compile data from several sources into
-  a single, static sitemap.
-
-* Maintained and adhered to strict **unit test** and **documentation**
-  coverage standards.
