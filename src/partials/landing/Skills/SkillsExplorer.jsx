@@ -2,12 +2,8 @@
  * @flow
  */
 
-import React, { Component, Fragment } from 'react'
-import {
-  Segment, Accordion, List, Icon,
-} from 'semantic-ui-react'
-
-/* global Event */
+import React, { Fragment } from 'react'
+import { Segment, Label, Header } from 'semantic-ui-react'
 
 type Library = string
 
@@ -25,62 +21,45 @@ type SkillsExplorerProps = {
   collections: Collection[],
 }
 
-type SkillsExplorerState = {
-  activeIndex: number,
-}
+const colors = ['violet', 'teal', 'yellow', 'grey']
 
-class SkillsExplorer extends Component<
-  SkillsExplorerProps,
-  SkillsExplorerState,
-> {
-  state = { activeIndex: 0 }
-
-  handleClick = (e: Event, { index }: { index: number }) => {
-    const { activeIndex } = this.state
-    const newIndex = activeIndex === index ? -1 : index
-
-    this.setState({ activeIndex: newIndex })
-  }
-
-  render() {
-    const { activeIndex } = this.state
-    const { collections = [] } = this.props
-
-    return (
-      <Segment inverted>
-        <Accordion inverted>
-          {collections.map(({ title: collectionTitle, skills }, idx) => (
-            <Fragment key={collectionTitle}>
-              <Accordion.Title
-                active={activeIndex === idx}
-                index={idx}
-                onClick={this.handleClick}
+const SkillsExplorer = function SkillsExplorer({
+  collections = [],
+}: SkillsExplorerProps) {
+  return (
+    <>
+      <Header as="h4" textAlign="center" attached="top" inverted>
+        Libraries, frameworks, &amp; technologies
+      </Header>
+      <Segment padded attached>
+        {collections.map(({ title: collectionTitle, skills = [] }, idx) => (
+          <Fragment key={collectionTitle}>
+            <Label ribbon color={colors[idx]}>
+              {collectionTitle}
+            </Label>
+            <Segment compact basic>
+              <Label.Group
+                key={collectionTitle}
+                color={colors[idx]}
+                size="huge"
               >
-                <Icon name="dropdown" />
-                {collectionTitle}
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === idx}>
-                <List inverted celled>
-                  {skills.map(({ title: skillTitle, libraries = [] }) => (
-                    <List.Item key={skillTitle}>
-                      <List.Header>{skillTitle}</List.Header>
-                      {libraries && libraries.length > 0 && (
-                        <List.List>
-                          {libraries.map(library => (
-                            <List.Item key={library} content={library} />
-                          ))}
-                        </List.List>
-                      )}
-                    </List.Item>
-                  ))}
-                </List>
-              </Accordion.Content>
-            </Fragment>
-          ))}
-        </Accordion>
+                {skills.map(({ title: skillTitle, libraries = [] }) => (
+                  <>
+                    <Label>{skillTitle}</Label>
+                    {libraries
+                      && libraries.length > 0
+                      && libraries.map(library => (
+                        <Label key={library}>{library}</Label>
+                      ))}
+                  </>
+                ))}
+              </Label.Group>
+            </Segment>
+          </Fragment>
+        ))}
       </Segment>
-    )
-  }
+    </>
+  )
 }
 
 export default SkillsExplorer

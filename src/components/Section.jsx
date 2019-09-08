@@ -26,12 +26,10 @@ export type SectionProps = {
 function Section({ children, classes, title }: SectionProps) {
   return (
     <Segment className={classes.section} vertical>
-      <Container>
+      <Container text>
         <Header as="h3" className={classes.sectionHeader}>
           {title}
         </Header>
-      </Container>
-      <Container>
         {children}
       </Container>
     </Segment>

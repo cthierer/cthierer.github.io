@@ -81,7 +81,7 @@ skillsExplorer:
         libraries:
           - Linux
           - Windows
-          - Mac OSX
+          - Mac OS X
 ---
 
 * Experienced with designing, implementing, and maintaining
