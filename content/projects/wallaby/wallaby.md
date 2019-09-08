@@ -11,6 +11,7 @@ end_date: 2017-02-04
 publish_date: 2017-01-15
 color:
   bg: "#2b76cb"
+  theme: blue
 logo:
   link: ./wallaby.svg
 link: https://wallaby.builds.solutions/

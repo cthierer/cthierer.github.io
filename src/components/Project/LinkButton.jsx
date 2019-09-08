@@ -14,14 +14,13 @@ type LinkButtonProps = {
 }
 
 function LinkButton({
-  icon,
-  href,
-  label,
-  children,
+  icon, href, label, children,
 }: LinkButtonProps) {
   return (
-    <Button link href={href} fluid size="big" animated="vertical" basic>
-      <Button.Content visible><Icon name={icon} fitted /></Button.Content>
+    <Button link href={href} size="big" animated="vertical">
+      <Button.Content visible>
+        <Icon name={icon} fitted />
+      </Button.Content>
       <Button.Content hidden>{label || children}</Button.Content>
     </Button>
   )

@@ -10,8 +10,9 @@ import {
   Grid,
   Segment,
   Divider,
+  Label,
+  Button,
 } from 'semantic-ui-react'
-import injectStyles from 'react-jss'
 import Layout from '../containers/Layout'
 import Meta from '../components/Meta'
 import RenderedMarkdown from '../components/Content/RenderedMarkdown'
@@ -20,18 +21,6 @@ import LeadParagraph from '../components/Content/LeadParagraph'
 import FullDate from '../components/Content/FullDate'
 import formatMarkdown from '../content/formatMarkdown'
 import LinkButton from '../components/Project/LinkButton'
-import LinkGrid from '../components/Project/LinkGrid'
-import TagList from '../components/Project/TagList'
-
-const styles = {
-  projectWrapper: {
-    marginTop: '3em',
-    marginBottom: '6em',
-  },
-  sidebarWrapper: {
-    paddingTop: '1em',
-  },
-}
 
 type ProjectDocument = {
   frontmatter: {
@@ -40,6 +29,7 @@ type ProjectDocument = {
     publish_date: string,
     color: {
       bg: string,
+      theme: string,
     },
     logo: {
       link: {
@@ -65,7 +55,6 @@ type ProjectTemplateProps = {
   data: {
     markdownRemark: ProjectDocument,
   },
-  classes: { [string]: string },
 }
 
 function ProjectTemplate({
@@ -77,12 +66,9 @@ function ProjectTemplate({
         publish_date: publishDate,
         color: {
           bg: backgroundColor = '#000',
+          theme: themeColor = 'black',
         } = {},
-        logo: {
-          link: {
-            publicURL: logoSrc,
-          } = {},
-        } = {},
+        logo: { link: { publicURL: logoSrc } = {} } = {},
         link,
         repo = {},
         ci = {},
@@ -92,78 +78,104 @@ function ProjectTemplate({
       html,
     } = {},
   } = {},
-  classes,
 }: ProjectTemplateProps) {
   return (
     <Layout activeSection="projects">
       <Meta title={title} />
-      <div className={classes.projectWrapper}>
-        <Container>
-          <Grid reversed="computer tablet" stackable>
+      <Segment inverted color={themeColor} attached style={{ border: 'none' }}>
+        <Divider hidden />
+        <Container text>
+          <Grid stackable>
             <Grid.Row>
-              <Grid.Column widescreen={3} largeScreen={4} computer={5} width={6}>
-                <Segment>
-                  <div className={classes.sidebarWrapper}>
-                    {logoSrc && <LogoCard backgroundColor={backgroundColor} logoSrc={logoSrc} />}
-                    <Divider hidden />
-                    <LinkGrid>
-                      {link && <LinkButton icon="lab" label="Demo" href={link} />}
-                      {repo && <LinkButton icon="code branch" label="Code" href={repo.link} />}
-                      {ci && <LinkButton icon="cogs" label="Build" href={ci.link} />}
-                      {docs && <LinkButton icon="paperclip" label="Docs" href={docs.link} />}
-                    </LinkGrid>
-                    <TagList tags={tags} />
-                  </div>
-                </Segment>
-              </Grid.Column>
               <Grid.Column width={10}>
-                <Header as="h1">{title}</Header>
+                <Header as="h1" size="huge" inverted>
+                  {title}
+                  <Header.Subheader>
+                    {publishDate && (
+                      <FullDate value={publishDate} format="MMMM y" />
+                    )}
+                  </Header.Subheader>
+                </Header>
                 {description && (
                   <LeadParagraph as="div">
                     {formatMarkdown(description)}
                   </LeadParagraph>
                 )}
-                {publishDate && <FullDate value={publishDate} format="MMMM y" />}
-                <Divider hidden section />
-                <RenderedMarkdown html={html} />
+                <Divider hidden />
+                {tags && tags.length > 0 && (
+                  <Label.Group color={themeColor}>
+                    {tags.map(tag => (
+                      <Label>{tag}</Label>
+                    ))}
+                  </Label.Group>
+                )}
+              </Grid.Column>
+              <Grid.Column width={6}>
+                {logoSrc && (
+                  <LogoCard
+                    backgroundColor={backgroundColor}
+                    logoSrc={logoSrc}
+                  />
+                )}
               </Grid.Column>
             </Grid.Row>
           </Grid>
-
         </Container>
-      </div>
+      </Segment>
+      <Segment text attached="bottom" color={themeColor} inverted>
+        <Container text>
+          <Button.Group attached="bottom" color={themeColor}>
+            {link && <LinkButton icon="lab" label="Demo" href={link} />}
+            {repo && (
+              <LinkButton icon="code branch" label="Code" href={repo.link} />
+            )}
+            {ci && <LinkButton icon="cogs" label="Build" href={ci.link} />}
+            {docs && (
+              <LinkButton icon="paperclip" label="Docs" href={docs.link} />
+            )}
+          </Button.Group>
+        </Container>
+      </Segment>
+      <Divider hidden />
+      <Container text>
+        <RenderedMarkdown html={html} />
+        <Divider hidden section />
+      </Container>
     </Layout>
   )
 }
 
-export default injectStyles(styles)(ProjectTemplate)
+export default ProjectTemplate
 
-export const pageQuery = graphql`query($path: String!) {
-  markdownRemark(frontmatter: { route: { eq: $path } }) {
-    frontmatter {
-      title
-      description
-      publish_date
-      color {
-        bg
-      }
-      logo {
-        link {
-          publicURL
+export const pageQuery = graphql`
+  query($path: String!) {
+    markdownRemark(frontmatter: { route: { eq: $path } }) {
+      frontmatter {
+        title
+        description
+        publish_date
+        color {
+          bg
+          theme
         }
-      }
-      link
-      repo {
+        logo {
+          link {
+            publicURL
+          }
+        }
         link
+        repo {
+          link
+        }
+        ci {
+          link
+        }
+        docs {
+          link
+        }
+        tags
       }
-      ci {
-        link
-      }
-      docs {
-        link
-      }
-      tags
+      html
     }
-    html
   }
-}`
+`

@@ -10,6 +10,7 @@ feed:
   - projects
 color:
   bg: '#2D4064'
+  theme: teal
 logo:
   link: ./logo.png
 repo:

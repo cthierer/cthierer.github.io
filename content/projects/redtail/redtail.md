@@ -10,6 +10,7 @@ publish_date: 2016-11-20
 start_date: 2016-11-20
 color:
   bg: "#6d0e0e"
+  theme: red
 logo:
   link: ./redtail.svg
 link: http://redtail.builds.solutions
