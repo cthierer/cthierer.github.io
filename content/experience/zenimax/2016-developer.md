@@ -1,12 +1,12 @@
 ---
-title: Senior Web Engineer for Bethesda.net
+title: Lead Software Engineer for Bethesda.net
 feed:
   - experience
 company: Bethesda.net
 location: Rockville, MD
 logo:
   link: ./logo.jpg
-role: Sr. Web Engineer
+role: Lead Software Engineer
 start_date: 2016-07-25
 tags:
   - golang
