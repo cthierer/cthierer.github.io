@@ -75,10 +75,8 @@ const styles = {
     marginBottom: important('.5em'),
     width: '100%',
     verticalAlign: 'middle',
-    '@media screen': {
-      paddingLeft: '.5em',
-      paddingRight: '.5em',
-    },
+    paddingLeft: '.5em',
+    paddingRight: '.5em',
   },
   entryHeader: {
     fontSize: '12pt',
@@ -368,9 +366,7 @@ function Resume({ classes }: ResumeProps) {
                         } = {},
                       }) => (
                         <Grid.Column key={title} width={8}>
-                          <h3
-                            className={classes.entryHeader}
-                          >
+                          <h3 className={classes.entryHeader}>
                             {`${degree}, ${program}`}
                           </h3>
                           <p className={classes.narrow}>{affiliation}</p>
