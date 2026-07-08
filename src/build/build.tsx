@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
-import HomePage from '../pages/HomePage'
+import Page from '../layouts/Page'
+import Home from '../pages/Home'
 
 const writePage = async (filePath: string, element: React.ReactElement) => {
 	const html = `<!doctype html>${renderToStaticMarkup(element)}`
@@ -10,7 +11,12 @@ const writePage = async (filePath: string, element: React.ReactElement) => {
 }
 
 const main = async () => {
-	await writePage('dist/index.html', <HomePage />)
+	await writePage(
+		'dist/index.html',
+		<Page title="Home page">
+			<Home />
+		</Page>,
+	)
 }
 
 try {
