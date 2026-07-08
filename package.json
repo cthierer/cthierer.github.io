@@ -11,7 +11,13 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"lint": "eslint .",
+		"prepare": "husky",
+		"precommit": "lint-staged",
 		"typecheck": "tsc --noEmit"
+	},
+	"lint-staged": {
+		"*": "prettier --write --ignore-unknown",
+		"*.{js,mjs,cjs,ts,tsx}": "eslint --fix"
 	},
 	"dependencies": {
 		"@picocss/pico": "^2.1.1",
@@ -26,7 +32,9 @@
 		"eslint": "^10.6.0",
 		"eslint-config-prettier": "^10.1.8",
 		"globals": "^17.7.0",
+		"husky": "^9.1.7",
 		"lightningcss-cli": "^1.32.0",
+		"lint-staged": "^17.0.8",
 		"prettier": "^3.9.4",
 		"tsx": "^4.23.0",
 		"typescript": "^6.0.3",
