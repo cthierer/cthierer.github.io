@@ -1,0 +1,58 @@
+:root,
+:root[data-theme='light'] {
+	color-scheme: light;
+
+	/* Typography */
+	--pico-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--site-font-heading: 'Source Serif 4', Georgia, serif;
+	--site-font-mono:
+		'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+	/* Core palette */
+	--pico-background-color: #f8f7f1;
+	--pico-color: #20231f;
+	--pico-muted-color: #5c6358;
+
+	/* Green accent */
+	--pico-primary: #073d24;
+	--pico-primary-hover: #052f1c;
+	--pico-primary-focus: rgba(7, 61, 36, 0.22);
+	--pico-primary-inverse: #ffffff;
+
+	/* Secondary text / contrast */
+	--pico-secondary: #566251;
+	--pico-secondary-hover: #394537;
+	--pico-secondary-focus: rgba(86, 98, 81, 0.18);
+	--pico-secondary-inverse: #ffffff;
+
+	/* Surfaces */
+	--pico-card-background-color: #fbfaf5;
+	--pico-card-border-color: #d8d6cc;
+
+	/* Forms/buttons/borders */
+	--pico-border-color: #d8d6cc;
+	--pico-form-element-border-color: #9fa89b;
+	--pico-form-element-active-border-color: #073d24;
+	--pico-form-element-focus-color: rgba(7, 61, 36, 0.18);
+
+	/* Links */
+	--pico-link-color: #073d24;
+	--pico-link-hover-color: #052f1c;
+
+	/* Spacing/radius */
+	--pico-border-radius: 0.55rem;
+	--pico-spacing: 1rem;
+	--pico-block-spacing-vertical: 1.25rem;
+	--pico-block-spacing-horizontal: 1.25rem;
+
+	/* Site-specific tokens */
+	--site-surface: #fbfaf5;
+	--site-surface-soft: #f1f2ea;
+	--site-surface-warm: #f7f4ec;
+	--site-border: #d8d6cc;
+	--site-border-strong: #9fa89b;
+	--site-text-soft: #5c6358;
+	--site-accent: #073d24;
+	--site-accent-soft: #dfe7d8;
+	--site-shadow-card: 0 1px 2px rgba(32, 35, 31, 0.08), 0 8px 24px rgba(32, 35, 31, 0.06);
+}

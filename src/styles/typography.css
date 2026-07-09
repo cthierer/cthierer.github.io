@@ -1,0 +1,40 @@
+h1,
+h2,
+h3 {
+	font-family: var(--site-font-heading);
+	color: var(--pico-color);
+	letter-spacing: 0;
+}
+
+h1 {
+	font-size: 2.4rem;
+	line-height: 0.98;
+	font-weight: 700;
+	max-width: 820px;
+}
+
+h2 {
+	font-size: 1.45rem;
+	line-height: 1.1;
+	font-weight: 700;
+}
+
+h3 {
+	font-size: 1.1rem;
+	line-height: 1.2;
+	font-weight: 700;
+}
+
+p {
+	color: var(--pico-color);
+}
+
+@media (min-width: 48rem) {
+	h1 {
+		font-size: 4.25rem;
+	}
+
+	h2 {
+		font-size: 2rem;
+	}
+}

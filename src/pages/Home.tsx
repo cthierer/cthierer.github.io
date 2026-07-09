@@ -1,7 +1,14 @@
+import SiteHeader from '../components/SiteHeader'
+
 const Home = () => (
-	<main>
-		<p>Hello, world</p>
-	</main>
+	<>
+		<header className="container page-header">
+			<SiteHeader />
+		</header>
+		<main className="container">
+			<p>Hello, world</p>
+		</main>
+	</>
 )
 
 export default Home

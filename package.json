@@ -3,9 +3,10 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "npm run build:html && npm run build:css",
+		"build": "npm run build:html && npm run build:css && npm run build:public",
 		"build:html": "tsx src/build/build.tsx",
 		"build:css": "lightningcss --minify --bundle --targets \">= 0.25%\" src/styles/main.css -o dist/assets/main.css",
+		"build:public": "cp -r public/* dist",
 		"check": "npm run typecheck && npm run lint && npm run format:check",
 		"clean": "rm -rf dist",
 		"dev": "npm run build && concurrently -k -n build,serve -c yellow,cyan \"npm run watch\" \"npm run serve\"",
@@ -24,6 +25,7 @@
 	},
 	"dependencies": {
 		"@picocss/pico": "^2.1.1",
+		"lucide-react": "^1.24.0",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7"
 	},
