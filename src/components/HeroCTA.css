@@ -1,0 +1,9 @@
+.hero-cta {
+	gap: 1.5rem;
+	align-items: flex-end;
+
+	.link-button {
+		font-size: 0.8rem;
+		font-weight: 500;
+	}
+}

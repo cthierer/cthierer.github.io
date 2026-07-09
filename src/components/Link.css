@@ -1,4 +1,5 @@
-.link {
+.link,
+a.link[role='button'] {
 	display: flex;
 	align-items: center;
 	align-content: center;
@@ -18,5 +19,9 @@
 			height: 100%;
 			object-fit: contain;
 		}
+	}
+
+	&.primary .decorator {
+		color: var(--pico-primary-inverse);
 	}
 }

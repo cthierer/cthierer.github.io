@@ -1,3 +1,5 @@
+@import '../components/Hero.css';
+@import '../components/HeroCTA.css';
 @import '../components/Link.css';
 @import '../components/SiteHeader.css';
 @import '../components/SiteLinks.css';

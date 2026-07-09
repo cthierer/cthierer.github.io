@@ -1,0 +1,55 @@
+.hero {
+	display: flex;
+	align-items: stretch;
+
+	gap: clamp(2rem, 8vw, 5rem);
+
+	& > .main {
+		min-width: 0;
+		flex-grow: 2;
+		display: flex;
+		flex-direction: column;
+
+		& > .content {
+			flex-grow: 2;
+		}
+	}
+
+	& > .fascinator {
+		flex-grow: 1;
+		flex-shrink: 0;
+
+		max-width: 30%;
+		font-size: 0.8rem;
+
+		&.background {
+			background-position: bottom right;
+			background-size: contain;
+			background-repeat: no-repeat;
+
+			padding-bottom: 180px;
+		}
+
+		h2 {
+			font-family: var(--site-font-mono);
+			font-size: 1rem;
+			text-transform: uppercase;
+		}
+	}
+}
+
+@media (max-width: 1024px) {
+	.hero {
+		flex-direction: column;
+		gap: 2rem;
+
+		& > .fascinator {
+			max-width: none;
+
+			&.background {
+				background-size: auto 140px;
+				padding-bottom: 150px;
+			}
+		}
+	}
+}

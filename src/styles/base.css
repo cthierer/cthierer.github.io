@@ -9,35 +9,65 @@
 		'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
 	/* Core palette */
-	--pico-background-color: #f8f7f1;
+	--pico-background-color: #fdfdf9;
 	--pico-color: #20231f;
 	--pico-muted-color: #5c6358;
 
 	/* Green accent */
 	--pico-primary: #073d24;
+	--pico-primary-background: #073d24;
+	--pico-primary-border: #073d24;
+	--pico-primary-underline: rgba(7, 61, 36, 0.45);
 	--pico-primary-hover: #052f1c;
+	--pico-primary-hover-background: #052f1c;
+	--pico-primary-hover-border: #052f1c;
+	--pico-primary-hover-underline: rgba(5, 47, 28, 0.6);
 	--pico-primary-focus: rgba(7, 61, 36, 0.22);
 	--pico-primary-inverse: #ffffff;
 
 	/* Secondary text / contrast */
 	--pico-secondary: #566251;
+	--pico-secondary-background: #fffefa;
+	--pico-secondary-border: #9fa89b;
+	--pico-secondary-underline: rgba(86, 98, 81, 0.45);
 	--pico-secondary-hover: #394537;
+	--pico-secondary-hover-background: #f4f5ee;
+	--pico-secondary-hover-border: #073d24;
+	--pico-secondary-hover-underline: rgba(57, 69, 55, 0.6);
 	--pico-secondary-focus: rgba(86, 98, 81, 0.18);
-	--pico-secondary-inverse: #ffffff;
+	--pico-secondary-inverse: #20231f;
+
+	/* High contrast actions */
+	--pico-contrast: #20231f;
+	--pico-contrast-background: #20231f;
+	--pico-contrast-border: #20231f;
+	--pico-contrast-underline: rgba(32, 35, 31, 0.45);
+	--pico-contrast-hover: #11140f;
+	--pico-contrast-hover-background: #11140f;
+	--pico-contrast-hover-border: #11140f;
+	--pico-contrast-hover-underline: rgba(17, 20, 15, 0.6);
+	--pico-contrast-focus: rgba(32, 35, 31, 0.2);
+	--pico-contrast-inverse: #ffffff;
 
 	/* Surfaces */
-	--pico-card-background-color: #fbfaf5;
-	--pico-card-border-color: #d8d6cc;
+	--pico-card-background-color: #f5f4eb;
+	--pico-card-border-color: #eef0e6;
 
 	/* Forms/buttons/borders */
-	--pico-border-color: #d8d6cc;
+	--pico-border-color: #d9d8cf;
 	--pico-form-element-border-color: #9fa89b;
 	--pico-form-element-active-border-color: #073d24;
 	--pico-form-element-focus-color: rgba(7, 61, 36, 0.18);
+	--pico-button-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+	--pico-button-hover-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 
 	/* Links */
 	--pico-link-color: #073d24;
 	--pico-link-hover-color: #052f1c;
+
+	/* Nav links */
+	--pico-nav-link-spacing-vertical: 0.5rem;
+	--pico-nav-link-spacing-horizontal: 2rem;
 
 	/* Spacing/radius */
 	--pico-border-radius: 0.55rem;
@@ -46,10 +76,10 @@
 	--pico-block-spacing-horizontal: 1.25rem;
 
 	/* Site-specific tokens */
-	--site-surface: #fbfaf5;
-	--site-surface-soft: #f1f2ea;
-	--site-surface-warm: #f7f4ec;
-	--site-border: #d8d6cc;
+	--site-surface: #fffefa;
+	--site-surface-soft: #f4f5ee;
+	--site-surface-warm: #fbf8f1;
+	--site-border: #d9d8cf;
 	--site-border-strong: #9fa89b;
 	--site-text-soft: #5c6358;
 	--site-accent: #073d24;

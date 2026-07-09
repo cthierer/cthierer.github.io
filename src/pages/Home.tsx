@@ -1,4 +1,7 @@
+import HomeHero from '../components/HomeHero'
 import SiteHeader from '../components/SiteHeader'
+import CurrentFocus from '../components/CurrentFocus'
+import HomeHeroCTA from '../components/HomeHeroCTA'
 
 const Home = () => (
 	<>
@@ -6,7 +9,11 @@ const Home = () => (
 			<SiteHeader />
 		</header>
 		<main className="container">
-			<p>Hello, world</p>
+			<HomeHero
+				fascinator={<CurrentFocus />}
+				fascinatorBackground="/assets/aside-bg.webp"
+				footer={<HomeHeroCTA />}
+			/>
 		</main>
 	</>
 )
