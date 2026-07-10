@@ -28,6 +28,13 @@ const SelectedExperience = () => {
 							location={role.location}
 						>
 							<div dangerouslySetInnerHTML={{ __html: role.html }} />
+							{role.resumeHighlights.length > 0 ? (
+								<ul className="experience-highlights">
+									{role.resumeHighlights.map(highlight => (
+										<li key={highlight}>{highlight}</li>
+									))}
+								</ul>
+							) : null}
 						</ExperienceCard>
 					))}
 				</OrganizationCard>
