@@ -7,14 +7,14 @@ resumeDownload: /resume.pdf
 homePage:
   title: 'Chris Thierer | Software Engineering Leader'
   path: /index.html
-  description: |
+  description: >
     Chris Thierer is a Baltimore/DC software engineering leader focused on web
     services, internal platforms, live services, and healthy engineering teams.
 
 resumePage:
   title: 'Resume | Chris Thierer'
   path: /resume.html
-  description: |
+  description: >
     Resume for Chris Thierer, a Baltimore/DC software engineering leader with
     experience across public-sector technology, web platforms, and video game live
     services.

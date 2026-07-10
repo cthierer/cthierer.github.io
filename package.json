@@ -8,7 +8,7 @@
 		"node": ">=26"
 	},
 	"scripts": {
-		"build": "npm run build:html && npm run build:css && npm run build:public && npm run build:pdf",
+		"build": "npm run clean && npm run build:html && npm run build:css && npm run build:public && npm run build:pdf",
 		"build:html": "tsx src/build/build.tsx",
 		"build:css": "lightningcss --minify --bundle --targets \">= 0.25%\" src/styles/main.css -o dist/assets/main.css",
 		"build:pdf": "weasyprint --media-type print --pdf-tags --pdf-variant pdf/ua-1 dist/resume.html dist/resume.pdf",
@@ -23,7 +23,7 @@
 		"precommit": "lint-staged",
 		"serve": "serve dist -l 3000",
 		"typecheck": "tsc --noEmit",
-		"watch": "chokidar \"src/**/*\" -c \"npm run build\""
+		"watch": "chokidar \"src/**/*\" \"content/**/*\" \"public/**/*\" config.yaml -c \"npm run build\""
 	},
 	"lint-staged": {
 		"*": "prettier --write --ignore-unknown",
