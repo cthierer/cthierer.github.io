@@ -28,12 +28,8 @@ const Page = ({ title, description, path, children }: PageProps) => {
 				<meta name="twitter:image" content={socialImage} />
 				<title>{title}</title>
 				<link rel="canonical" href={canonicalUrl} />
-				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-				<link
-					rel="stylesheet"
-					href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-				/>
-				<link rel="stylesheet" href="/assets/main.css" />
+				<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+				<link rel="stylesheet" href="assets/main.css" />
 			</head>
 			<body>{children}</body>
 		</html>

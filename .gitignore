@@ -8,6 +8,9 @@
 # npm
 node_modules
 
+# python
+.venv
+
 # build output
 dist
 

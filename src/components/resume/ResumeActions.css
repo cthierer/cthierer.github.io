@@ -37,6 +37,12 @@
 	}
 }
 
+.resume-action-links {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
 @media print {
 	.resume-actions {
 		display: none;
