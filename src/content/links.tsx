@@ -9,6 +9,7 @@ import Entry from './Entry'
 export type LinkArea = 'header' | 'footer' | 'cta' | 'resume'
 
 export interface ContentLink {
+	readonly title: string
 	readonly name: string
 	readonly category: string
 	readonly href: string
@@ -70,6 +71,7 @@ const toContentLink = (entry: Entry): ContentLink | null => {
 	}
 
 	return {
+		title: (entry.data.title as string) ?? entry.name,
 		name: entry.name,
 		category: entry.category,
 		href,

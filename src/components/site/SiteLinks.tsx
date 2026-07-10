@@ -13,7 +13,7 @@ const SiteLinks = () => {
 			{links.map(link => (
 				<li key={link.name}>
 					<Link href={link.href} decorator={link.decorator}>
-						{link.label}
+						{link.title}
 					</Link>
 				</li>
 			))}
