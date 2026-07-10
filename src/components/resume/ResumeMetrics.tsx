@@ -11,15 +11,15 @@ const ResumeMetrics = () => {
 			<h2 id="resume-metrics" className="resume-metrics-heading">
 				At a glance
 			</h2>
-			<div className="resume-metrics-list">
+			<dl className="resume-metrics-list">
 				{metrics.map(metric => (
 					<div className="resume-metric" key={`${metric.value}-${metric.label}`}>
-						<p className="resume-metric-value">{metric.value}</p>
-						<p className="resume-metric-label">{metric.label}</p>
-						{metric.detail ? <p className="resume-metric-detail">{metric.detail}</p> : null}
+						<dt className="resume-metric-value">{metric.value}</dt>
+						<dd className="resume-metric-label">{metric.label}</dd>
+						{metric.detail ? <dd className="resume-metric-detail">{metric.detail}</dd> : null}
 					</div>
 				))}
-			</div>
+			</dl>
 		</section>
 	)
 }

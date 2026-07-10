@@ -31,6 +31,12 @@
 	display: grid;
 	align-self: end;
 	justify-items: end;
+	font-style: normal;
+}
+
+.resume-contact ul {
+	display: grid;
+	justify-items: inherit;
 	gap: 0.18rem;
 	margin: 0;
 	padding: 0;
@@ -86,12 +92,17 @@
 	.resume-contact {
 		display: flex;
 		align-self: end;
-		flex-wrap: wrap;
 		justify-content: flex-end;
-		gap: 0.12rem 0.65rem;
 		max-width: 19rem;
 		padding-bottom: 0.03rem;
 		font-size: 7.5pt;
 		line-height: 1.35;
+	}
+
+	.resume-contact ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: inherit;
+		gap: 0.12rem 0.65rem;
 	}
 }

@@ -11,13 +11,15 @@ const ResumeHeader = () => {
 				<h1 id="resume-title">{profile.name}</h1>
 				<p className="resume-headline">{profile.headline}</p>
 			</div>
-			<ul className="resume-contact" aria-label="Contact information">
-				{links.map(link => (
-					<li key={link.name}>
-						<a href={link.href}>{formatResumeLinkLabel(link.href, link.label)}</a>
-					</li>
-				))}
-			</ul>
+			<address className="resume-contact" aria-label="Contact information">
+				<ul>
+					{links.map(link => (
+						<li key={link.name}>
+							<a href={link.href}>{formatResumeLinkLabel(link.href, link.label)}</a>
+						</li>
+					))}
+				</ul>
+			</address>
 		</header>
 	)
 }

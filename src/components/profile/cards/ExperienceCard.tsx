@@ -1,3 +1,5 @@
+import DateRangeText from '../../DateText'
+
 interface ExperienceCardProps {
 	role: string
 	location: string
@@ -11,7 +13,7 @@ const ExperienceCard = ({ role, location, startDate, endDate, children }: Experi
 		<header>
 			<h4>{role}</h4>
 			<p className="date-range">
-				{startDate.getFullYear()} – {endDate ? endDate.getFullYear() : 'present'}
+				<DateRangeText startDate={startDate} endDate={endDate} presentLabel="present" />
 			</p>
 			<p className="location">{location}</p>
 		</header>

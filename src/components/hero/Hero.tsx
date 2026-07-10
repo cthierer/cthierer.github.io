@@ -16,14 +16,14 @@ const Hero = ({ headline, fascinator, fascinatorBackground, footer, children }: 
 			{footer ? <footer>{footer}</footer> : null}
 		</section>
 		{fascinator ? (
-			<article
+			<aside
 				className={`fascinator${fascinatorBackground ? ' background' : ''}`}
 				style={{
 					backgroundImage: fascinatorBackground ? `url("${fascinatorBackground}")` : 'inherit',
 				}}
 			>
 				{fascinator}
-			</article>
+			</aside>
 		) : null}
 	</header>
 )

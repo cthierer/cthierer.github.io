@@ -1,5 +1,6 @@
 import { useResumeEducation } from '../../content/resume'
-import { formatEducationLabel, formatEducationYear } from './format'
+import { YearText } from '../DateText'
+import { formatEducationLabel } from './format'
 import ResumeSection from './ResumeSection'
 
 const ResumeEducationSection = () => {
@@ -11,7 +12,11 @@ const ResumeEducationSection = () => {
 				{education.map(entry => (
 					<section className="resume-education" key={entry.name}>
 						<h3 className="resume-education-degree">{formatEducationLabel(entry)}</h3>
-						<p className="resume-education-year">{formatEducationYear(entry)}</p>
+						{entry.endDate ? (
+							<p className="resume-education-year">
+								<YearText date={entry.endDate} />
+							</p>
+						) : null}
 						<p className="resume-education-institution">{entry.institution}</p>
 						{entry.honors.length > 0 ? (
 							<p className="resume-education-honors">{entry.honors.join(', ')}</p>

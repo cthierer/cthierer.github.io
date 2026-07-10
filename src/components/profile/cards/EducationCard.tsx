@@ -1,15 +1,9 @@
+import { YearText } from '../../DateText'
+
 interface EducationCardProps {
 	institution: string
 	program: string
 	endDate?: Date
-}
-
-const formatYear = (date: Date | undefined): string | null => {
-	if (!date) {
-		return null
-	}
-
-	return date.getFullYear().toString()
 }
 
 const formatInstitution = (institution: string): string => {
@@ -30,7 +24,11 @@ const EducationCard = ({ institution, program, endDate }: EducationCardProps) =>
 		<header>
 			<p className="institution">{institution}</p>
 			<p className="institution-short">{formatInstitution(institution)}</p>
-			<p className="date-range">{formatYear(endDate)}</p>
+			{endDate ? (
+				<p className="date-range">
+					<YearText date={endDate} />
+				</p>
+			) : null}
 		</header>
 		<h3>{program}</h3>
 	</article>

@@ -1,6 +1,6 @@
 import { useResumeExperience } from '../../content/resume'
 import ExperienceEntry from '../../content/ExperienceEntry'
-import { formatDateRange } from './format'
+import DateRangeText from '../DateText'
 import ResumeSection from './ResumeSection'
 
 const hasResumeContent = (experience: ExperienceEntry): boolean =>
@@ -20,7 +20,9 @@ const ResumeExperienceSection = () => {
 								<p>{organization.label}</p>
 							</div>
 							<div className="resume-role-meta">
-								<p>{formatDateRange(experience.startDate, experience.endDate)}</p>
+								<p>
+									<DateRangeText startDate={experience.startDate} endDate={experience.endDate} />
+								</p>
 								<p>{experience.location}</p>
 							</div>
 						</header>
