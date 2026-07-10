@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
-import Page from '../layouts/Page'
+import Page, { StructuredDataContext } from '../layouts/Page'
 import Home from '../pages/Home'
 import Resume from '../pages/Resume'
 import loadMarkdown from './loadMarkdown'
@@ -9,11 +9,22 @@ import ContentProvider from '../content/ContentProvider'
 import ConfigProvider from '../config/ConfigProvider'
 import loadYaml from './loadYaml'
 import { schema as configSchema } from '../config/Config'
+import { JsonLdValue } from '../metadata/JsonLd'
+import createProfileJsonLd from '../metadata/profileJsonLd'
 
 const contentDir = path.join(process.cwd(), './content')
 const configFile = path.join(process.cwd(), './config.yaml')
 
 const getOutputPath = (pagePath: string): string => path.join('dist', pagePath)
+
+interface Route {
+	readonly outputPath: string
+	readonly canonicalPath: string
+	readonly title: string
+	readonly description: string
+	readonly element: React.ReactElement
+	readonly structuredData?: (context: StructuredDataContext) => JsonLdValue
+}
 
 const writePage = async (filePath: string, element: React.ReactElement) => {
 	const html = `<!doctype html>${renderToStaticMarkup(element)}`
@@ -21,36 +32,67 @@ const writePage = async (filePath: string, element: React.ReactElement) => {
 	await fs.writeFile(filePath, html, 'utf8')
 }
 
+const escapeXml = (value: string): string =>
+	value
+		.replaceAll('&', '&amp;')
+		.replaceAll('<', '&lt;')
+		.replaceAll('>', '&gt;')
+		.replaceAll('"', '&quot;')
+		.replaceAll("'", '&apos;')
+
+const createSitemap = (urls: readonly string[]): string => `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(url => `\t<url><loc>${escapeXml(url)}</loc></url>`).join('\n')}
+</urlset>
+`
+
+const writeSitemap = async (urls: readonly string[]) => {
+	await fs.mkdir('dist', { recursive: true })
+	await fs.writeFile(path.join('dist', 'sitemap.xml'), createSitemap(urls), 'utf8')
+}
+
 const main = async () => {
 	const loaded = loadMarkdown(contentDir)
 	const content = await Array.fromAsync(loaded)
 	const config = await loadYaml(configFile, configSchema)
 
-	await writePage(
-		getOutputPath(config.homePage.path),
-		<ConfigProvider config={config}>
-			<ContentProvider content={content}>
-				<Page title={config.homePage.title} description={config.homePage.description} path="/">
-					<Home />
-				</Page>
-			</ContentProvider>
-		</ConfigProvider>,
-	)
+	const routes: readonly Route[] = [
+		{
+			outputPath: config.homePage.path,
+			canonicalPath: '/',
+			title: config.homePage.title,
+			description: config.homePage.description,
+			element: <Home />,
+			structuredData: context => createProfileJsonLd({ config, content, ...context }),
+		},
+		{
+			outputPath: config.resumePage.path,
+			canonicalPath: config.resumePage.path,
+			title: config.resumePage.title,
+			description: config.resumePage.description,
+			element: <Resume />,
+		},
+	]
 
-	await writePage(
-		getOutputPath(config.resumePage.path),
-		<ConfigProvider config={config}>
-			<ContentProvider content={content}>
-				<Page
-					title={config.resumePage.title}
-					description={config.resumePage.description}
-					path={config.resumePage.path}
-				>
-					<Resume />
-				</Page>
-			</ContentProvider>
-		</ConfigProvider>,
-	)
+	for (const route of routes) {
+		await writePage(
+			getOutputPath(route.outputPath),
+			<ConfigProvider config={config}>
+				<ContentProvider content={content}>
+					<Page
+						title={route.title}
+						description={route.description}
+						path={route.canonicalPath}
+						structuredData={route.structuredData}
+					>
+						{route.element}
+					</Page>
+				</ContentProvider>
+			</ConfigProvider>,
+		)
+	}
+
+	await writeSitemap(routes.map(route => new URL(route.canonicalPath, config.siteUrl).toString()))
 }
 
 try {

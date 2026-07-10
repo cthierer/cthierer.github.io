@@ -1,19 +1,32 @@
 import { useConfigValue } from '../config/ConfigContext'
+import JsonLd, { JsonLdValue } from '../metadata/JsonLd'
+
+export interface StructuredDataContext {
+	readonly canonicalUrl: string
+	readonly dateModified: string
+	readonly socialImage: string
+}
 
 interface PageProps {
 	title: string
 	description: string
 	path: string
+	structuredData?: (context: StructuredDataContext) => JsonLdValue
 	children: React.ReactNode
 }
 
-const Page = ({ title, description, path, children }: PageProps) => {
+const Page = ({ title, description, path, structuredData, children }: PageProps) => {
 	const renderTime = new Date().toISOString()
 	const siteUrl = useConfigValue('siteUrl')
 	const favIcon = useConfigValue('favIcon')
 	const socialImagePath = useConfigValue('socialImage')
 	const socialImage = new URL(socialImagePath, siteUrl).toString()
 	const canonicalUrl = new URL(path, siteUrl).toString()
+	const jsonLd = structuredData?.({
+		canonicalUrl,
+		dateModified: renderTime,
+		socialImage,
+	})
 
 	return (
 		<html lang="en" data-theme="light">
@@ -37,6 +50,7 @@ const Page = ({ title, description, path, children }: PageProps) => {
 				<link rel="canonical" href={canonicalUrl} />
 				<link rel="icon" href={favIcon} type="image/svg+xml" />
 				<link rel="stylesheet" href="assets/main.css" />
+				{jsonLd ? <JsonLd data={jsonLd} /> : null}
 			</head>
 			<body>{children}</body>
 		</html>
