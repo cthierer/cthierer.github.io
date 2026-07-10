@@ -1,4 +1,4 @@
-import FeaturedWork from './FeaturedWork'
+import FeaturedWork from './lists/FeaturedWork'
 import ProfileCard from './ProfileCard'
 
 const ProfileFeaturedWork = () => (

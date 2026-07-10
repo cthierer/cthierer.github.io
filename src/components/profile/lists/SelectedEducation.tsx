@@ -1,5 +1,5 @@
-import useRecentEducation from '../content/education'
-import EducationCard from './EducationCard'
+import useRecentEducation from '../../../content/education'
+import EducationCard from '../cards/EducationCard'
 import FeaturedList from './FeaturedList'
 
 const SelectedEducation = () => {

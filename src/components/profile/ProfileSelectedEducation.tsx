@@ -1,5 +1,5 @@
 import ProfileCard from './ProfileCard'
-import SelectedEducation from './SelectedEducation'
+import SelectedEducation from './lists/SelectedEducation'
 
 const ProfileSelectedEducation = () => (
 	<ProfileCard id="education" title="Education & Development">

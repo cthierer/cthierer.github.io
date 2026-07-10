@@ -1,11 +1,11 @@
-import HomeHero from '../components/HomeHero'
-import SiteHeader from '../components/SiteHeader'
-import CurrentFocus from '../components/CurrentFocus'
-import HomeHeroCTA from '../components/HomeHeroCTA'
-import ProfileAtAGlance from '../components/ProfileAtAGlance'
-import ProfileSelectedEducation from '../components/ProfileSelectedEducation'
-import ProfileSelectedExperience from '../components/ProfileSelectedExperience'
-import SiteFooter from '../components/SiteFooter'
+import HomeHero from '../components/hero/HomeHero'
+import SiteHeader from '../components/site/SiteHeader'
+import CurrentFocus from '../components/hero/CurrentFocus'
+import HomeHeroCTA from '../components/hero/HomeHeroCTA'
+import ProfileAtAGlance from '../components/profile/ProfileAtAGlance'
+import ProfileSelectedEducation from '../components/profile/ProfileSelectedEducation'
+import ProfileSelectedExperience from '../components/profile/ProfileSelectedExperience'
+import SiteFooter from '../components/site/SiteFooter'
 
 const Home = () => (
 	<>

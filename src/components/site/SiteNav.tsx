@@ -1,4 +1,4 @@
-import Link from './Link'
+import Link from '../link/Link'
 
 const SiteNav = () => (
 	<ul className="site-nav">

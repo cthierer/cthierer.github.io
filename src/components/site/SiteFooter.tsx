@@ -1,9 +1,9 @@
 import { Gamepad2 } from 'lucide-react'
-import Email from './icons/Email'
-import GitHub from './icons/GitHub'
-import LinkedIn from './icons/LinkedIn'
-import Resume from './icons/Resume'
-import Link from './Link'
+import Email from '../icons/Email'
+import GitHub from '../icons/GitHub'
+import LinkedIn from '../icons/LinkedIn'
+import Resume from '../icons/Resume'
+import Link from '../link/Link'
 
 const SiteFooter = () => (
 	<footer className="container site-footer">

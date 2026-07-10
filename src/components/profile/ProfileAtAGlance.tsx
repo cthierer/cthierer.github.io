@@ -1,4 +1,4 @@
-import { useContentEntry } from '../content/ContentContext'
+import { useContentEntry } from '../../content/ContentContext'
 import ProfileCard from './ProfileCard'
 
 const ProfileAtAGlance = () => {

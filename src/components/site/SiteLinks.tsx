@@ -1,6 +1,6 @@
-import { useContentEntry } from '../content/ContentContext'
-import Email from './icons/Email'
-import Link from './Link'
+import { useContentEntry } from '../../content/ContentContext'
+import Email from '../icons/Email'
+import Link from '../link/Link'
 
 const SiteLinks = () => {
 	const email = useContentEntry('contact/Email.md')

@@ -1,7 +1,7 @@
-import useRecentOrganizations from '../content/experience'
+import useRecentOrganizations from '../../../content/experience'
 import FeaturedList from './FeaturedList'
-import ExperienceCard from './ExperienceCard'
-import OrganizationCard from './OrganizationCard'
+import ExperienceCard from '../cards/ExperienceCard'
+import OrganizationCard from '../cards/OrganizationCard'
 
 const SelectedExperience = () => {
 	const content = useRecentOrganizations({

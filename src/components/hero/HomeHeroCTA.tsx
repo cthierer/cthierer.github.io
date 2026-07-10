@@ -1,8 +1,8 @@
 import HeroCTA from './HeroCTA'
-import Email from './icons/Email'
-import LinkedIn from './icons/LinkedIn'
-import Resume from './icons/Resume'
-import LinkButton from './LinkButton'
+import Email from '../icons/Email'
+import LinkedIn from '../icons/LinkedIn'
+import Resume from '../icons/Resume'
+import LinkButton from '../link/LinkButton'
 
 const HomeHeroCTA = () => (
 	<HeroCTA>

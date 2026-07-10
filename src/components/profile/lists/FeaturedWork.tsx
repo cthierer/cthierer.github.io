@@ -1,5 +1,5 @@
-import { useFeatured } from '../content/ContentContext'
-import ArticleCard from './ArticleCard'
+import { useFeatured } from '../../../content/ContentContext'
+import ArticleCard from '../cards/ArticleCard'
 import FeaturedGallery from './FeaturedGallery'
 
 const FeaturedWork = () => {

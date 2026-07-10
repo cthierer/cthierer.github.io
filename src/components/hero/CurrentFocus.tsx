@@ -1,4 +1,4 @@
-import { useContentEntry } from '../content/ContentContext'
+import { useContentEntry } from '../../content/ContentContext'
 import Aside from './Aside'
 
 const CurrentFocus = () => {
