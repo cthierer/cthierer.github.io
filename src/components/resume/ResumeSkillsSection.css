@@ -1,0 +1,55 @@
+.resume-skills {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	gap: 0.85rem 1.5rem;
+	margin: 0;
+
+	div {
+		margin: 0;
+	}
+
+	dt,
+	dd {
+		margin: 0;
+	}
+
+	dt {
+		margin-bottom: 0.12rem;
+		font-weight: 700;
+		color: var(--pico-color);
+	}
+
+	dd {
+		color: var(--site-text-soft);
+		line-height: 1.45;
+	}
+}
+
+@media (max-width: 720px) {
+	.resume-skills {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media print {
+	.resume-skills {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.25rem 1rem;
+	}
+
+	.resume-skills div {
+		display: grid;
+		grid-template-columns: 5.75rem minmax(0, 1fr);
+		gap: 0.55rem;
+	}
+
+	.resume-skills dt {
+		margin-bottom: 0;
+		color: var(--pico-color);
+	}
+
+	.resume-skills dd {
+		color: var(--pico-color);
+		line-height: inherit;
+	}
+}

@@ -41,6 +41,24 @@ class EducationEntry implements Entry {
 	get label(): string {
 		return this.data.title as string
 	}
+
+	get honors(): string[] {
+		const { honors } = this.data
+		if (!Array.isArray(honors)) {
+			return []
+		}
+
+		return honors.filter((honor): honor is string => typeof honor === 'string')
+	}
+
+	get resumeInclude(): boolean {
+		const { resumeInclude } = this.data
+		if (typeof resumeInclude === 'boolean') {
+			return resumeInclude
+		}
+
+		return true
+	}
 }
 
 export default EducationEntry

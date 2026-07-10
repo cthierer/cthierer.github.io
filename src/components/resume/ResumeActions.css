@@ -1,0 +1,44 @@
+.resume-actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	padding: 0.75rem 0.9rem;
+	background: transparent;
+	border-bottom: 1px solid var(--site-border);
+
+	a,
+	button {
+		width: auto;
+		margin: 0;
+		font-size: 0.82rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	a {
+		color: var(--site-text-soft);
+		text-decoration-color: transparent;
+		text-underline-offset: 0.18rem;
+		transition:
+			color 0.16s ease,
+			text-decoration-color 0.16s ease;
+	}
+
+	a:hover,
+	a:focus-visible {
+		color: var(--site-accent);
+		text-decoration-color: currentColor;
+	}
+
+	button {
+		padding: 0.62rem 0.9rem;
+		border-radius: 999px;
+	}
+}
+
+@media print {
+	.resume-actions {
+		display: none;
+	}
+}

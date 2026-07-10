@@ -8,6 +8,13 @@
 @import '../components/link/Link.css';
 @import '../components/profile/cards/OrganizationCard.css';
 @import '../components/profile/ProfileCard.css';
+@import '../components/resume/ResumeActions.css';
+@import '../components/resume/ResumeEducationSection.css';
+@import '../components/resume/ResumeExperienceSection.css';
+@import '../components/resume/ResumeHeader.css';
+@import '../components/resume/ResumeMetrics.css';
+@import '../components/resume/ResumeSection.css';
+@import '../components/resume/ResumeSkillsSection.css';
 @import '../components/site/SiteFooter.css';
 @import '../components/site/SiteHeader.css';
 @import '../components/site/SiteLinks.css';

@@ -1,0 +1,97 @@
+.resume-header {
+	display: grid;
+	grid-template-columns: minmax(22rem, 1fr) max-content;
+	gap: clamp(1.5rem, 6vw, 4rem);
+	align-items: start;
+	margin: 0;
+	padding-bottom: 1.25rem;
+	padding-inline: 0;
+	padding-top: 0;
+	background: transparent;
+	border-bottom: 1px solid var(--site-border);
+	border-radius: 0;
+
+	h1 {
+		margin: 0;
+		font-size: clamp(2.75rem, 6vw, 4.2rem);
+		line-height: 0.98;
+	}
+}
+
+.resume-headline {
+	max-width: 16rem;
+	margin: 0.4rem 0 0;
+	font-size: 1.12rem;
+	line-height: 1.2;
+	font-weight: 700;
+	color: var(--site-accent);
+}
+
+.resume-contact {
+	display: grid;
+	align-self: end;
+	justify-items: end;
+	gap: 0.18rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	list-style-type: none;
+	font-size: 0.84rem;
+	line-height: 1.45;
+	text-align: right;
+
+	li {
+		display: block;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	a {
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.16rem;
+		overflow-wrap: anywhere;
+	}
+}
+
+@media (max-width: 860px) {
+	.resume-header {
+		grid-template-columns: 1fr;
+	}
+
+	.resume-contact {
+		justify-content: flex-start;
+		justify-items: start;
+		text-align: left;
+	}
+}
+
+@media print {
+	.resume-header {
+		gap: 1.5rem;
+		padding-bottom: 0.55rem;
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.resume-header h1 {
+		font-size: 21pt;
+	}
+
+	.resume-headline {
+		max-width: none;
+		margin-top: 0.15rem;
+		font-size: 8.8pt;
+	}
+
+	.resume-contact {
+		display: flex;
+		align-self: end;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.12rem 0.65rem;
+		max-width: 19rem;
+		padding-bottom: 0.03rem;
+		font-size: 7.5pt;
+		line-height: 1.35;
+	}
+}

@@ -6,6 +6,6 @@ published: true
 label: Email
 href: mailto:hello@christhierer.com
 icon: email
-areas: [header, footer]
+areas: [header, footer, resume]
 order: 40
 ---

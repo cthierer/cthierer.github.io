@@ -8,7 +8,7 @@ const HomeHeroCTA = () => {
 
 	return (
 		<HeroCTA>
-			<LinkButton href="#" decorator={<Resume />}>
+			<LinkButton href="/resume.html" decorator={<Resume />}>
 				Resume
 			</LinkButton>
 			{links.map(link => (

@@ -3,6 +3,7 @@ import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import Page from '../layouts/Page'
 import Home from '../pages/Home'
+import Resume from '../pages/Resume'
 import loadMarkdown from './loadMarkdown'
 import ContentProvider from '../content/ContentProvider'
 
@@ -23,6 +24,15 @@ const main = async () => {
 		<ContentProvider content={content}>
 			<Page title="Chris Thierer | Software Engineering Leader">
 				<Home />
+			</Page>
+		</ContentProvider>,
+	)
+
+	await writePage(
+		'dist/resume.html',
+		<ContentProvider content={content}>
+			<Page title="Resume | Chris Thierer">
+				<Resume />
 			</Page>
 		</ContentProvider>,
 	)

@@ -36,6 +36,19 @@ class ExperienceEntry implements Entry {
 	get label(): string {
 		return this.data.title as string
 	}
+
+	get jobTitle(): string {
+		return this.data.jobTitle as string
+	}
+
+	get resumeInclude(): boolean {
+		const { resumeInclude, type } = this.data
+		if (typeof resumeInclude === 'boolean') {
+			return resumeInclude
+		}
+
+		return type === 'fte'
+	}
 }
 
 export default ExperienceEntry

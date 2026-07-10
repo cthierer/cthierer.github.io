@@ -1,0 +1,68 @@
+.resume-timeline {
+	display: grid;
+	gap: 0.85rem;
+}
+
+.resume-role {
+	margin: 0;
+	break-inside: avoid;
+
+	header {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 1.25rem;
+		align-items: start;
+		margin-bottom: 0.28rem;
+	}
+
+	h3,
+	p {
+		margin: 0;
+	}
+
+	h3 {
+		font-family: var(--pico-font-family);
+		font-size: 1.02rem;
+		line-height: 1.18;
+	}
+
+	header p {
+		font-size: 0.84rem;
+		color: var(--site-text-soft);
+	}
+}
+
+.resume-role-meta {
+	text-align: right;
+	white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+	.resume-role header {
+		grid-template-columns: 1fr;
+	}
+
+	.resume-role-meta {
+		text-align: left;
+		white-space: normal;
+	}
+}
+
+@media print {
+	.resume-timeline {
+		gap: 0.46rem;
+	}
+
+	.resume-role header {
+		gap: 1rem;
+		margin-bottom: 0.16rem;
+	}
+
+	.resume-role h3 {
+		font-size: 9pt;
+	}
+
+	.resume-role header p {
+		font-size: 7.5pt;
+	}
+}

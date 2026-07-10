@@ -2,10 +2,11 @@ import { Gamepad2 } from 'lucide-react'
 import Email from '../components/icons/Email'
 import GitHub from '../components/icons/GitHub'
 import LinkedIn from '../components/icons/LinkedIn'
+import Resume from '../components/icons/Resume'
 import { useContent } from './ContentContext'
 import Entry from './Entry'
 
-export type LinkArea = 'header' | 'footer' | 'cta'
+export type LinkArea = 'header' | 'footer' | 'cta' | 'resume'
 
 export interface ContentLink {
 	readonly name: string
@@ -26,6 +27,7 @@ const iconRegistry: Record<string, React.ReactNode> = {
 	github: <GitHub />,
 	linkedin: <LinkedIn />,
 	mobygames: <Gamepad2 aria-hidden="true" />,
+	resume: <Resume />,
 }
 
 const isString = (value: unknown): value is string => typeof value === 'string'

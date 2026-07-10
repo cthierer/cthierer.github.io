@@ -1,0 +1,77 @@
+.resume-education-list {
+	display: grid;
+	gap: 0.85rem;
+}
+
+.resume-education {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) max-content;
+	grid-template-areas:
+		'degree year'
+		'institution year'
+		'honors year';
+	gap: 0.12rem 1rem;
+	align-items: start;
+	margin: 0;
+	break-inside: avoid;
+
+	h3,
+	p {
+		margin: 0;
+	}
+
+	h3 {
+		font-family: var(--pico-font-family);
+		font-size: 0.92rem;
+		line-height: 1.2;
+	}
+
+	p {
+		font-size: 0.82rem;
+		color: var(--site-text-soft);
+	}
+}
+
+.resume-education-degree {
+	grid-area: degree;
+}
+
+.resume-education-year {
+	grid-area: year;
+	white-space: nowrap;
+}
+
+.resume-education-institution {
+	grid-area: institution;
+}
+
+.resume-education-honors {
+	grid-area: honors;
+	font-style: italic;
+}
+
+@media (max-width: 720px) {
+	.resume-education {
+		grid-template-columns: minmax(0, 1fr) max-content;
+	}
+}
+
+@media print {
+	.resume-education-list {
+		gap: 0.18rem;
+	}
+
+	.resume-education {
+		gap: 0.05rem 0.75rem;
+	}
+
+	.resume-education h3 {
+		font-size: 8.3pt;
+		line-height: 1.08;
+	}
+
+	.resume-education p {
+		font-size: 7.1pt;
+		line-height: 1.18;
+	}
+}
