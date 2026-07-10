@@ -1,3 +1,3 @@
-const LinkedIn = () => <img src="/assets/In_Bug_Black.png" alt="" aria-hidden="true" />
+const LinkedIn = () => <img src="/assets/linkedin-bug-black.webp" alt="" aria-hidden="true" />
 
 export default LinkedIn

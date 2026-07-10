@@ -6,5 +6,5 @@ published: true
 slug: umbc
 label: UMBC
 location: Catonsville, MD
-logo: /assets/umbc.jpg
+logo: /assets/umbc-logo.webp
 ---

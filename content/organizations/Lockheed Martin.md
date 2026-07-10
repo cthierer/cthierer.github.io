@@ -6,5 +6,5 @@ published: true
 slug: lockheed
 label: Lockheed Martin
 location: Bethesda, MD
-logo: /assets/lockheed.png
+logo: /assets/lockheed-martin-logo.webp
 ---

@@ -15,7 +15,7 @@ const Home = () => (
 		<main className="container">
 			<HomeHero
 				fascinator={<CurrentFocus />}
-				fascinatorBackground="/assets/aside-bg.webp"
+				fascinatorBackground="/assets/hero-aside-background.webp"
 				footer={<HomeHeroCTA />}
 			/>
 			<section className="home-content">

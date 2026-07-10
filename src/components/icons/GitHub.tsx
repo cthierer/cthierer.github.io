@@ -1,3 +1,3 @@
-const GitHub = () => <img src="/assets/GitHub_Invertocat_Black.svg" alt="" aria-hidden="true" />
+const GitHub = () => <img src="/assets/github-invertocat-black.svg" alt="" aria-hidden="true" />
 
 export default GitHub

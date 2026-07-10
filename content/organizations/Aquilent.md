@@ -6,5 +6,5 @@ published: true
 slug: aquilent
 label: Aquilent
 location: Laurel, MD
-logo: /assets/aquilent.png
+logo: /assets/aquilent-logo.webp
 ---
