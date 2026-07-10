@@ -6,14 +6,14 @@ import Home from '../pages/Home'
 import Resume from '../pages/Resume'
 import loadMarkdown from './loadMarkdown'
 import ContentProvider from '../content/ContentProvider'
+import ConfigProvider from '../config/ConfigProvider'
+import loadYaml from './loadYaml'
+import { schema as configSchema } from '../config/Config'
 
 const contentDir = path.join(process.cwd(), './content')
+const configFile = path.join(process.cwd(), './config.yaml')
 
-const homeDescription =
-	'Chris Thierer is a Baltimore/DC software engineering leader focused on web services, internal platforms, live services, and healthy engineering teams.'
-
-const resumeDescription =
-	'Resume for Chris Thierer, a Baltimore/DC software engineering leader with experience across public-sector technology, web platforms, and video game live services.'
+const getOutputPath = (pagePath: string): string => path.join('dist', pagePath)
 
 const writePage = async (filePath: string, element: React.ReactElement) => {
 	const html = `<!doctype html>${renderToStaticMarkup(element)}`
@@ -24,27 +24,32 @@ const writePage = async (filePath: string, element: React.ReactElement) => {
 const main = async () => {
 	const loaded = loadMarkdown(contentDir)
 	const content = await Array.fromAsync(loaded)
+	const config = await loadYaml(configFile, configSchema)
 
 	await writePage(
-		'dist/index.html',
-		<ContentProvider content={content}>
-			<Page
-				title="Chris Thierer | Software Engineering Leader"
-				description={homeDescription}
-				path="/"
-			>
-				<Home />
-			</Page>
-		</ContentProvider>,
+		getOutputPath(config.homePage.path),
+		<ConfigProvider config={config}>
+			<ContentProvider content={content}>
+				<Page title={config.homePage.title} description={config.homePage.description} path="/">
+					<Home />
+				</Page>
+			</ContentProvider>
+		</ConfigProvider>,
 	)
 
 	await writePage(
-		'dist/resume.html',
-		<ContentProvider content={content}>
-			<Page title="Resume | Chris Thierer" description={resumeDescription} path="/resume.html">
-				<Resume />
-			</Page>
-		</ContentProvider>,
+		getOutputPath(config.resumePage.path),
+		<ConfigProvider config={config}>
+			<ContentProvider content={content}>
+				<Page
+					title={config.resumePage.title}
+					description={config.resumePage.description}
+					path={config.resumePage.path}
+				>
+					<Resume />
+				</Page>
+			</ContentProvider>
+		</ConfigProvider>,
 	)
 }
 

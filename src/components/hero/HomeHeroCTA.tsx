@@ -2,13 +2,15 @@ import HeroCTA from './HeroCTA'
 import { useLinks } from '../../content/links'
 import Resume from '../icons/Resume'
 import LinkButton from '../link/LinkButton'
+import { useConfigValue } from '../../config/ConfigContext'
 
 const HomeHeroCTA = () => {
 	const links = useLinks({ area: 'cta', category: 'social' })
+	const resumePage = useConfigValue('resumePage')
 
 	return (
 		<HeroCTA>
-			<LinkButton href="/resume.html" decorator={<Resume />}>
+			<LinkButton href={resumePage.path} decorator={<Resume />}>
 				Resume
 			</LinkButton>
 			{links.map(link => (

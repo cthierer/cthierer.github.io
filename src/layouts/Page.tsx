@@ -1,3 +1,5 @@
+import { useConfigValue } from '../config/ConfigContext'
+
 interface PageProps {
 	title: string
 	description: string
@@ -5,10 +7,11 @@ interface PageProps {
 	children: React.ReactNode
 }
 
-const siteUrl = 'https://www.christhierer.com'
-const socialImage = `${siteUrl}/assets/social-image.png`
-
 const Page = ({ title, description, path, children }: PageProps) => {
+	const siteUrl = useConfigValue('siteUrl')
+	const favIcon = useConfigValue('favIcon')
+	const socialImagePath = useConfigValue('socialImage')
+	const socialImage = new URL(socialImagePath, siteUrl).toString()
 	const canonicalUrl = new URL(path, siteUrl).toString()
 
 	return (
@@ -28,7 +31,7 @@ const Page = ({ title, description, path, children }: PageProps) => {
 				<meta name="twitter:image" content={socialImage} />
 				<title>{title}</title>
 				<link rel="canonical" href={canonicalUrl} />
-				<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+				<link rel="icon" href={favIcon} type="image/svg+xml" />
 				<link rel="stylesheet" href="assets/main.css" />
 			</head>
 			<body>{children}</body>
