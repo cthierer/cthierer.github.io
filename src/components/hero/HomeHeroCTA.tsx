@@ -1,21 +1,23 @@
 import HeroCTA from './HeroCTA'
-import Email from '../icons/Email'
-import LinkedIn from '../icons/LinkedIn'
+import { useLinks } from '../../content/links'
 import Resume from '../icons/Resume'
 import LinkButton from '../link/LinkButton'
 
-const HomeHeroCTA = () => (
-	<HeroCTA>
-		<LinkButton href="#" decorator={<Resume />}>
-			Resume
-		</LinkButton>
-		<LinkButton variant="secondary" decorator={<Email />} href="#">
-			Email
-		</LinkButton>
-		<LinkButton variant="secondary" decorator={<LinkedIn />} href="#">
-			LinkedIn
-		</LinkButton>
-	</HeroCTA>
-)
+const HomeHeroCTA = () => {
+	const links = useLinks({ area: 'cta', category: 'social' })
+
+	return (
+		<HeroCTA>
+			<LinkButton href="#" decorator={<Resume />}>
+				Resume
+			</LinkButton>
+			{links.map(link => (
+				<LinkButton key={link.name} variant="secondary" decorator={link.decorator} href={link.href}>
+					{link.label}
+				</LinkButton>
+			))}
+		</HeroCTA>
+	)
+}
 
 export default HomeHeroCTA

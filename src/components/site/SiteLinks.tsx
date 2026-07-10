@@ -1,22 +1,22 @@
-import { useContentEntry } from '../../content/ContentContext'
-import Email from '../icons/Email'
+import { useLinks } from '../../content/links'
 import Link from '../link/Link'
 
 const SiteLinks = () => {
-	const email = useContentEntry('contact/Email.md')
-	const emailHref = email?.data.href as string | undefined
+	const links = useLinks({ area: 'header', category: 'contact' })
 
-	if (!emailHref) {
+	if (links.length === 0) {
 		return null
 	}
 
 	return (
 		<ul className="site-links">
-			<li>
-				<Link href={emailHref} decorator={<Email />}>
-					Email
-				</Link>
-			</li>
+			{links.map(link => (
+				<li key={link.name}>
+					<Link href={link.href} decorator={link.decorator}>
+						{link.label}
+					</Link>
+				</li>
+			))}
 		</ul>
 	)
 }
