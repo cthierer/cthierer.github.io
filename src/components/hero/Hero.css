@@ -22,7 +22,8 @@
 		max-width: 30%;
 		font-size: 0.8rem;
 
-		&.background {
+		&.background > article {
+			background-image: var(--hero-fascinator-background);
 			background-position: bottom right;
 			background-size: contain;
 			background-repeat: no-repeat;
@@ -46,7 +47,7 @@
 		& > .fascinator {
 			max-width: none;
 
-			&.background {
+			&.background > article {
 				background-size: auto 140px;
 				padding-bottom: 150px;
 			}

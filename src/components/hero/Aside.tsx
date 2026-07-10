@@ -4,10 +4,10 @@ interface AsideProps {
 }
 
 const Aside = ({ title, children }: AsideProps) => (
-	<>
+	<article>
 		<h2>{title}</h2>
 		{children}
-	</>
+	</article>
 )
 
 export default Aside

@@ -18,9 +18,13 @@ const Hero = ({ headline, fascinator, fascinatorBackground, footer, children }: 
 		{fascinator ? (
 			<aside
 				className={`fascinator${fascinatorBackground ? ' background' : ''}`}
-				style={{
-					backgroundImage: fascinatorBackground ? `url("${fascinatorBackground}")` : 'inherit',
-				}}
+				style={
+					fascinatorBackground
+						? ({
+								'--hero-fascinator-background': `url("${fascinatorBackground}")`,
+							} as React.CSSProperties)
+						: undefined
+				}
 			>
 				{fascinator}
 			</aside>
