@@ -1,14 +1,24 @@
+import { useContentEntry } from '../content/ContentContext'
 import Email from './icons/Email'
 import Link from './Link'
 
-const SiteLinks = () => (
-	<ul className="site-links">
-		<li>
-			<Link href="#" decorator={<Email />}>
-				Email
-			</Link>
-		</li>
-	</ul>
-)
+const SiteLinks = () => {
+	const email = useContentEntry('contact/Email.md')
+	const emailHref = email?.data.href as string | undefined
+
+	if (!emailHref) {
+		return null
+	}
+
+	return (
+		<ul className="site-links">
+			<li>
+				<Link href={emailHref} decorator={<Email />}>
+					Email
+				</Link>
+			</li>
+		</ul>
+	)
+}
 
 export default SiteLinks

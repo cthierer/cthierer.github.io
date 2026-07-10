@@ -1,0 +1,25 @@
+.article-card {
+	margin: 0;
+	height: 100%;
+
+	padding: 0;
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+
+	& > header {
+		margin: 0;
+		margin-bottom: 0.5rem;
+		margin-top: 0.5rem;
+		padding: 0;
+		border: none;
+		background-color: transparent;
+
+		& > h3 {
+			margin: 0;
+			font-size: 1.2rem;
+			font-weight: 600;
+			font-family: var(--pico-font-family);
+		}
+	}
+}

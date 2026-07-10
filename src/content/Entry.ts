@@ -1,7 +1,8 @@
 interface Entry {
-	data: Record<string, unknown>
-	html: string
-	name: string
+	readonly category: string
+	readonly data: Record<string, unknown>
+	readonly html: string
+	readonly name: string
 }
 
 export default Entry

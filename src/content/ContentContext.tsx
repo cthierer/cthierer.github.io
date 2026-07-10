@@ -26,3 +26,10 @@ export const useContentEntry = (name: string): Entry | null => {
 
 	return null
 }
+
+export const useFeatured = (category: string, limit: number = 4) => {
+	const content = useContent()
+	const featured = content.filter(entry => entry.category === category).slice(0, limit)
+
+	return featured
+}

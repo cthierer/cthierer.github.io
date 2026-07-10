@@ -1,9 +1,62 @@
 .hero-cta {
-	gap: 1.5rem;
 	align-items: flex-end;
 
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		align-items: stretch;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	li {
+		display: flex;
+	}
+
 	.link-button {
-		font-size: 0.8rem;
-		font-weight: 500;
+		display: inline-flex;
+		justify-content: center;
+		min-width: 8.5rem;
+		padding: 0.75rem 1.1rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		line-height: 1.1;
+		transition:
+			background-color 160ms ease,
+			border-color 160ms ease,
+			color 160ms ease,
+			transform 160ms ease;
+
+		&:hover,
+		&:focus-visible {
+			transform: translateY(-2px);
+		}
+	}
+
+	.link-button.secondary {
+		&:hover,
+		&:focus-visible {
+			background-color: var(--pico-secondary-hover-background);
+			color: var(--pico-secondary-hover);
+			border-color: var(--pico-secondary-hover-border);
+		}
+
+		&:hover .decorator,
+		&:focus-visible .decorator {
+			color: var(--pico-secondary-hover);
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-cta .link-button {
+		transition: none;
+	}
+
+	.hero-cta .link-button:hover,
+	.hero-cta .link-button:focus-visible {
+		transform: none;
 	}
 }

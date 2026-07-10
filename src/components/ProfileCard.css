@@ -1,0 +1,67 @@
+.profile-card {
+	h2 {
+		font-family: var(--site-font-mono);
+		font-size: 1rem;
+		text-transform: uppercase;
+	}
+
+	.content {
+		font-size: 0.9rem;
+
+		/* description lists */
+
+		dl {
+			display: grid;
+			grid-template-columns: 1fr;
+			align-items: start;
+			overflow: hidden;
+			margin: 0;
+			background-color: var(--site-surface);
+			border: 1px solid var(--site-border);
+			border-radius: var(--pico-border-radius);
+			box-shadow: var(--site-shadow-card);
+		}
+
+		dt,
+		dd {
+			min-height: 0;
+			padding: 0;
+			border-bottom: none;
+			margin: 0;
+			background-color: var(--site-surface);
+		}
+
+		dt {
+			display: flex;
+			align-items: flex-start;
+			gap: 0.6rem;
+			grid-column: 1;
+			padding: 0.7rem 0.75rem 0.2rem;
+			border-top: 1px solid var(--site-border);
+			font-size: 0.9rem;
+			font-weight: 700;
+			line-height: 1.35;
+
+			svg {
+				width: 1rem;
+				height: 1rem;
+				flex: 0 0 1rem;
+				margin-top: 0.08rem;
+				color: var(--pico-primary);
+			}
+		}
+
+		dt:first-of-type {
+			border-top: none;
+		}
+
+		dd {
+			grid-column: 1;
+			padding: 0 0.75rem 0.7rem 2.35rem;
+			font-size: 0.9rem;
+			font-weight: 500;
+			color: var(--site-text-soft);
+			line-height: 1.35;
+		}
+	}
+}

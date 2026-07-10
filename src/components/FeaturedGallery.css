@@ -1,0 +1,15 @@
+.featured-gallery {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	gap: 16px;
+
+	list-style: none;
+	padding: 0;
+	margin: 0;
+
+	& > li {
+		list-style: none;
+		padding: 0;
+	}
+}

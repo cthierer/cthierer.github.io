@@ -3,23 +3,18 @@ import Link from './Link'
 const SiteNav = () => (
 	<ul className="site-nav">
 		<li>
-			<Link href="#" className="secondary">
+			<Link href="#about" className="secondary">
 				About
 			</Link>
 		</li>
 		<li>
-			<Link href="#" className="secondary">
+			<Link href="#experience" className="secondary">
 				Experience
 			</Link>
 		</li>
 		<li>
-			<Link href="#" className="secondary">
-				Work
-			</Link>
-		</li>
-		<li>
-			<Link href="#" className="secondary">
-				Resume
+			<Link href="#education" className="secondary">
+				Education
 			</Link>
 		</li>
 	</ul>

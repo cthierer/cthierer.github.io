@@ -1,0 +1,81 @@
+.organization-card {
+	position: relative;
+	padding: 0;
+	background-color: transparent;
+
+	& > article {
+		min-width: 0;
+		margin: 0;
+		padding: 0;
+		background-color: transparent;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+
+		& > header {
+			display: grid;
+			grid-template-columns: 2.35rem minmax(0, 1fr);
+			gap: 0.85rem;
+			align-items: center;
+			margin: 0;
+			padding: 0;
+			border: none;
+			border-radius: 0;
+			background-color: transparent;
+
+			.logo {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.35rem;
+				height: 2.35rem;
+
+				img {
+					display: block;
+					width: 2.25rem;
+					height: 2.25rem;
+					object-fit: contain;
+				}
+			}
+
+			& > h3 {
+				margin: 0;
+				font-size: 0.95rem;
+				font-weight: 700;
+				font-family: var(--pico-font-family);
+				line-height: 1.35;
+			}
+		}
+
+		& > section {
+			position: relative;
+			margin: 0;
+			padding-left: 3.2rem;
+		}
+	}
+}
+
+@media (max-width: 640px) {
+	.organization-card {
+		& > article {
+			& > header {
+				grid-template-columns: 1.9rem minmax(0, 1fr);
+				gap: 0.65rem;
+
+				.logo {
+					width: 1.9rem;
+					height: 1.9rem;
+
+					img {
+						width: 1.8rem;
+						height: 1.8rem;
+					}
+				}
+			}
+
+			& > section {
+				padding-left: 2.55rem;
+			}
+		}
+	}
+}

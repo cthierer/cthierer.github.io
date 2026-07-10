@@ -3,3 +3,26 @@
 		border-bottom: 1px solid var(--site-border);
 	}
 }
+
+.home-content {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(16rem, 30%);
+	column-gap: clamp(2.5rem, 10vw, 6.5rem);
+	row-gap: 2rem;
+	align-items: start;
+	margin-top: clamp(2.5rem, 7vw, 4.5rem);
+}
+
+.home-content-main,
+.home-content-sidebar {
+	display: grid;
+	gap: var(--pico-block-spacing-vertical);
+	min-width: 0;
+}
+
+@media (max-width: 1024px) {
+	.home-content {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+}
