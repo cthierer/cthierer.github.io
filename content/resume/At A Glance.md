@@ -10,7 +10,7 @@ metrics:
   - value: 9 years
     label: Leadership
     detail: Teams, projects, architecture, and technical direction
-  - value: 4 years
+  - value: Since 2023
     label: Management
     detail: Engineers, contractors, delivery, operations, and team health
   - value: Baltimore/DC

@@ -9,6 +9,12 @@ import ContentProvider from '../content/ContentProvider'
 
 const contentDir = path.join(process.cwd(), './content')
 
+const homeDescription =
+	'Chris Thierer is a Baltimore/DC software engineering leader focused on web services, internal platforms, live services, and healthy engineering teams.'
+
+const resumeDescription =
+	'Resume for Chris Thierer, a Baltimore/DC software engineering leader with experience across public-sector technology, web platforms, and video game live services.'
+
 const writePage = async (filePath: string, element: React.ReactElement) => {
 	const html = `<!doctype html>${renderToStaticMarkup(element)}`
 	await fs.mkdir(path.dirname(filePath), { recursive: true })
@@ -22,7 +28,11 @@ const main = async () => {
 	await writePage(
 		'dist/index.html',
 		<ContentProvider content={content}>
-			<Page title="Chris Thierer | Software Engineering Leader">
+			<Page
+				title="Chris Thierer | Software Engineering Leader"
+				description={homeDescription}
+				path="/"
+			>
 				<Home />
 			</Page>
 		</ContentProvider>,
@@ -31,7 +41,7 @@ const main = async () => {
 	await writePage(
 		'dist/resume.html',
 		<ContentProvider content={content}>
-			<Page title="Resume | Chris Thierer">
+			<Page title="Resume | Chris Thierer" description={resumeDescription} path="/resume.html">
 				<Resume />
 			</Page>
 		</ContentProvider>,

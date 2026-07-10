@@ -3,6 +3,29 @@ import path from 'node:path'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 import Entry from '../content/Entry'
+import { contentSchema } from '../content/schemas/content'
+
+const formatPath = (path: PropertyKey[]): string => {
+	if (path.length === 0) {
+		return 'frontmatter'
+	}
+
+	return path.join('.')
+}
+
+const validateContent = (fileName: string, data: unknown): void => {
+	const result = contentSchema.safeParse(data)
+
+	if (result.success) {
+		return
+	}
+
+	const issues = result.error.issues
+		.map(issue => `- ${formatPath(issue.path)}: ${issue.message}`)
+		.join('\n')
+
+	throw new Error(`Invalid frontmatter in ${fileName}:\n${issues}`)
+}
 
 const loadMarkdown = async function* (cwd: string): AsyncIterable<Entry> {
 	const fileNames = []
@@ -19,6 +42,8 @@ const loadMarkdown = async function* (cwd: string): AsyncIterable<Entry> {
 		if (!data.published) {
 			continue
 		}
+
+		validateContent(fileName, data)
 
 		const html = await marked.parse(content)
 		const [category] = path.dirname(fileName).split('/', 2)
