@@ -1,6 +1,8 @@
 {
 	"name": "cthierer.github.io",
+	"description": "My personal profile and resume site.",
 	"private": true,
+	"license": "UNLICENSED",
 	"type": "module",
 	"engines": {
 		"node": ">=26"

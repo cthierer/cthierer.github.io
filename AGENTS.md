@@ -17,8 +17,8 @@ The site should stay simple, semantic, accessible, and easy to revisit after lon
 - Bethesda/game credits are a supporting detail, not the main positioning.
 - Selected work should stay more abstract for now because of confidentiality and positioning.
 - Direct `mailto:` links are acceptable.
-- Resume output should eventually be generated from shared site data rather than maintained as a separate source of truth.
-- Structured content is expected to come from Markdown files eventually. Prefer a content model that can support both the website and resume.
+- Resume output is generated from shared Markdown content. Avoid introducing a separate resume source of truth.
+- Structured content lives in Markdown files under `content/` and is validated with Zod schemas in `src/content/schemas/`.
 - Privacy-first analytics may be added later for basic page metrics and engagement tracking.
 
 ## Architecture
@@ -27,15 +27,44 @@ The site should stay simple, semantic, accessible, and easy to revisit after lon
 - CSS is bundled with Lightning CSS from `src/styles/main.css`.
 - Pico CSS provides a lightweight base layer; local CSS should own the site's specific visual language.
 - Public assets live in `public/` and are copied into `dist/`.
+- Resume PDF output is generated from `dist/resume.html` with WeasyPrint.
 - Generated output in `dist/` should not be treated as source.
 
 Current source organization:
 
+- `content/` for Markdown content and frontmatter.
 - `src/layouts/` for document/page shells.
 - `src/pages/` for page-level content and page-specific CSS.
 - `src/components/` for reusable components and matching component CSS.
 - `src/components/icons/` for icon wrappers.
+- `src/content/` for typed content wrappers, selectors, and schemas.
+- `src/config/` for typed `config.yaml` loading.
+- `src/metadata/` for structured data helpers.
 - `src/styles/` for global tokens, typography, import wiring, and broad style layers.
+
+Generated routes:
+
+- `/index.html` from `src/pages/Home.tsx`.
+- `/resume.html` from `src/pages/Resume.tsx`.
+- `/resume.pdf` from `dist/resume.html` after the HTML build.
+- `/sitemap.xml` from configured route canonical URLs.
+
+## Content Model
+
+Markdown files are loaded from `content/**/*.md` by `src/build/loadMarkdown.ts`. Files must have `published: true` to render; unpublished files are skipped before schema validation.
+
+Top-level content directories become entry categories:
+
+- `content/singles/` for homepage hero, current focus, and profile detail copy.
+- `content/resume/` for resume profile, metrics, and skill groups.
+- `content/experience/` for work history. These entries reference `content/organizations/` by `organization` slug.
+- `content/education/` for degrees and certificates.
+- `content/contact/` and `content/social/` for links. The `areas` field controls placement such as `header`, `footer`, `cta`, and `resume`.
+- `content/organizations/` for organization display names, locations, logos, and slugs.
+
+Resume inclusion defaults are implemented in `src/content/ExperienceEntry.tsx` and `src/content/EducationEntry.ts`. Use explicit `resumeInclude: false` only when an otherwise valid entry should stay off the resume.
+
+When changing content shape, update the matching schema in `src/content/schemas/`, the typed wrapper or selector in `src/content/`, and the relevant maintenance notes in `docs/maintenance.md`.
 
 ## Development Commands
 
@@ -43,6 +72,14 @@ Current source organization:
 - `npm run build` builds HTML, CSS, and public assets.
 - `npm run check` runs typecheck, lint, and formatting checks.
 - `npm run format` applies Prettier.
+
+Local PDF builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+PATH="$PWD/.venv/bin:$PATH" npm run build
+```
 
 Note: in some sandboxed environments, `tsx` may need approval because it opens an IPC pipe under `/tmp`.
 
@@ -74,10 +111,11 @@ Default to semantic HTML before adding styling hooks.
 
 - Keep dependencies minimal. Add a dependency only when it clearly reduces maintenance or risk.
 - Prefer small, obvious components over abstractions that anticipate future complexity.
+- Prefer updating Markdown content over hard-coding copy in React components.
 - Keep component-specific CSS next to the component and import it through `src/styles/components.css`.
 - Keep page-specific CSS in `src/pages/` and import it through `src/styles/pages.css`.
 - Avoid unrelated refactors while making feature or design changes.
-- If content starts duplicating across the site and resume, introduce a small typed data module before duplication spreads.
+- If content starts duplicating across the site and resume, reuse the Markdown model or introduce a small typed selector before duplication spreads.
 - If the hand-rolled build becomes painful, consider Vite only when the trade-off is clearly worth it.
 
 ## Commits
@@ -94,5 +132,6 @@ Before finishing meaningful changes:
 - Run `npm run build` when changes affect rendering, CSS, assets, or build behavior.
 - Review generated HTML when changing document structure, metadata, navigation, or accessibility-sensitive markup.
 - For visual changes, sanity-check desktop and mobile layouts when feasible.
+- For resume or print changes, review both `dist/resume.html` and `dist/resume.pdf` when feasible.
 
 Keep final notes concise: describe what changed, what was verified, and any known follow-up.
