@@ -1,6 +1,10 @@
 import { useResumeExperience } from '../../content/resume'
+import ExperienceEntry from '../../content/ExperienceEntry'
 import { formatDateRange } from './format'
 import ResumeSection from './ResumeSection'
+
+const hasResumeContent = (experience: ExperienceEntry): boolean =>
+	Boolean(experience.resumeSummary || experience.resumeHighlights.length > 0)
 
 const ResumeExperienceSection = () => {
 	const roles = useResumeExperience()
@@ -20,7 +24,20 @@ const ResumeExperienceSection = () => {
 								<p>{experience.location}</p>
 							</div>
 						</header>
-						<div className="resume-prose" dangerouslySetInnerHTML={{ __html: experience.html }} />
+						{hasResumeContent(experience) ? (
+							<div className="resume-prose">
+								{experience.resumeSummary ? <p>{experience.resumeSummary}</p> : null}
+								{experience.resumeHighlights.length > 0 ? (
+									<ul>
+										{experience.resumeHighlights.map(highlight => (
+											<li key={highlight}>{highlight}</li>
+										))}
+									</ul>
+								) : null}
+							</div>
+						) : (
+							<div className="resume-prose" dangerouslySetInnerHTML={{ __html: experience.html }} />
+						)}
 					</section>
 				))}
 			</div>

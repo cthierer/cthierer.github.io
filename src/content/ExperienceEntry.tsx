@@ -1,5 +1,15 @@
 import Entry from './Entry'
 
+interface ResumeContent {
+	readonly summary?: unknown
+	readonly highlights?: unknown
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+	typeof value === 'object' && value !== null
+
+const isString = (value: unknown): value is string => typeof value === 'string'
+
 class ExperienceEntry implements Entry {
 	constructor(
 		readonly category: string,
@@ -48,6 +58,24 @@ class ExperienceEntry implements Entry {
 		}
 
 		return type === 'fte'
+	}
+
+	get resumeSummary(): string | undefined {
+		const resume = this.data.resume as ResumeContent | undefined
+		if (!isRecord(resume) || !isString(resume.summary)) {
+			return undefined
+		}
+
+		return resume.summary
+	}
+
+	get resumeHighlights(): string[] {
+		const resume = this.data.resume as ResumeContent | undefined
+		if (!isRecord(resume) || !Array.isArray(resume.highlights)) {
+			return []
+		}
+
+		return resume.highlights.filter(isString)
 	}
 }
 
