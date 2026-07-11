@@ -3,7 +3,7 @@ title: B.S. in Computer Science
 archetype: degree
 published: true
 
-institution: University of Maryland, Baltimore County (UMBC)
+organization: umbc
 degree: B.S.
 program: Computer Science
 startDate: 2007-08-27

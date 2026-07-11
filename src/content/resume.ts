@@ -137,10 +137,27 @@ export const useResumeExperience = (): ResumeRole[] => {
 
 export const useResumeEducation = (): EducationEntry[] => {
 	const content = useContent()
+	const organizations = new Map(
+		content
+			.filter(entry => entry.category === 'organizations')
+			.map(entry => [
+				entry.data.slug as string,
+				new OrganizationEntry(entry.category, entry.data, entry.html, entry.name),
+			]),
+	)
 
 	return content
 		.filter(entry => entry.category === 'education')
-		.map(entry => new EducationEntry(entry.category, entry.data, entry.html, entry.name))
+		.map(
+			entry =>
+				new EducationEntry(
+					entry.category,
+					entry.data,
+					entry.html,
+					entry.name,
+					organizations.get(entry.data.organization as string),
+				),
+		)
 		.filter(entry => entry.resumeInclude)
 		.sort((entryA, entryB) => getComparableDate(entryB) - getComparableDate(entryA))
 }

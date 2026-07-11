@@ -3,7 +3,7 @@ title: Technical Management Program
 archetype: certificate
 published: true
 
-institution: University of California, Los Angeles (UCLA) Extension
+organization: ucla-extension
 program: Technical Management Program
 startDate: 2024-03-24
 endDate: 2024-03-29

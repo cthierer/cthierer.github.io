@@ -17,7 +17,7 @@ const SelectedExperience = () => {
 				<OrganizationCard
 					key={organization.slug}
 					name={organization.label}
-					logo={<img src={organization.logo} alt="" />}
+					logo={organization.logo ? <img src={organization.logo} alt="" /> : null}
 				>
 					{organization.roles.map(role => (
 						<ExperienceCard

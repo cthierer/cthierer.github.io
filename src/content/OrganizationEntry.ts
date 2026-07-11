@@ -18,12 +18,16 @@ class OrganizationEntry implements Entry {
 		return this.data.label as string
 	}
 
+	get title(): string {
+		return this.data.title as string
+	}
+
 	get location(): string {
 		return this.data.location as string
 	}
 
-	get logo(): string {
-		return this.data.logo as string
+	get logo(): string | undefined {
+		return this.data.logo as string | undefined
 	}
 
 	get startDate(): Date | undefined {

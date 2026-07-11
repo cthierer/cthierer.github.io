@@ -1,4 +1,5 @@
 import Entry from './Entry'
+import OrganizationEntry from './OrganizationEntry'
 
 class EducationEntry implements Entry {
 	constructor(
@@ -6,10 +7,19 @@ class EducationEntry implements Entry {
 		readonly data: Record<string, unknown>,
 		readonly html: string,
 		readonly name: string,
+		private readonly organizationEntry?: OrganizationEntry,
 	) {}
 
+	get organization(): string {
+		return this.data.organization as string
+	}
+
 	get institution(): string {
-		return this.data.institution as string
+		return this.organizationEntry?.title ?? this.organization
+	}
+
+	get institutionLabel(): string {
+		return this.organizationEntry?.label ?? this.institution
 	}
 
 	get startDate(): Date | undefined {

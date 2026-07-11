@@ -14,6 +14,7 @@ const SelectedEducation = () => {
 				<EducationCard
 					key={entry.name}
 					institution={entry.institution}
+					institutionLabel={entry.institutionLabel}
 					program={[entry.degree, entry.program].filter(Boolean).join(' ') || entry.label}
 					endDate={entry.endDate}
 				/>

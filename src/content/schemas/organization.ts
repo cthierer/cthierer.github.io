@@ -6,6 +6,6 @@ export const organizationSchema = z.looseObject({
 	archetype: z.literal('organization'),
 	label: z.string().min(1),
 	location: z.string().min(1),
-	logo: z.string().min(1),
+	logo: z.string().min(1).optional(),
 	slug: z.string().min(1),
 })

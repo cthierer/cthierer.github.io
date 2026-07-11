@@ -8,7 +8,7 @@ export const educationSchema = z.looseObject({
 	endDate: dateValue.optional(),
 	gpa: z.number().optional(),
 	honors: z.array(z.string().min(1)).optional(),
-	institution: z.string().min(1),
+	organization: z.string().min(1),
 	program: z.string().min(1),
 	resumeInclude: z.boolean().optional(),
 	startDate: dateValue.optional(),

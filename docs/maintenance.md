@@ -24,7 +24,7 @@ Common updates:
 - Work history: `content/experience/*.md`.
 - Education: `content/education/*.md`.
 - Email, website, and social links: `content/contact/*.md` and `content/social/*.md`.
-- Organization labels, locations, and logos: `content/organizations/*.md`.
+- Organization names, display labels, locations, and optional logos: `content/organizations/*.md`.
 - Page titles, descriptions, canonical site URL, favicon, social image, and resume download path: `config.yaml`.
 
 ## Frontmatter Quick Reference
@@ -46,9 +46,9 @@ The `archetype` selects the schema:
 - `metrics`: resume metric cards with `metrics`.
 - `skills`: resume skill groups with `groups`.
 - `experience`: work entries with organization slug, job title, role, location, type, dates, and optional resume summary/highlights.
-- `degree` or `certificate`: education entries.
+- `degree` or `certificate`: education entries with an organization slug, program, dates, and optional degree details.
 - `link`: contact or social links with `href`, `label`, `areas`, and optional `icon` and `order`.
-- `organization`: organization metadata with `slug`, `label`, `location`, and `logo`.
+- `organization`: organization metadata with `slug`, `label`, `location`, and optional `logo`.
 
 Dates should stay ISO-like, such as `2023-06-20`, so sorting remains predictable.
 
@@ -60,7 +60,7 @@ The resume page is generated from shared content rather than a separate document
 - `content/resume/At A Glance.md` feeds the metric strip.
 - `content/resume/Skills.md` feeds skill groups.
 - `content/experience/*.md` feeds resume experience when included by `src/content/ExperienceEntry.tsx`.
-- `content/education/*.md` feeds resume education when included by `src/content/EducationEntry.ts`.
+- `content/education/*.md` feeds resume education when included by `src/content/EducationEntry.ts`. Education entries reference `content/organizations/*.md` with `organization` slugs; organization titles are the full institution names, and organization labels are the compact homepage labels.
 - Links with `areas: [resume]` in `content/contact/` or `content/social/` appear in the resume header.
 
 Experience entries can include resume-specific copy:
@@ -89,7 +89,7 @@ The `order` field controls ordering within a placement. Supported icon names dep
 
 Public files live in `public/` and are copied to `dist/` during `npm run build`.
 
-- Organization logos are referenced from `content/organizations/*.md`.
+- Organization logos are referenced from `content/organizations/*.md` when available.
 - `public/assets/social-image.png` is the configured social preview image.
 - `public/favicon.svg` is the configured favicon.
 - Local fonts are in `public/assets/fonts/` and wired through `src/styles/fonts.css`.

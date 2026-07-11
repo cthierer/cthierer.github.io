@@ -3,7 +3,7 @@ title: M.S. in Information Systems
 archetype: degree
 published: true
 
-institution: University of Maryland, Baltimore County (UMBC)
+organization: umbc
 degree: M.S.
 program: Information Systems
 startDate: 2012-08-29
