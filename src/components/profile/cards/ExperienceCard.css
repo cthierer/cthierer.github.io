@@ -53,6 +53,44 @@
 	}
 }
 
+.experience-more {
+	margin-top: 0.45rem;
+
+	& > summary {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.25rem;
+		color: var(--site-accent);
+		font-size: 0.85rem;
+		font-weight: 600;
+		line-height: 1.3;
+		cursor: pointer;
+	}
+
+	& > summary:focus-visible {
+		outline: 2px solid var(--site-accent);
+		outline-offset: 0.2rem;
+	}
+
+	.experience-more-label-open {
+		display: none;
+	}
+
+	&[open] {
+		.experience-more-label-closed {
+			display: none;
+		}
+
+		.experience-more-label-open {
+			display: inline;
+		}
+	}
+}
+
+.experience-more-content {
+	margin-top: 0.45rem;
+}
+
 .experience-highlights {
 	margin: 0.75rem 0 0;
 	padding-left: 1.1rem;

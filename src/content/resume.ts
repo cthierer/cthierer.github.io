@@ -113,13 +113,16 @@ export const useResumeExperience = (): ResumeRole[] => {
 			.filter(entry => entry.category === 'organizations')
 			.map(entry => [
 				entry.data.slug as string,
-				new OrganizationEntry(entry.category, entry.data, entry.html, entry.name),
+				new OrganizationEntry(entry.category, entry.data, entry.html, entry.markdown, entry.name),
 			]),
 	)
 
 	return content
 		.filter(entry => entry.category === 'experience')
-		.map(entry => new ExperienceEntry(entry.category, entry.data, entry.html, entry.name))
+		.map(
+			entry =>
+				new ExperienceEntry(entry.category, entry.data, entry.html, entry.markdown, entry.name),
+		)
 		.filter(experience => experience.resumeInclude)
 		.map(experience => {
 			const organization = organizations.get(experience.organization)
@@ -142,7 +145,7 @@ export const useResumeEducation = (): EducationEntry[] => {
 			.filter(entry => entry.category === 'organizations')
 			.map(entry => [
 				entry.data.slug as string,
-				new OrganizationEntry(entry.category, entry.data, entry.html, entry.name),
+				new OrganizationEntry(entry.category, entry.data, entry.html, entry.markdown, entry.name),
 			]),
 	)
 
@@ -154,6 +157,7 @@ export const useResumeEducation = (): EducationEntry[] => {
 					entry.category,
 					entry.data,
 					entry.html,
+					entry.markdown,
 					entry.name,
 					organizations.get(entry.data.organization as string),
 				),

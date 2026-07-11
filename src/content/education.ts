@@ -12,7 +12,7 @@ const useRecentEducation = (limit: number = 4): EducationEntry[] => {
 			.filter(entry => entry.category === 'organizations')
 			.map(entry => [
 				entry.data.slug as string,
-				new OrganizationEntry(entry.category, entry.data, entry.html, entry.name),
+				new OrganizationEntry(entry.category, entry.data, entry.html, entry.markdown, entry.name),
 			]),
 	)
 
@@ -24,6 +24,7 @@ const useRecentEducation = (limit: number = 4): EducationEntry[] => {
 					entry.category,
 					entry.data,
 					entry.html,
+					entry.markdown,
 					entry.name,
 					organizations.get(entry.data.organization as string),
 				),

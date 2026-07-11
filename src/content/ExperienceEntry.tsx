@@ -1,3 +1,4 @@
+import { Lexer, Parser, type Token } from 'marked'
 import Entry from './Entry'
 
 interface ResumeContent {
@@ -5,16 +6,26 @@ interface ResumeContent {
 	readonly highlights?: unknown
 }
 
+export interface ExperienceBody {
+	readonly introHtml: string
+	readonly detailsHtml?: string
+}
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
 	typeof value === 'object' && value !== null
 
 const isString = (value: unknown): value is string => typeof value === 'string'
+
+const hasContentToken = (token: Token): boolean => token.type !== 'space' && token.type !== 'def'
+
+const renderTokens = (tokens: Token[]): string => Parser.parse(tokens)
 
 class ExperienceEntry implements Entry {
 	constructor(
 		readonly category: string,
 		readonly data: Record<string, unknown>,
 		readonly html: string,
+		readonly markdown: string,
 		readonly name: string,
 	) {}
 
@@ -85,6 +96,25 @@ class ExperienceEntry implements Entry {
 		}
 
 		return resume.highlights.filter(isString)
+	}
+
+	get homeBody(): ExperienceBody {
+		const tokens = Lexer.lex(this.markdown)
+		const firstParagraphIndex = tokens.findIndex(token => token.type === 'paragraph')
+		if (firstParagraphIndex < 0) {
+			return { introHtml: this.html }
+		}
+
+		const introTokens = tokens.slice(0, firstParagraphIndex + 1)
+		const detailTokens = tokens.slice(firstParagraphIndex + 1)
+		if (!detailTokens.some(hasContentToken)) {
+			return { introHtml: renderTokens(introTokens) }
+		}
+
+		return {
+			introHtml: renderTokens(introTokens),
+			detailsHtml: renderTokens(detailTokens),
+		}
 	}
 }
 

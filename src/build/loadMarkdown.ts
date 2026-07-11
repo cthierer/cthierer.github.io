@@ -52,6 +52,7 @@ const loadMarkdown = async function* (cwd: string): AsyncIterable<Entry> {
 			category,
 			data,
 			html,
+			markdown: content,
 			name: fileName,
 		}
 	}

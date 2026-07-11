@@ -12,7 +12,10 @@ const useRecentOrganizations = ({
 	const content = useContent()
 	const experiences = content
 		.filter(entry => entry.category === 'experience')
-		.map(entry => new ExperienceEntry(entry.category, entry.data, entry.html, entry.name))
+		.map(
+			entry =>
+				new ExperienceEntry(entry.category, entry.data, entry.html, entry.markdown, entry.name),
+		)
 		.filter(experience => !notBefore || experience.startDate >= notBefore)
 		.sort(
 			(experienceA, experienceB) =>
@@ -33,6 +36,7 @@ const useRecentOrganizations = ({
 					entry.category,
 					entry.data,
 					entry.html,
+					entry.markdown,
 					entry.name,
 					experiences.filter(experience => experience.organization === (entry.data.slug as string)),
 				),
