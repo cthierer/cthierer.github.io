@@ -4,7 +4,7 @@ archetype: organization
 published: true
 
 slug: zmi
-label: ZeniMax Media / Bethesda Softworks / Xbox
+label: ZeniMax Media / Bethesda Softworks / XBOX
 location: Rockville, MD
 logo: /assets/bethesda-softworks-logo.webp
 ---

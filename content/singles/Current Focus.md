@@ -4,6 +4,6 @@ archetype: article
 published: true
 ---
 
-I'm looking for Software Engineering Management roles in the Baltimore/Washington, DC area. I prefer in-office or hybrid work environments, and am comfortable working with distributed teams.
+I’m looking for a software engineering management role in the Baltimore–Washington, DC area, preferably in a hybrid or in-office environment. I’ve led distributed teams, but I value the collaboration and shared context that come from working together in person.
 
-I'm especially interested in platforms, tools, web services, creative technology, education, science, and community. I'm also open to strong senior individual contributor roles.
+I’m drawn to useful, technically interesting work: platforms, developer tools, web services, creative technology, education, science, and community-focused products. I’m also open to a senior individual contributor role where I can have meaningful technical ownership.

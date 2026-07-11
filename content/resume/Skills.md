@@ -7,37 +7,33 @@ groups:
   - label: Leadership
     items:
       - Engineering management
+      - People leadership
       - Technical leadership
       - Mentoring
-      - Delivery planning
-  - label: Platforms
+      - Cross-team delivery
+
+  - label: Architecture
     items:
       - Web services
+      - Platform architecture
+      - System design
       - Internal tools
-      - Live services
-      - Admin platforms
-  - label: Languages
+
+  - label: Technology
     items:
       - Go
-      - TypeScript
       - JavaScript
+      - TypeScript
       - Node.js
-  - label: Frontend
-    items:
       - React
-      - Accessibility
-      - Responsive UI
-      - Design systems
+      - REST
+      - gRPC
+      - AWS
+
   - label: Operations
     items:
-      - Incident support
+      - Live services
+      - Reliability
       - Launch readiness
       - Performance testing
-      - Reliability
-  - label: Collaboration
-    items:
-      - Cross-functional planning
-      - Stakeholder communication
-      - Code review
-      - Documentation
 ---

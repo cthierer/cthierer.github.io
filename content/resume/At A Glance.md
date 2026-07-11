@@ -5,15 +5,15 @@ published: true
 
 metrics:
   - value: 15 years
-    label: Web systems
-    detail: Public-sector technology and video game live services
+    label: Experience
+    detail: Web systems across public-sector technology and video game live services
   - value: 9 years
-    label: Leadership
+    label: Technical leadership
     detail: Teams, projects, architecture, and technical direction
-  - value: Since 2023
-    label: Management
-    detail: Engineers, contractors, delivery, operations, and team health
+  - value: 3 years
+    label: Engineering management
+    detail: People leadership, delivery, operations, and team health
   - value: Baltimore/DC
-    label: Area
-    detail: In-office or hybrid engineering leadership roles
+    label: Location
+    detail: Seeking hybrid or in-office engineering leadership roles
 ---

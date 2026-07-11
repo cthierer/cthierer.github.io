@@ -1,5 +1,5 @@
 ---
-title: Moby Games
+title: MobyGames
 archetype: link
 published: true
 

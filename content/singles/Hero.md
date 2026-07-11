@@ -1,7 +1,9 @@
 ---
-title: Software engineering leader focused on building web services and teams
+title: Software engineering leader building web services and strong teams
 archetype: article
 published: true
 ---
 
-I have 15 years of experience across public-sector technology and video game live services. I've grown from an individual contributor to technical lead to engineering manager, with a track record of shipping reliable systems and helping teams do their best work.
+I’ve spent 15 years building public-sector technology and video game live services. I work best on complex systems that need **clearer architecture**, more **reliable delivery**, and **better tools** for the people who build and operate them. I’ve grown from engineer to technical lead to engineering manager while staying close to the technical work.
+
+😸 Usually accompanied by a cat.

@@ -11,6 +11,6 @@ endDate: 2015-05-20
 gpa: 3.7
 ---
 
-Graduate coursework focused on the intersection of technology, information retrieval, collaboration, and how people use systems to solve practical problems.
+My graduate work focused on how people use technology to solve practical problems, collaborate, and build communities. I developed a particular interest in human-computer interaction, information retrieval, and computer-supported cooperative work.
 
-Course projects included small-group research studies on topics such as social media trustworthiness, federated search, web search and data mining, and computer-supported cooperative work. Example projects included analyzing trust signals in political social media posts, evaluating federated search approaches, and studying how developers use open-source tools to maintain awareness in collaborative GitHub environments.
+My course projects included small-group research on social media trustworthiness, federated search, web search and data mining, and collaborative software development. I analyzed trust signals in political social media posts, evaluated federated search approaches, and studied [how developers use open-source tools](https://drive.google.com/file/d/0B8V_PvzH1Bi6VFF6MHk5QkN0alI4Vmt0NkVXUGRqTlpPeTZN/view?usp=sharing) to maintain awareness while working together on GitHub.

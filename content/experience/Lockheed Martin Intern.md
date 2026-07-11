@@ -10,10 +10,21 @@ endDate: 2008-08-08
 location: Arlington, VA
 role: Software Engineer
 jobTitle: Software Development Intern
+resume:
+  summary: Software engineering intern supporting the migration of EPA.gov to a new content management system.
+  highlights:
+    - Built XSLT transforms that converted XML content into structured, styled XHTML for the public website.
+    - Supported template development, stylesheet work, and debugging within a large, production-facing content platform.
+focusAreas:
+  - XSLT
+  - XML
+  - XHTML
+  - JavaScript
+  - CSS
+  - XPath
+  - Content management systems
 ---
 
-At Lockheed Martin, I supported development work around a content management system, including stylesheet and template development, XML/XSLT work, and debugging existing systems.
+At Lockheed Martin, I supported the migration of EPA.gov to a new content management system (<abbr>CMS</abbr>). I primarily developed XSLT transforms that converted XML content into structured, styled XHTML documents, along with related template, stylesheet, and debugging work.
 
-It was an early exposure to maintaining and improving software within a larger technical environment, where correctness, structure, and consistency mattered as much as the initial implementation.
-
-**Focus areas:** XSLT, XML, XHTML, CSS, JavaScript, XPath, content management systems
+The internship gave me early experience maintaining and improving software within a large technical environment, where correctness, structure, and consistency mattered as much as delivering new functionality.
