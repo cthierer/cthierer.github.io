@@ -26,6 +26,7 @@ const SelectedExperience = () => {
 							startDate={role.startDate}
 							endDate={role.endDate}
 							location={role.location}
+							focusAreas={role.focusAreas.slice(0, 8)}
 						>
 							<div dangerouslySetInnerHTML={{ __html: role.html }} />
 							{role.resumeHighlights.length > 0 ? (

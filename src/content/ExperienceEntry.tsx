@@ -51,6 +51,15 @@ class ExperienceEntry implements Entry {
 		return this.data.jobTitle as string
 	}
 
+	get focusAreas(): string[] {
+		const { focusAreas } = this.data
+		if (!Array.isArray(focusAreas)) {
+			return []
+		}
+
+		return focusAreas.filter(isString)
+	}
+
 	get resumeInclude(): boolean {
 		const { resumeInclude, type } = this.data
 		if (typeof resumeInclude === 'boolean') {

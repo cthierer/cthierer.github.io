@@ -5,6 +5,7 @@ export const experienceSchema = z.looseObject({
 	...publishedBase,
 	archetype: z.literal('experience'),
 	endDate: dateValue.optional(),
+	focusAreas: z.array(z.string()).optional(),
 	jobTitle: z.string().min(1),
 	location: z.string().min(1),
 	organization: z.string().min(1),

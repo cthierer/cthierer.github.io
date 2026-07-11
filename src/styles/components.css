@@ -1,6 +1,7 @@
 @import '../components/profile/cards/ArticleCard.css';
 @import '../components/profile/cards/EducationCard.css';
 @import '../components/profile/cards/ExperienceCard.css';
+@import '../components/profile/FocusAreaTags.css';
 @import '../components/profile/lists/FeaturedGallery.css';
 @import '../components/profile/lists/FeaturedList.css';
 @import '../components/hero/Hero.css';
