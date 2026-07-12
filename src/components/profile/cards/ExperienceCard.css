@@ -58,7 +58,7 @@
 
 	& > summary {
 		display: inline-flex;
-		align-items: baseline;
+		align-items: center;
 		gap: 0.25rem;
 		color: var(--site-accent);
 		font-size: 0.85rem;
