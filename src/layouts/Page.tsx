@@ -4,7 +4,7 @@ import JsonLd, { JsonLdValue } from '../metadata/JsonLd'
 export interface StructuredDataContext {
 	readonly canonicalUrl: string
 	readonly dateModified: string
-	readonly socialImage: string
+	readonly profileImage: string
 }
 
 interface PageProps {
@@ -20,12 +20,14 @@ const Page = ({ title, description, path, structuredData, children }: PageProps)
 	const siteUrl = useConfigValue('siteUrl')
 	const favIcon = useConfigValue('favIcon')
 	const socialImagePath = useConfigValue('socialImage')
+	const profileImagePath = useConfigValue('profileImage')
 	const socialImage = new URL(socialImagePath, siteUrl).toString()
+	const profileImage = new URL(profileImagePath, siteUrl).toString()
 	const canonicalUrl = new URL(path, siteUrl).toString()
 	const jsonLd = structuredData?.({
 		canonicalUrl,
 		dateModified: renderTime,
-		socialImage,
+		profileImage,
 	})
 
 	return (

@@ -13,6 +13,7 @@ export const schema = z.looseObject({
 	siteUrl: z.httpUrl(),
 	siteTitle: z.string(),
 	favIcon: z.string(),
+	profileImage: z.string().refine(absolutePath),
 	socialImage: z.string().refine(absolutePath),
 	resumeDownload: z.union([z.httpUrl(), z.string().refine(absolutePath)]),
 	homePage: pageSchema,

@@ -6,7 +6,7 @@ interface ProfileJsonLdOptions {
 	readonly config: Config
 	readonly content: readonly Entry[]
 	readonly canonicalUrl: string
-	readonly socialImage: string
+	readonly profileImage: string
 	readonly dateModified: string
 }
 
@@ -64,7 +64,7 @@ const createProfileJsonLd = ({
 	config,
 	content,
 	canonicalUrl,
-	socialImage,
+	profileImage,
 	dateModified,
 }: ProfileJsonLdOptions): JsonLdValue => {
 	const profile = getProfile(content, config)
@@ -90,7 +90,7 @@ const createProfileJsonLd = ({
 						}
 					: {}),
 				url: canonicalUrl,
-				image: socialImage,
+				image: profileImage,
 				...(email ? { email } : {}),
 				...(sameAs.length > 0 ? { sameAs } : {}),
 			},
