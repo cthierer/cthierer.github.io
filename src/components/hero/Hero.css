@@ -25,10 +25,11 @@
 		&.background > article {
 			background-image: var(--hero-fascinator-background);
 			background-position: bottom right;
-			background-size: contain;
+			background-size: 100% auto;
 			background-repeat: no-repeat;
 
-			padding-bottom: 180px;
+			padding-bottom: calc(100% / 2.2 + 8px);
+			/* 2.2 is a magic number - it's the ratio of the image */
 		}
 
 		h2 {
@@ -46,11 +47,6 @@
 
 		& > .fascinator {
 			max-width: none;
-
-			&.background > article {
-				background-size: auto 140px;
-				padding-bottom: 150px;
-			}
 		}
 	}
 }
