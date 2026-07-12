@@ -3,6 +3,7 @@ title: MobyGames
 archetype: link
 published: true
 
+slug: mobygames
 label: Game Credits
 href: https://www.mobygames.com/person/842700/christopher-thierer/credits/
 icon: mobygames

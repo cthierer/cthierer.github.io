@@ -47,7 +47,7 @@ The `archetype` selects the schema:
 - `skills`: resume skill groups with `groups`.
 - `experience`: work entries with organization slug, job title, role, location, type, dates, and optional resume summary/highlights.
 - `degree` or `certificate`: education entries with an organization slug, program, dates, and optional degree details.
-- `link`: contact or social links with `href`, `label`, `areas`, and optional `icon` and `order`.
+- `link`: contact or social links with `href`, `label`, `slug`, `areas`, and optional `icon` and `order`.
 - `organization`: organization metadata with `slug`, `label`, `location`, and optional `logo`.
 
 Dates should stay ISO-like, such as `2023-06-20`, so sorting remains predictable.
@@ -83,7 +83,7 @@ Links use the `areas` frontmatter field to control where they appear:
 - `cta`: homepage hero call-to-action links.
 - `resume`: resume contact links.
 
-The `order` field controls ordering within a placement. Supported icon names depend on the local icon handling in `src/content/links.tsx` and the components under `src/components/icons/`.
+The `slug` field is used for analytics event names such as `github-clicked`. Keep it lowercase with only letters, numbers, and hyphens. The `order` field controls ordering within a placement. Supported icon names depend on the local icon handling in `src/content/links.tsx` and the components under `src/components/icons/`.
 
 ## Assets
 

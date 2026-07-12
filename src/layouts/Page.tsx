@@ -21,6 +21,7 @@ const Page = ({ title, description, path, structuredData, children }: PageProps)
 	const favIcon = useConfigValue('favIcon')
 	const socialImagePath = useConfigValue('socialImage')
 	const profileImagePath = useConfigValue('profileImage')
+	const umamiWebsiteId = useConfigValue('umamiWebsiteId')
 	const socialImage = new URL(socialImagePath, siteUrl).toString()
 	const profileImage = new URL(profileImagePath, siteUrl).toString()
 	const canonicalUrl = new URL(path, siteUrl).toString()
@@ -53,6 +54,13 @@ const Page = ({ title, description, path, structuredData, children }: PageProps)
 				<link rel="icon" href={favIcon} type="image/svg+xml" />
 				<link rel="stylesheet" href="assets/main.css" />
 				{jsonLd ? <JsonLd data={jsonLd} /> : null}
+				{umamiWebsiteId ? (
+					<script
+						defer
+						src="https://cloud.umami.is/script.js"
+						data-website-id={umamiWebsiteId}
+					></script>
+				) : null}
 			</head>
 			<body>{children}</body>
 		</html>

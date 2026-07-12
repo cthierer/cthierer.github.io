@@ -11,6 +11,7 @@ import loadYaml from './loadYaml'
 import { schema as configSchema } from '../config/Config'
 import { JsonLdValue } from '../metadata/JsonLd'
 import createProfileJsonLd from '../metadata/profileJsonLd'
+import Privacy from '../pages/Privacy'
 
 const contentDir = path.join(process.cwd(), './content')
 const configFile = path.join(process.cwd(), './config.yaml')
@@ -71,6 +72,13 @@ const main = async () => {
 			title: config.resumePage.title,
 			description: config.resumePage.description,
 			element: <Resume />,
+		},
+		{
+			outputPath: config.privacyPage.path,
+			canonicalPath: config.privacyPage.path,
+			title: config.privacyPage.title,
+			description: config.privacyPage.description,
+			element: <Privacy />,
 		},
 	]
 

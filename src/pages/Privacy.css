@@ -1,0 +1,8 @@
+.privacy {
+	&,
+	& > header {
+		border: none;
+		background-color: transparent;
+		box-shadow: none;
+	}
+}

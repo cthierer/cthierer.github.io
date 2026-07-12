@@ -3,6 +3,7 @@ title: GitHub
 archetype: link
 published: true
 
+slug: github
 label: GitHub
 href: https://github.com/cthierer
 icon: github

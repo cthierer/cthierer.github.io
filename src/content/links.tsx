@@ -9,6 +9,7 @@ import Entry from './Entry'
 export type LinkArea = 'header' | 'footer' | 'cta' | 'resume'
 
 export interface ContentLink {
+	readonly slug: string
 	readonly title: string
 	readonly name: string
 	readonly category: string
@@ -64,13 +65,14 @@ const toContentLink = (entry: Entry): ContentLink | null => {
 		return null
 	}
 
-	const { href, label, icon, order } = entry.data
+	const { href, label, slug, icon, order } = entry.data
 
-	if (!isString(href) || !isString(label)) {
+	if (!isString(href) || !isString(label) || !isString(slug)) {
 		return null
 	}
 
 	return {
+		slug,
 		title: (entry.data.title as string) ?? entry.name,
 		name: entry.name,
 		category: entry.category,

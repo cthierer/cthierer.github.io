@@ -2,12 +2,14 @@ import Link from './Link'
 
 interface LinkButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	decorator?: React.ReactNode
+	event?: string
 	variant?: 'primary' | 'secondary' | 'contrast'
 	children: React.ReactNode
 }
 
 const LinkButton = ({
 	decorator,
+	event,
 	variant = 'primary',
 	children,
 	className,
@@ -17,6 +19,7 @@ const LinkButton = ({
 		role="button"
 		className={['link-button', variant, className].filter(Boolean).join(' ')}
 		decorator={decorator}
+		event={event}
 		{...anchorProps}
 	>
 		{children}

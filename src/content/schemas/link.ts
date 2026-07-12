@@ -9,4 +9,8 @@ export const linkSchema = z.looseObject({
 	icon: z.string().min(1).optional(),
 	label: z.string().min(1),
 	order: z.number().optional(),
+	slug: z
+		.string()
+		.min(1)
+		.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Use lowercase letters, numbers, and hyphens only.'),
 })

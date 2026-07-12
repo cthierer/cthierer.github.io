@@ -14,7 +14,13 @@ const HomeHeroCTA = () => {
 				Resume
 			</LinkButton>
 			{links.map(link => (
-				<LinkButton key={link.name} variant="secondary" decorator={link.decorator} href={link.href}>
+				<LinkButton
+					key={link.name}
+					variant="secondary"
+					decorator={link.decorator}
+					href={link.href}
+					event={`${link.slug}-clicked`}
+				>
 					{link.label}
 				</LinkButton>
 			))}

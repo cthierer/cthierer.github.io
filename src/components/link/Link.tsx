@@ -1,10 +1,15 @@
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	decorator?: React.ReactNode
+	event?: string
 	children: React.ReactNode
 }
 
-const Link = ({ decorator, children, className, ...anchorProps }: LinkProps) => (
-	<a className={['link', className].filter(Boolean).join(' ')} {...anchorProps}>
+const Link = ({ decorator, event, children, className, ...anchorProps }: LinkProps) => (
+	<a
+		data-umami-event={event}
+		className={['link', className].filter(Boolean).join(' ')}
+		{...anchorProps}
+	>
 		{decorator ? (
 			<span className="decorator" aria-hidden="true">
 				{decorator}

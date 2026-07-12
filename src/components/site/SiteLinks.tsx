@@ -12,7 +12,7 @@ const SiteLinks = () => {
 		<ul className="site-links">
 			{links.map(link => (
 				<li key={link.name}>
-					<Link href={link.href} decorator={link.decorator}>
+					<Link href={link.href} decorator={link.decorator} event={`${link.slug}-clicked`}>
 						{link.title}
 					</Link>
 				</li>

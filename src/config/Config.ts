@@ -16,8 +16,10 @@ export const schema = z.looseObject({
 	profileImage: z.string().refine(absolutePath),
 	socialImage: z.string().refine(absolutePath),
 	resumeDownload: z.union([z.httpUrl(), z.string().refine(absolutePath)]),
+	umamiWebsiteId: z.string().optional(),
 	homePage: pageSchema,
 	resumePage: pageSchema,
+	privacyPage: pageSchema,
 })
 
 type Config = z.infer<typeof schema>

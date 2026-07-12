@@ -41,6 +41,11 @@
 		margin: 0;
 		font-size: 0.75rem;
 		color: var(--site-text-soft);
+		text-align: right;
+
+		p {
+			margin: 0;
+		}
 	}
 }
 

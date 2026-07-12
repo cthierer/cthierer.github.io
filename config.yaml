@@ -4,6 +4,7 @@ favIcon: favicon.svg
 profileImage: /assets/profile-image.webp
 socialImage: /assets/social-image.png
 resumeDownload: /resume.pdf
+umamiWebsiteId: 65c89b58-5089-40ad-ad8b-8219e6013773
 
 homePage:
   title: 'Chris Thierer | Software Engineering Leader'
@@ -19,3 +20,9 @@ resumePage:
     Resume for Chris Thierer, a Baltimore/DC software engineering leader with
     experience across public-sector technology, web platforms, and video game live
     services.
+
+privacyPage:
+  title: 'Privacy | Chris Thierer'
+  path: /privacy.html
+  description: >
+    Privacy policy governing this personal profile website.

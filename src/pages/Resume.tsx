@@ -6,6 +6,7 @@ import ResumeMetrics from '../components/resume/ResumeMetrics'
 import ResumePrintScript from '../components/resume/ResumePrintScript'
 import ResumeProfileSection from '../components/resume/ResumeProfileSection'
 import ResumeSkillsSection from '../components/resume/ResumeSkillsSection'
+import SiteLegal from '../components/site/SiteLegal'
 
 const Resume = () => {
 	return (
@@ -21,6 +22,7 @@ const Resume = () => {
 						<ResumeExperienceSection />
 						<ResumeEducationSection />
 					</article>
+					<SiteLegal />
 				</div>
 			</main>
 			<ResumePrintScript />
