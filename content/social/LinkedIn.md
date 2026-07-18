@@ -5,7 +5,7 @@ published: true
 
 slug: linkedin
 label: LinkedIn
-href: www.linkedin.com/in/christopher-thierer-8919731a
+href: 
 icon: linkedin
 areas: [footer, cta]
 order: 20
