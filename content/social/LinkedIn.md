@@ -5,7 +5,7 @@ published: true
 
 slug: linkedin
 label: LinkedIn
-href: 
+href: https://www.linkedin.com/in/chris-thierer
 icon: linkedin
 areas: [footer, cta]
 order: 20
