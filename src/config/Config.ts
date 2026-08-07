@@ -9,6 +9,7 @@ const pageSchema = z.looseObject({
 	path: z.string().refine(absolutePath),
 	canonicalPath: z.string().refine(absolutePath).optional(),
 	description: z.string(),
+	pdf: z.boolean().optional(),
 })
 
 export const schema = z.looseObject({

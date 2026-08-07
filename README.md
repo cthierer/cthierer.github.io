@@ -47,7 +47,8 @@ Start a local rebuilding server:
 PATH="$PWD/.venv/bin:$PATH" npm run dev
 ```
 
-Build the site, including HTML, CSS, copied public assets, and `dist/resume.pdf`:
+Build the site. The TypeScript build script renders HTML, bundles CSS, copies public
+assets, writes the sitemap, and generates PDFs for pages configured with `pdf: true`:
 
 ```sh
 PATH="$PWD/.venv/bin:$PATH" npm run build
@@ -82,7 +83,8 @@ Markdown frontmatter is validated during `npm run build`. Set `published: true` 
 
 ## Architecture
 
-- `src/build/build.tsx` loads `config.yaml` and Markdown content, renders React pages to static HTML, and writes `dist/sitemap.xml`.
+- `src/build/build.tsx` orchestrates the complete build: it loads configuration and Markdown content, copies public assets, bundles CSS, renders React pages to static HTML, generates configured PDFs, and writes `dist/sitemap.xml`.
+- `config.yaml` controls generated pages through its `pages` list. Add `pdf: true` to an HTML page entry to generate a PDF alongside it; for example, `/resume.html` produces `/resume.pdf`.
 - `src/styles/main.css` is bundled and minified by Lightning CSS.
 - `src/pages/` contains page-level composition for the homepage and resume.
 - `src/components/` contains reusable page, profile, hero, link, site, and resume components.
@@ -95,7 +97,9 @@ GitHub Pages deployment is handled by `.github/workflows/pages.yml` on pushes to
 
 ## Troubleshooting
 
-If `weasyprint` is not found locally, make sure the virtual environment is installed and prepended to `PATH` when building:
+If a configured page has `pdf: true`, the build requires WeasyPrint. If `weasyprint`
+is not found locally, make sure the virtual environment is installed and prepended to
+`PATH` when building:
 
 ```sh
 PATH="$PWD/.venv/bin:$PATH" npm run build

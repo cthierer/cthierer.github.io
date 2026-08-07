@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { type ReactElement } from 'react'
 import Page from '../layouts/Page'
 import Home from '../pages/Home'
@@ -14,6 +15,9 @@ import { schema as configSchema } from '../config/Config'
 import createProfileJsonLd from '../metadata/profileJsonLd'
 import Privacy from '../pages/Privacy'
 import type Entry from '../content/Entry'
+import buildCSS from './buildCSS'
+import copyPublic from './copyPublic'
+import writePDF from './writePDF'
 
 const resolveContent = (loadedContent: Entry[][]): Entry[] => {
 	// later content will overwrite earlier content; otherwise, results are merged together
@@ -49,12 +53,19 @@ const main = async (cwd: string, argv: string[]) => {
 	const content = resolveContent(contentSets)
 	const config = await loadYaml(configFile, configSchema)
 
+	const publicDir = path.join(cwd, './public')
+	await copyPublic(publicDir, outputDir)
+
+	const sourceDir = path.join(cwd, './src')
+	await buildCSS(sourceDir, outputDir)
+
 	const routes: readonly Route[] = config.pages.map(
-		({ key, title, path, canonicalPath = path, description }) => ({
+		({ key, title, path, canonicalPath = path, description, pdf }) => ({
 			outputPath: path,
 			canonicalPath,
 			title,
 			description,
+			formats: ['html' as const, ...(pdf ? ['pdf' as const] : [])],
 			element: getElementForKey(key),
 			structuredData:
 				key === 'home'
@@ -80,6 +91,10 @@ const main = async (cwd: string, argv: string[]) => {
 				</ContentProvider>
 			</ConfigProvider>,
 		)
+
+		if (route.formats.includes('pdf')) {
+			await writePDF(cwd, outputDir, route.outputPath)
+		}
 	}
 
 	await writeSitemap(

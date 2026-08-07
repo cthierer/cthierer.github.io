@@ -27,7 +27,7 @@ The site should stay simple, semantic, accessible, and easy to revisit after lon
 - CSS is bundled with Lightning CSS from `src/styles/main.css`.
 - Pico CSS provides a lightweight base layer; local CSS should own the site's specific visual language.
 - Public assets live in `public/` and are copied into `dist/`.
-- Resume PDF output is generated from `dist/resume.html` with WeasyPrint.
+- PDF output is generated with WeasyPrint for HTML pages configured with `pdf: true`.
 - Generated output in `dist/` should not be treated as source.
 
 Current source organization:
@@ -44,14 +44,16 @@ Current source organization:
 
 Configured routes:
 
-- `config.yaml` controls generated HTML routes through its `pages` list. Supported page keys are `home`, `resume`, and `privacy`; omit an entry to exclude its HTML page.
+- `config.yaml` controls generated routes through its `pages` list. Supported page keys are `home`, `resume`, and `privacy`; omit an entry to exclude its HTML page. Set `pdf: true` on an HTML page entry to generate a PDF with the same basename.
 - `/index.html` from `src/pages/Home.tsx` when the `home` page is configured.
 - `/resume.html` from `src/pages/Resume.tsx` when the `resume` page is configured.
-- `/resume.pdf` from `dist/resume.html` after the HTML build.
+- `/resume.pdf` from `dist/resume.html` when the resume page has `pdf: true`.
 - `/privacy.html` from `src/pages/Privacy.tsx` when the `privacy` page is configured.
 - `/sitemap.xml` from the configured routes' canonical URLs.
 
-`npm run build` currently always generates the resume PDF and therefore requires the `resume` page to be configured.
+`src/build/build.tsx` orchestrates public asset copying, CSS bundling, HTML rendering,
+configured PDF generation, and sitemap generation. `npm run build` cleans `dist/` through
+the `prebuild` script before running this pipeline.
 
 ## Content Model
 
@@ -73,11 +75,11 @@ When changing content shape, update the matching schema in `src/content/schemas/
 ## Development Commands
 
 - `npm run dev` starts the rebuild/watch and local static server.
-- `npm run build` builds HTML, CSS, and public assets.
+- `npm run build` cleans `dist/`, then builds HTML, CSS, public assets, the sitemap, and any configured PDFs.
 - `npm run check` runs typecheck, lint, and formatting checks.
 - `npm run format` applies Prettier.
 
-Local PDF builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
+When any page has `pdf: true`, local builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
 
 ```sh
 python3 -m venv .venv

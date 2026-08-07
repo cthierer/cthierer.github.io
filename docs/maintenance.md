@@ -25,7 +25,7 @@ Common updates:
 - Education: `content/education/*.md`.
 - Email, website, and social links: `content/contact/*.md` and `content/social/*.md`.
 - Organization names, display labels, locations, and optional logos: `content/organizations/*.md`.
-- Site URL, favicon, social image, resume download path, and generated pages: `config.yaml`. Pages are configured in the `pages` list. Each entry has a supported `key` (`home`, `resume`, or `privacy`), `title`, `description`, and output `path`; `canonicalPath` is optional and defaults to `path`. Omit a page entry to exclude that HTML page from the build. The standard `npm run build` command still expects the resume page so it can generate `dist/resume.pdf`.
+- Site URL, favicon, social image, resume download path, and generated pages: `config.yaml`. Pages are configured in the `pages` list. Each entry has a supported `key` (`home`, `resume`, or `privacy`), `title`, `description`, and output `path`; `canonicalPath` is optional and defaults to `path`. Omit a page entry to exclude its HTML page. Set `pdf: true` on an HTML page entry to generate a PDF with the same basename, such as `dist/resume.pdf` from `/resume.html`.
 
 ## Frontmatter Quick Reference
 
@@ -96,6 +96,21 @@ Public files live in `public/` and are copied to `dist/` during `npm run build`.
 
 When replacing images, keep filenames stable if possible. If a filename changes, update the relevant Markdown or `config.yaml` reference.
 
+## Build Pipeline
+
+`src/build/build.tsx` owns the complete site build. A normal `npm run build` cleans
+`dist/` through the `prebuild` script, then:
+
+1. Loads and validates `config.yaml` and the published Markdown content.
+2. Copies `public/` into `dist/`.
+3. Bundles and minifies `src/styles/main.css` into `dist/assets/main.css`.
+4. Renders each configured page to HTML.
+5. Generates a PDF for each page configured with `pdf: true`.
+6. Writes the sitemap from the configured routes.
+
+PDF generation uses WeasyPrint and therefore requires the project virtual environment
+on `PATH` locally. Pages without `pdf: true` do not produce a PDF.
+
 ## Dependency Updates
 
 For occasional dependency maintenance:
@@ -123,9 +138,8 @@ Run:
 PATH="$PWD/.venv/bin:$PATH" npm run dev
 ```
 
-The dev script builds the site, watches `src/**/*`, and serves `dist/` at `http://localhost:3000`.
-
-The watch command currently watches `src/**/*`; if content-only edits do not rebuild automatically, rerun `npm run build`.
+The dev script builds the site, watches `src/**/*`, `content/**/*`, `public/**/*`, and
+`config.yaml`, and serves `dist/` at `http://localhost:3000`.
 
 ## Deployment
 
@@ -143,6 +157,6 @@ Do not commit `dist/` unless the deployment strategy changes.
 
 If frontmatter validation fails, the build error reports the Markdown filename and failing field path. Check the matching schema in `src/content/schemas/`.
 
-If `weasyprint` is missing locally, make sure the virtual environment exists and that `.venv/bin` is in `PATH` for the build command.
+If `weasyprint` is missing while generating a configured PDF, make sure the virtual environment exists and that `.venv/bin` is in `PATH` for the build command.
 
 If the generated PDF looks wrong but the HTML resume is correct, inspect print styles in `src/pages/Resume.css` and component CSS under `src/components/resume/`.
