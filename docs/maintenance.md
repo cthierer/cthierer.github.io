@@ -45,6 +45,7 @@ The `archetype` selects the schema:
 - `profile`: resume profile fields, including `name`, `headline`, and `location`.
 - `metrics`: resume metric cards with `metrics`.
 - `skills`: resume skill groups with `groups`.
+- `experience-section`: optional resume experience heading and positive integer `limit`.
 - `experience`: work entries with organization slug, job title, role, location, type, dates, and optional resume summary/highlights.
 - `degree` or `certificate`: education entries with an organization slug, program, dates, and optional degree details.
 - `link`: contact or social links with `href`, `label`, `slug`, `areas`, and optional `icon` and `order`.
@@ -61,6 +62,7 @@ The resume page is generated from shared content rather than a separate document
 - `content/resume/Skills.md` feeds skill groups.
 - The `title` in each of those three files controls its resume section heading.
 - Optional `article` entries in a resume content directory render as freeform sections after the profile. Their `title` controls the section heading, and an optional numeric `order` controls their sequence.
+- An optional `resume/Experience.md` entry with archetype `experience-section` controls the Experience heading and can limit the newest-first list with a positive integer `limit`. Without it, every included experience entry renders.
 - `content/experience/*.md` feeds resume experience when included by `src/content/ExperienceEntry.tsx`.
 - `content/education/*.md` feeds resume education when included by `src/content/EducationEntry.ts`. Education entries reference `content/organizations/*.md` with `organization` slugs; organization titles are the full institution names, and organization labels are the compact homepage labels.
 - Links with `areas: [resume]` in `content/contact/` or `content/social/` appear in the resume header.

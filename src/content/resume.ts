@@ -5,7 +5,7 @@ import ExperienceEntry from './ExperienceEntry'
 import { ContentLink, useLinks } from './links'
 import OrganizationEntry from './OrganizationEntry'
 
-type ResumeSectionArchetype = 'metrics' | 'profile' | 'skills'
+type ResumeSectionArchetype = 'experience-section' | 'metrics' | 'profile' | 'skills'
 
 export interface ResumeProfile {
 	readonly name: string
@@ -142,6 +142,7 @@ export const useResumeArticleSections = (): ResumeArticleSection[] => {
 
 export const useResumeExperience = (): ResumeRole[] => {
 	const content = useContent()
+	const section = useResumeEntry('experience-section')
 	const organizations = new Map(
 		content
 			.filter(entry => entry.category === 'organizations')
@@ -151,7 +152,7 @@ export const useResumeExperience = (): ResumeRole[] => {
 			]),
 	)
 
-	return content
+	const roles = content
 		.filter(entry => entry.category === 'experience')
 		.map(
 			entry =>
@@ -170,6 +171,9 @@ export const useResumeExperience = (): ResumeRole[] => {
 		.sort(
 			(roleA, roleB) => roleB.experience.startDate.valueOf() - roleA.experience.startDate.valueOf(),
 		)
+	const limit = section?.data.limit
+
+	return typeof limit === 'number' ? roles.slice(0, limit) : roles
 }
 
 export const useResumeEducation = (): EducationEntry[] => {

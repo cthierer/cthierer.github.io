@@ -1,4 +1,4 @@
-import { useResumeExperience } from '../../content/resume'
+import { useResumeExperience, useResumeSectionTitle } from '../../content/resume'
 import ExperienceEntry from '../../content/ExperienceEntry'
 import DateRangeText from '../DateText'
 import ResumeSection from './ResumeSection'
@@ -8,9 +8,10 @@ const hasResumeContent = (experience: ExperienceEntry): boolean =>
 
 const ResumeExperienceSection = () => {
 	const roles = useResumeExperience()
+	const title = useResumeSectionTitle('experience-section', 'Experience')
 
 	return (
-		<ResumeSection id="resume-experience" title="Experience">
+		<ResumeSection id="resume-experience" title={title}>
 			<div className="resume-timeline">
 				{roles.map(({ experience, organization }) => (
 					<section className="resume-role" key={experience.name}>
