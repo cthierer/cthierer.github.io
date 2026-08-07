@@ -25,7 +25,7 @@ Common updates:
 - Education: `content/education/*.md`.
 - Email, website, and social links: `content/contact/*.md` and `content/social/*.md`.
 - Organization names, display labels, locations, and optional logos: `content/organizations/*.md`.
-- Page titles, descriptions, canonical site URL, favicon, social image, and resume download path: `config.yaml`.
+- Site URL, favicon, social image, resume download path, and generated pages: `config.yaml`. Pages are configured in the `pages` list. Each entry has a supported `key` (`home`, `resume`, or `privacy`), `title`, `description`, and output `path`; `canonicalPath` is optional and defaults to `path`. Omit a page entry to exclude that HTML page from the build. The standard `npm run build` command still expects the resume page so it can generate `dist/resume.pdf`.
 
 ## Frontmatter Quick Reference
 

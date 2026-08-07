@@ -19,3 +19,9 @@ export const useConfigValue = <K extends keyof Config>(name: K): Config[K] => {
 	const config = useConfig()
 	return config[name]
 }
+
+export const usePage = (pageKey: 'home' | 'resume' | 'privacy') => {
+	const pages = useConfigValue('pages')
+	const page = pages.find(({ key }) => key === pageKey)
+	return page
+}

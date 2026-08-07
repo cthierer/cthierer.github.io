@@ -1,3 +1,4 @@
+import { type ReactElement } from 'react'
 import Page from '../layouts/Page'
 import Home from '../pages/Home'
 import Resume from '../pages/Resume'
@@ -26,6 +27,19 @@ const resolveContent = (loadedContent: Entry[][]): Entry[] => {
 	return Array.from(contentMap.values())
 }
 
+const getElementForKey = (key: string): ReactElement => {
+	switch (key) {
+		case 'home':
+			return <Home />
+		case 'resume':
+			return <Resume />
+		case 'privacy':
+			return <Privacy />
+	}
+
+	throw new Error(`unknown page key: "${key}"`)
+}
+
 const main = async (cwd: string, argv: string[]) => {
 	const { configFile, contentDirs, outputDir } = getArgs(cwd, argv)
 	const loadingContentSets = contentDirs.map(contentDir => loadMarkdown(contentDir))
@@ -35,30 +49,19 @@ const main = async (cwd: string, argv: string[]) => {
 	const content = resolveContent(contentSets)
 	const config = await loadYaml(configFile, configSchema)
 
-	const routes: readonly Route[] = [
-		{
-			outputPath: config.homePage.path,
-			canonicalPath: '/',
-			title: config.homePage.title,
-			description: config.homePage.description,
-			element: <Home />,
-			structuredData: context => createProfileJsonLd({ config, content, ...context }),
-		},
-		{
-			outputPath: config.resumePage.path,
-			canonicalPath: config.resumePage.path,
-			title: config.resumePage.title,
-			description: config.resumePage.description,
-			element: <Resume />,
-		},
-		{
-			outputPath: config.privacyPage.path,
-			canonicalPath: config.privacyPage.path,
-			title: config.privacyPage.title,
-			description: config.privacyPage.description,
-			element: <Privacy />,
-		},
-	]
+	const routes: readonly Route[] = config.pages.map(
+		({ key, title, path, canonicalPath = path, description }) => ({
+			outputPath: path,
+			canonicalPath,
+			title,
+			description,
+			element: getElementForKey(key),
+			structuredData:
+				key === 'home'
+					? context => createProfileJsonLd({ title, description, config, content, ...context })
+					: undefined,
+		}),
+	)
 
 	for (const route of routes) {
 		await writePage(

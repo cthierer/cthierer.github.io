@@ -42,12 +42,16 @@ Current source organization:
 - `src/metadata/` for structured data helpers.
 - `src/styles/` for global tokens, typography, import wiring, and broad style layers.
 
-Generated routes:
+Configured routes:
 
-- `/index.html` from `src/pages/Home.tsx`.
-- `/resume.html` from `src/pages/Resume.tsx`.
+- `config.yaml` controls generated HTML routes through its `pages` list. Supported page keys are `home`, `resume`, and `privacy`; omit an entry to exclude its HTML page.
+- `/index.html` from `src/pages/Home.tsx` when the `home` page is configured.
+- `/resume.html` from `src/pages/Resume.tsx` when the `resume` page is configured.
 - `/resume.pdf` from `dist/resume.html` after the HTML build.
-- `/sitemap.xml` from configured route canonical URLs.
+- `/privacy.html` from `src/pages/Privacy.tsx` when the `privacy` page is configured.
+- `/sitemap.xml` from the configured routes' canonical URLs.
+
+`npm run build` currently always generates the resume PDF and therefore requires the `resume` page to be configured.
 
 ## Content Model
 
