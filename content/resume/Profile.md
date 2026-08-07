@@ -1,5 +1,5 @@
 ---
-title: Resume Profile
+title: Profile
 archetype: profile
 published: true
 

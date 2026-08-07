@@ -1,7 +1,9 @@
-import { useResumeMetrics } from '../../content/resume'
+import { useResumeMetrics, useResumeSectionTitle } from '../../content/resume'
 
 const ResumeMetrics = () => {
 	const metrics = useResumeMetrics()
+	const title = useResumeSectionTitle('metrics', 'At a glance')
+
 	if (metrics.length === 0) {
 		return null
 	}
@@ -9,7 +11,7 @@ const ResumeMetrics = () => {
 	return (
 		<section className="resume-metrics" aria-labelledby="resume-metrics">
 			<h2 id="resume-metrics" className="resume-metrics-heading">
-				At a glance
+				{title}
 			</h2>
 			<dl className="resume-metrics-list">
 				{metrics.map(metric => (

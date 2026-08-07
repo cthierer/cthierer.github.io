@@ -1,5 +1,5 @@
 ---
-title: Resume At A Glance
+title: At a glance
 archetype: metrics
 published: true
 

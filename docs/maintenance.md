@@ -59,6 +59,8 @@ The resume page is generated from shared content rather than a separate document
 - `content/resume/Profile.md` feeds the header/profile summary.
 - `content/resume/At A Glance.md` feeds the metric strip.
 - `content/resume/Skills.md` feeds skill groups.
+- The `title` in each of those three files controls its resume section heading.
+- Optional `article` entries in a resume content directory render as freeform sections after the profile. Their `title` controls the section heading, and an optional numeric `order` controls their sequence.
 - `content/experience/*.md` feeds resume experience when included by `src/content/ExperienceEntry.tsx`.
 - `content/education/*.md` feeds resume education when included by `src/content/EducationEntry.ts`. Education entries reference `content/organizations/*.md` with `organization` slugs; organization titles are the full institution names, and organization labels are the compact homepage labels.
 - Links with `areas: [resume]` in `content/contact/` or `content/social/` appear in the resume header.

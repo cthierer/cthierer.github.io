@@ -5,6 +5,8 @@ import ExperienceEntry from './ExperienceEntry'
 import { ContentLink, useLinks } from './links'
 import OrganizationEntry from './OrganizationEntry'
 
+type ResumeSectionArchetype = 'metrics' | 'profile' | 'skills'
+
 export interface ResumeProfile {
 	readonly name: string
 	readonly headline: string
@@ -21,6 +23,13 @@ export interface ResumeMetric {
 	readonly value: string
 	readonly label: string
 	readonly detail?: string
+}
+
+export interface ResumeArticleSection {
+	readonly html: string
+	readonly name: string
+	readonly order: number
+	readonly title: string
 }
 
 export interface ResumeRole {
@@ -52,12 +61,24 @@ const getComparableDate = (entry: EducationEntry): number =>
 
 const getResumeLinkRank = (link: ContentLink): number => (link.href.startsWith('mailto:') ? 0 : 1)
 
+const useResumeEntry = (archetype: ResumeSectionArchetype) => {
+	const content = useContent()
+
+	return content.find(entry => entry.category === 'resume' && entry.data.archetype === archetype)
+}
+
+export const useResumeSectionTitle = (
+	archetype: ResumeSectionArchetype,
+	fallback: string,
+): string => {
+	const entry = useResumeEntry(archetype)
+
+	return isString(entry?.data.title) ? entry.data.title : fallback
+}
+
 export const useResumeProfile = (): ResumeProfile => {
 	const siteTitle = useConfigValue('siteTitle')
-	const content = useContent()
-	const entry = content.find(
-		item => item.category === 'resume' && item.data.archetype === 'profile',
-	)
+	const entry = useResumeEntry('profile')
 
 	return {
 		name: isString(entry?.data.name) ? entry.data.name : siteTitle,
@@ -68,8 +89,7 @@ export const useResumeProfile = (): ResumeProfile => {
 }
 
 export const useResumeSkills = (): ResumeSkillGroup[] => {
-	const content = useContent()
-	const entry = content.find(item => item.category === 'resume' && item.data.archetype === 'skills')
+	const entry = useResumeEntry('skills')
 	const groups = entry?.data.groups
 
 	if (!Array.isArray(groups)) {
@@ -86,10 +106,7 @@ export const useResumeSkills = (): ResumeSkillGroup[] => {
 }
 
 export const useResumeMetrics = (): ResumeMetric[] => {
-	const content = useContent()
-	const entry = content.find(
-		item => item.category === 'resume' && item.data.archetype === 'metrics',
-	)
+	const entry = useResumeEntry('metrics')
 	const metrics = entry?.data.metrics
 
 	if (!Array.isArray(metrics)) {
@@ -104,6 +121,23 @@ export const useResumeMetrics = (): ResumeMetric[] => {
 			detail: isString(metric.detail) ? metric.detail : undefined,
 		}))
 		.filter(metric => metric.value && metric.label)
+}
+
+export const useResumeArticleSections = (): ResumeArticleSection[] => {
+	const content = useContent()
+
+	return content
+		.filter(entry => entry.category === 'resume' && entry.data.archetype === 'article')
+		.map(entry => ({
+			html: entry.html,
+			name: entry.name,
+			order: typeof entry.data.order === 'number' ? entry.data.order : Number.MAX_SAFE_INTEGER,
+			title: isString(entry.data.title) ? entry.data.title : entry.name,
+		}))
+		.sort(
+			(sectionA, sectionB) =>
+				sectionA.order - sectionB.order || sectionA.name.localeCompare(sectionB.name),
+		)
 }
 
 export const useResumeExperience = (): ResumeRole[] => {

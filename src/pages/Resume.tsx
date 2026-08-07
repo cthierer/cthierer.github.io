@@ -1,4 +1,5 @@
 import ResumeActions from '../components/resume/ResumeActions'
+import ResumeArticleSections from '../components/resume/ResumeArticleSections'
 import ResumeEducationSection from '../components/resume/ResumeEducationSection'
 import ResumeExperienceSection from '../components/resume/ResumeExperienceSection'
 import ResumeHeader from '../components/resume/ResumeHeader'
@@ -19,6 +20,7 @@ const Resume = () => {
 						<ResumeMetrics />
 						<ResumeProfileSection />
 						<ResumeSkillsSection />
+						<ResumeArticleSections />
 						<ResumeExperienceSection />
 						<ResumeEducationSection />
 					</article>

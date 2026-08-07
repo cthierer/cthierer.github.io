@@ -101,8 +101,10 @@
 
 	.resume-contact ul {
 		display: flex;
+		flex-direction: column;
 		flex-wrap: wrap;
 		justify-content: inherit;
 		gap: 0.12rem 0.65rem;
+		font-size: 7.5pt;
 	}
 }

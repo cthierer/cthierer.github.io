@@ -1,5 +1,5 @@
 ---
-title: Resume Skills
+title: Skills
 archetype: skills
 published: true
 
