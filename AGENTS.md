@@ -125,6 +125,31 @@ Default to semantic HTML before adding styling hooks.
 - If content starts duplicating across the site and resume, reuse the Markdown model or introduce a small typed selector before duplication spreads.
 - If the hand-rolled build becomes painful, consider Vite only when the trade-off is clearly worth it.
 
+## Migration And Refactor Reviews
+
+Treat changes to content schemas or discriminators, configuration or CLI shapes, shared
+selectors, and generated-output behavior as migrations rather than isolated refactors.
+For those changes:
+
+- Inventory the contracts being changed before implementation. Search the repository for
+  every reader, writer, test, fixture, and documentation reference to both the old and new
+  shapes; do not assume visible page rendering covers every consumer.
+- Identify what could regress silently while the build still succeeds. Verify relevant
+  non-visible artifacts such as JSON-LD, metadata, analytics inclusion, sitemap entries,
+  and privacy-sensitive output in addition to rendered HTML and PDFs.
+- Exercise invalid and boundary inputs as well as the happy path. Include missing paths,
+  wrong filesystem types, duplicate or reordered layers, partial overrides, and omitted
+  configuration when those cases are relevant.
+- Test transformations with values produced by the real parser or integration boundary.
+  Do not rely only on simplified fixtures when YAML dates, Markdown frontmatter, URLs, or
+  other parsed values may have different runtime types.
+- After implementation and incremental fixes, review the complete base-to-head diff again
+  against the acceptance criteria. When using sub-agents, have at least one final reviewer
+  evaluate the complete change without being asked merely to confirm the implementation
+  plan.
+- In the final handoff, map each changed contract to its validation evidence and call out
+  anything that remains assumption-based or was not feasible to verify.
+
 ## Commits
 
 - Follow Conventional Commits when creating commits, for example `feat: add resume download link` or `fix: improve header focus state`.
