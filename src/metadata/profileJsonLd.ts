@@ -30,7 +30,10 @@ const getAreas = (entry: Entry): string[] => {
 
 const getProfile = (content: readonly Entry[], config: Config) => {
 	const entry = content.find(
-		item => item.category === 'resume' && item.data.archetype === 'profile',
+		item =>
+			item.category === 'resume' &&
+			item.data.archetype === 'resume-section' &&
+			item.data.kind === 'profile',
 	)
 
 	return {

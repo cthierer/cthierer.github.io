@@ -15,8 +15,14 @@ interface ResolvedMarkdownSource extends MarkdownSource {
 	readonly sourceDirectories: readonly string[]
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-	typeof value === 'object' && value !== null && !Array.isArray(value)
+const isPlainObject = (value: unknown): value is Record<string, unknown> => {
+	if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+		return false
+	}
+
+	const prototype = Object.getPrototypeOf(value)
+	return prototype === Object.prototype || prototype === null
+}
 
 const formatPath = (issuePath: PropertyKey[]): string =>
 	issuePath.length === 0 ? 'frontmatter' : issuePath.join('.')
@@ -34,7 +40,8 @@ export const mergeFrontmatter = (
 		}
 
 		const previous = merged[key]
-		merged[key] = isRecord(previous) && isRecord(value) ? mergeFrontmatter(previous, value) : value
+		merged[key] =
+			isPlainObject(previous) && isPlainObject(value) ? mergeFrontmatter(previous, value) : value
 	}
 
 	return merged

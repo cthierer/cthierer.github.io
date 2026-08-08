@@ -8,8 +8,12 @@ import { resolveBuildOptions, validateVariantName } from './buildOptions'
 
 const temporaryRoot = process.platform === 'win32' ? os.tmpdir() : '/tmp'
 
-test('public build uses conventional defaults and explicit content layers replace them', async () => {
-	const cwd = '/workspace/site'
+test('public build uses conventional defaults and explicit content layers replace them', async t => {
+	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'build-options-'))
+	t.after(() => fs.rm(cwd, { recursive: true, force: true }))
+	await fs.mkdir(path.join(cwd, 'content'))
+	await fs.mkdir(path.join(cwd, 'variants', 'content-sensitive'), { recursive: true })
+	await fs.mkdir(path.join(cwd, 'variants', 'umbc-adjunct'), { recursive: true })
 	const defaults = await resolveBuildOptions(cwd, [])
 	assert.deepEqual(defaults, {
 		analyticsEnabled: true,
@@ -50,9 +54,42 @@ test('public build uses conventional defaults and explicit content layers replac
 	})
 })
 
+test('build options reject every missing or non-directory content layer', async t => {
+	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'build-options-'))
+	t.after(() => fs.rm(cwd, { recursive: true, force: true }))
+	const missingContentDir = path.join(cwd, 'missing-content')
+	const contentFile = path.join(cwd, 'content.md')
+	await fs.writeFile(contentFile, 'not a directory')
+	await fs.mkdir(path.join(cwd, 'variants', 'umbc-adjunct'), { recursive: true })
+
+	await assert.rejects(
+		resolveBuildOptions(cwd, []),
+		/Content directories must exist and be directories/,
+	)
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--contentDir', 'missing-content']),
+		new RegExp(missingContentDir),
+	)
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--contentDir', 'content.md']),
+		/Content directories must exist and be directories/,
+	)
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--resume', 'umbc-adjunct']),
+		/Content directories must exist and be directories/,
+	)
+	await fs.mkdir(path.join(cwd, 'content'))
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--resume', 'umbc-adjunct', '--contentDir', 'missing-content']),
+		new RegExp(missingContentDir),
+	)
+})
+
 test('resume preset infers baseline, output, and variant layers without duplicating explicit paths', async t => {
 	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'resume-options-'))
 	t.after(() => fs.rm(cwd, { recursive: true, force: true }))
+	await fs.mkdir(path.join(cwd, 'content'))
+	await fs.mkdir(path.join(cwd, 'variants', 'content-sensitive'), { recursive: true })
 	await fs.mkdir(path.join(cwd, 'variants', 'umbc-adjunct'), { recursive: true })
 
 	const options = await resolveBuildOptions(cwd, [
@@ -109,12 +146,17 @@ test('resume variants accept only lowercase slug names and require their content
 
 	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'resume-options-'))
 	t.after(() => fs.rm(cwd, { recursive: true, force: true }))
-	await assert.rejects(resolveBuildOptions(cwd, ['--resume', 'umbc-adjunct']), /does not exist/)
+	await fs.mkdir(path.join(cwd, 'content'))
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--resume', 'umbc-adjunct']),
+		/Content directories must exist and be directories/,
+	)
 })
 
 test('build presets reject each other’s output roots while accepting their own overrides', async t => {
 	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'build-output-options-'))
 	t.after(() => fs.rm(cwd, { recursive: true, force: true }))
+	await fs.mkdir(path.join(cwd, 'content'))
 	await fs.mkdir(path.join(cwd, 'variants', 'umbc-adjunct'), { recursive: true })
 
 	await assert.rejects(

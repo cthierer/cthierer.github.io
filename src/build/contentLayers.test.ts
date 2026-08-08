@@ -22,13 +22,30 @@ const profile = {
 	title: 'Profile',
 }
 
-test('mergeFrontmatter recursively patches objects, replaces arrays, and removes null fields', () => {
+test('mergeFrontmatter recursively patches plain objects, replaces atomic values, and removes null fields', () => {
+	const updatedDate = new Date('2026-08-08T00:00:00.000Z')
+
 	assert.deepEqual(
 		mergeFrontmatter(
-			{ array: ['before'], nested: { keep: true, remove: 'value' }, scalar: 'before' },
-			{ array: ['after'], nested: { add: true, remove: null }, scalar: 'after' },
+			{
+				array: ['before'],
+				date: new Date('2026-08-07T00:00:00.000Z'),
+				nested: { keep: true, remove: 'value' },
+				scalar: 'before',
+			},
+			{
+				array: ['after'],
+				date: updatedDate,
+				nested: { add: true, remove: null },
+				scalar: 'after',
+			},
 		),
-		{ array: ['after'], nested: { add: true, keep: true }, scalar: 'after' },
+		{
+			array: ['after'],
+			date: updatedDate,
+			nested: { add: true, keep: true },
+			scalar: 'after',
+		},
 	)
 })
 

@@ -55,7 +55,7 @@ const validateOutputDirForMode = (cwd: string, outputDir: string, resumePreset: 
 	}
 }
 
-const directoryExists = async (directory: string): Promise<boolean> => {
+const isDirectory = async (directory: string): Promise<boolean> => {
 	try {
 		return (await fs.stat(directory)).isDirectory()
 	} catch (error: unknown) {
@@ -63,6 +63,25 @@ const directoryExists = async (directory: string): Promise<boolean> => {
 			return false
 		}
 		throw error
+	}
+}
+
+const validateContentDirs = async (contentDirs: readonly string[]): Promise<void> => {
+	const invalidContentDirs = (
+		await Promise.all(
+			contentDirs.map(async contentDir => ({
+				contentDir,
+				valid: await isDirectory(contentDir),
+			})),
+		)
+	)
+		.filter(({ valid }) => !valid)
+		.map(({ contentDir }) => contentDir)
+
+	if (invalidContentDirs.length > 0) {
+		throw new Error(
+			`Content directories must exist and be directories: ${invalidContentDirs.join(', ')}`,
+		)
 	}
 }
 
@@ -115,11 +134,14 @@ export const resolveBuildOptions = async (
 	validateOutputDirForMode(cwd, resolvedOutputDir, resumePreset)
 
 	if (!resumePreset) {
+		const contentDirs =
+			explicitContentDirs.length > 0 ? explicitContentDirs : [path.join(cwd, 'content')]
+		await validateContentDirs(contentDirs)
+
 		return {
 			analyticsEnabled: analytics ?? true,
 			configFile: resolvedConfigFile,
-			contentDirs:
-				explicitContentDirs.length > 0 ? explicitContentDirs : [path.join(cwd, 'content')],
+			contentDirs,
 			cwd,
 			outputDir: resolvedOutputDir,
 			outputMode: 'public',
@@ -131,18 +153,17 @@ export const resolveBuildOptions = async (
 	const variantName = validateVariantName(positionals[0])
 	const baselineContentDir = path.join(cwd, 'content')
 	const variantContentDir = path.join(cwd, 'variants', variantName)
-	if (!(await directoryExists(variantContentDir))) {
-		throw new Error(`Resume variant content directory does not exist: ${variantContentDir}`)
-	}
+	const contentDirs = dedupePaths([
+		...(explicitContentDirs.includes(baselineContentDir) ? [] : [baselineContentDir]),
+		...explicitContentDirs,
+		...(explicitContentDirs.includes(variantContentDir) ? [] : [variantContentDir]),
+	])
+	await validateContentDirs(contentDirs)
 
 	return {
 		analyticsEnabled: analytics ?? false,
 		configFile: resolvedConfigFile,
-		contentDirs: dedupePaths([
-			...(explicitContentDirs.includes(baselineContentDir) ? [] : [baselineContentDir]),
-			...explicitContentDirs,
-			...(explicitContentDirs.includes(variantContentDir) ? [] : [variantContentDir]),
-		]),
+		contentDirs,
 		cwd,
 		outputDir: resolvedOutputDir,
 		outputMode: 'resume',
