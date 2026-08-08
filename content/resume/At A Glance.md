@@ -1,7 +1,9 @@
 ---
-title: Resume At A Glance
-archetype: metrics
+title: At a glance
+archetype: resume-section
+kind: metrics
 published: true
+order: 10
 
 metrics:
   - value: 15 years

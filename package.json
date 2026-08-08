@@ -8,12 +8,9 @@
 		"node": ">=26"
 	},
 	"scripts": {
-		"build": "npm run clean && npm run build:html && npm run build:css && npm run build:public && npm run build:pdf",
-		"build:html": "tsx src/build/build.tsx",
-		"build:css": "lightningcss --minify --bundle --targets \">= 0.25%\" src/styles/main.css -o dist/assets/main.css",
-		"build:pdf": "weasyprint --media-type print --pdf-tags --pdf-variant pdf/ua-1 dist/resume.html dist/resume.pdf",
-		"build:public": "cp -r public/* dist",
-		"check": "npm run typecheck && npm run lint && npm run format:check",
+		"build": "tsx src/build/build.tsx",
+		"build:resume": "tsx src/build/build.tsx --resume",
+		"check": "npm run typecheck && npm run lint && npm run format:check && npm test",
 		"clean": "rm -rf dist",
 		"dev": "npm run build && concurrently -k -n build,serve -c yellow,cyan \"npm run watch\" \"npm run serve\"",
 		"format": "prettier --write .",
@@ -22,6 +19,7 @@
 		"prepare": "husky",
 		"precommit": "lint-staged",
 		"serve": "serve dist -l 3000",
+		"test": "node --import tsx --test src/**/*.test.ts",
 		"typecheck": "tsc --noEmit",
 		"watch": "chokidar \"src/**/*\" \"content/**/*\" \"public/**/*\" config.yaml -c \"npm run build\""
 	},
@@ -41,6 +39,7 @@
 		"@types/node": "^26.1.1",
 		"@types/react": "^19.2.17",
 		"@types/react-dom": "^19.2.3",
+		"browserslist": "^4.28.7",
 		"chokidar-cli": "^3.0.0",
 		"concurrently": "^10.0.4",
 		"eslint": "^10.6.0",
@@ -48,7 +47,7 @@
 		"globals": "^17.7.0",
 		"gray-matter": "^4.0.3",
 		"husky": "^9.1.7",
-		"lightningcss-cli": "^1.32.0",
+		"lightningcss": "^1.33.0",
 		"lint-staged": "^17.0.8",
 		"marked": "^18.0.6",
 		"prettier": "^3.9.4",
@@ -58,7 +57,6 @@
 		"typescript-eslint": "^8.63.0"
 	},
 	"allowScripts": {
-		"esbuild@0.28.1": true,
-		"lightningcss-cli@1.32.0": true
+		"esbuild@0.28.1": true
 	}
 }

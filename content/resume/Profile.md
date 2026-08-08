@@ -1,7 +1,9 @@
 ---
-title: Resume Profile
-archetype: profile
+title: Profile
+archetype: resume-section
+kind: profile
 published: true
+order: 20
 
 name: Chris Thierer
 headline: Software Engineering Leader

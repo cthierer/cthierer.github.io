@@ -6,11 +6,16 @@ import ResumeSection from './ResumeSection'
 const hasResumeContent = (experience: ExperienceEntry): boolean =>
 	Boolean(experience.resumeSummary || experience.resumeHighlights.length > 0)
 
-const ResumeExperienceSection = () => {
-	const roles = useResumeExperience()
+interface ResumeExperienceSectionProps {
+	readonly limit?: number
+	readonly title: string
+}
+
+const ResumeExperienceSection = ({ limit, title }: ResumeExperienceSectionProps) => {
+	const roles = useResumeExperience(limit)
 
 	return (
-		<ResumeSection id="resume-experience" title="Experience">
+		<ResumeSection id="resume-experience" title={title}>
 			<div className="resume-timeline">
 				{roles.map(({ experience, organization }) => (
 					<section className="resume-role" key={experience.name}>

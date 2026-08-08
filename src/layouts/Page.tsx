@@ -8,6 +8,7 @@ export interface StructuredDataContext {
 }
 
 interface PageProps {
+	analyticsEnabled?: boolean
 	title: string
 	description: string
 	path: string
@@ -15,7 +16,14 @@ interface PageProps {
 	children: React.ReactNode
 }
 
-const Page = ({ title, description, path, structuredData, children }: PageProps) => {
+const Page = ({
+	analyticsEnabled = true,
+	title,
+	description,
+	path,
+	structuredData,
+	children,
+}: PageProps) => {
 	const renderTime = new Date().toISOString()
 	const siteUrl = useConfigValue('siteUrl')
 	const favIcon = useConfigValue('favIcon')
@@ -54,7 +62,7 @@ const Page = ({ title, description, path, structuredData, children }: PageProps)
 				<link rel="icon" href={favIcon} type="image/svg+xml" />
 				<link rel="stylesheet" href="assets/main.css" />
 				{jsonLd ? <JsonLd data={jsonLd} /> : null}
-				{umamiWebsiteId ? (
+				{analyticsEnabled && umamiWebsiteId ? (
 					<script
 						defer
 						src="https://cloud.umami.is/script.js"

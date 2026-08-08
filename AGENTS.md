@@ -27,7 +27,7 @@ The site should stay simple, semantic, accessible, and easy to revisit after lon
 - CSS is bundled with Lightning CSS from `src/styles/main.css`.
 - Pico CSS provides a lightweight base layer; local CSS should own the site's specific visual language.
 - Public assets live in `public/` and are copied into `dist/`.
-- Resume PDF output is generated from `dist/resume.html` with WeasyPrint.
+- PDF output is generated with WeasyPrint for HTML pages configured with `pdf: true`.
 - Generated output in `dist/` should not be treated as source.
 
 Current source organization:
@@ -42,12 +42,18 @@ Current source organization:
 - `src/metadata/` for structured data helpers.
 - `src/styles/` for global tokens, typography, import wiring, and broad style layers.
 
-Generated routes:
+Configured routes:
 
-- `/index.html` from `src/pages/Home.tsx`.
-- `/resume.html` from `src/pages/Resume.tsx`.
-- `/resume.pdf` from `dist/resume.html` after the HTML build.
-- `/sitemap.xml` from configured route canonical URLs.
+- `config.yaml` controls generated routes through its `pages` list. Supported page keys are `home`, `resume`, and `privacy`; omit an entry to exclude its HTML page. Set `pdf: true` on an HTML page entry to generate a PDF with the same basename.
+- `/index.html` from `src/pages/Home.tsx` when the `home` page is configured.
+- `/resume.html` from `src/pages/Resume.tsx` when the `resume` page is configured.
+- `/resume.pdf` from `dist/resume.html` when the resume page has `pdf: true`.
+- `/privacy.html` from `src/pages/Privacy.tsx` when the `privacy` page is configured.
+- `/sitemap.xml` from the configured routes' canonical URLs.
+
+`src/build/build.tsx` resolves public-build and resume-preset options. `src/build/buildSite.tsx`
+handles safe output cleanup, content layers, public asset copying, CSS bundling, HTML
+rendering, configured PDF generation, and sitemap generation.
 
 ## Content Model
 
@@ -56,24 +62,25 @@ Markdown files are loaded from `content/**/*.md` by `src/build/loadMarkdown.ts`.
 Top-level content directories become entry categories:
 
 - `content/singles/` for homepage hero, current focus, and profile detail copy.
-- `content/resume/` for resume profile, metrics, and skill groups.
+- `content/resume/` for ordered resume sections such as profile, metrics, skills, experience, and education.
 - `content/experience/` for work history. These entries reference `content/organizations/` by `organization` slug.
 - `content/education/` for degrees and certificates.
 - `content/contact/` and `content/social/` for links. The `areas` field controls placement such as `header`, `footer`, `cta`, and `resume`.
 - `content/organizations/` for organization display names, locations, logos, and slugs.
 
-Resume inclusion defaults are implemented in `src/content/ExperienceEntry.tsx` and `src/content/EducationEntry.ts`. Use explicit `resumeInclude: false` only when an otherwise valid entry should stay off the resume.
+Resume inclusion defaults are implemented in `src/content/ExperienceEntry.tsx` and `src/content/EducationEntry.ts`. Use explicit `resumeInclude: false` only when an otherwise valid entry should stay off the resume. Resume body layout is driven by ordered `resume-section` entries; use `kind: prose` for additional Markdown sections rather than adding a new archetype.
 
 When changing content shape, update the matching schema in `src/content/schemas/`, the typed wrapper or selector in `src/content/`, and the relevant maintenance notes in `docs/maintenance.md`.
 
 ## Development Commands
 
 - `npm run dev` starts the rebuild/watch and local static server.
-- `npm run build` builds HTML, CSS, and public assets.
-- `npm run check` runs typecheck, lint, and formatting checks.
+- `npm run build` builds HTML, CSS, public assets, the sitemap, and any configured PDFs. It accepts `--configFile`, repeated `--contentDir`, `--outputDir`, repeated `--page`, and `--analytics` or `--no-analytics`; outputs must be `dist/` or beneath it.
+- `npm run build:resume -- <lowercase-slug>` is a private resume preset. It infers `content/` and `variants/<slug>/`, accepts additional ordered `--contentDir` layers, disables analytics by default, and writes to `variants/output/<slug>/` unless an override beneath `variants/output/` is supplied.
+- `npm run check` runs typecheck, lint, formatting, and tests.
 - `npm run format` applies Prettier.
 
-Local PDF builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
+When any page has `pdf: true`, local builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
 
 ```sh
 python3 -m venv .venv

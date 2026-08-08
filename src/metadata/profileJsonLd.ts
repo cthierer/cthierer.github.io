@@ -3,6 +3,8 @@ import Entry from '../content/Entry'
 import { JsonLdValue } from './JsonLd'
 
 interface ProfileJsonLdOptions {
+	readonly title: string
+	readonly description: string
 	readonly config: Config
 	readonly content: readonly Entry[]
 	readonly canonicalUrl: string
@@ -28,7 +30,10 @@ const getAreas = (entry: Entry): string[] => {
 
 const getProfile = (content: readonly Entry[], config: Config) => {
 	const entry = content.find(
-		item => item.category === 'resume' && item.data.archetype === 'profile',
+		item =>
+			item.category === 'resume' &&
+			item.data.archetype === 'resume-section' &&
+			item.data.kind === 'profile',
 	)
 
 	return {
@@ -61,6 +66,8 @@ const getSameAs = (content: readonly Entry[], siteUrl: string): string[] =>
 		.map(link => makeAbsoluteUrl(link.href, siteUrl))
 
 const createProfileJsonLd = ({
+	title,
+	description,
 	config,
 	content,
 	canonicalUrl,
@@ -98,8 +105,8 @@ const createProfileJsonLd = ({
 				'@type': 'ProfilePage',
 				'@id': profilePageId,
 				url: canonicalUrl,
-				name: config.homePage.title,
-				description: config.homePage.description,
+				name: title,
+				description,
 				dateModified,
 				mainEntity: {
 					'@id': personId,

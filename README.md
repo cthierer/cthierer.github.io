@@ -47,10 +47,21 @@ Start a local rebuilding server:
 PATH="$PWD/.venv/bin:$PATH" npm run dev
 ```
 
-Build the site, including HTML, CSS, copied public assets, and `dist/resume.pdf`:
+Build the site. The TypeScript build script renders HTML, bundles CSS, copies public
+assets, writes the sitemap, and generates PDFs for pages configured with `pdf: true`:
 
 ```sh
 PATH="$PWD/.venv/bin:$PATH" npm run build
+```
+
+Build a private role-specific resume variant (for example, the ignored UMBC adjunct
+variant). The preset infers the shared baseline and variant directory, builds only the
+resume with analytics disabled, and writes its local submission PDF to
+`variants/output/<variant>/resume.pdf`:
+
+```sh
+PATH="$PWD/.venv/bin:$PATH" npm run build:resume -- umbc-adjunct \
+  --contentDir variants/content-sensitive
 ```
 
 Run the maintenance checks:
@@ -65,14 +76,16 @@ Format the repository:
 npm run format
 ```
 
-The generated site is written to `dist/`. Treat `dist/` as build output, not source.
+The generated site is written to `dist/`. Treat `dist/` as build output, not source. Public
+`--outputDir` overrides must stay within `dist/`; private resume overrides must stay below
+`variants/output/`.
 
 ## Content Maintenance
 
 Most routine updates I expect to make happen in `content/`:
 
 - `content/singles/` controls homepage hero, current focus, and at-a-glance copy.
-- `content/resume/` controls resume profile, metrics, and skills.
+- `content/resume/` controls ordered resume sections, including profile, metrics, skills, experience, and education.
 - `content/experience/` controls work history for both the homepage and resume.
 - `content/education/` controls education entries.
 - `content/contact/` and `content/social/` control header, footer, CTA, and resume links.
@@ -80,9 +93,12 @@ Most routine updates I expect to make happen in `content/`:
 
 Markdown frontmatter is validated during `npm run build`. Set `published: true` for entries that should render. See [docs/maintenance.md](docs/maintenance.md) for the practical update checklist and frontmatter notes.
 
+Private resume patches belong under ignored `variants/`, where they can override the shared Markdown baseline without being deployed. See the private-variant workflow in [docs/maintenance.md](docs/maintenance.md#private-resume-variants).
+
 ## Architecture
 
-- `src/build/build.tsx` loads `config.yaml` and Markdown content, renders React pages to static HTML, and writes `dist/sitemap.xml`.
+- `src/build/build.tsx` resolves the public-build or resume-preset command options, while `src/build/buildSite.tsx` provides their shared pipeline: it cleans the selected safe output directory, loads configuration and resolved Markdown layers, copies public assets, bundles CSS, renders React pages to static HTML, generates configured PDFs, and writes a sitemap.
+- `config.yaml` controls generated pages through its `pages` list. Add `pdf: true` to an HTML page entry to generate a PDF alongside it; for example, `/resume.html` produces `/resume.pdf`.
 - `src/styles/main.css` is bundled and minified by Lightning CSS.
 - `src/pages/` contains page-level composition for the homepage and resume.
 - `src/components/` contains reusable page, profile, hero, link, site, and resume components.
@@ -95,7 +111,9 @@ GitHub Pages deployment is handled by `.github/workflows/pages.yml` on pushes to
 
 ## Troubleshooting
 
-If `weasyprint` is not found locally, make sure the virtual environment is installed and prepended to `PATH` when building:
+If a configured page has `pdf: true`, the build requires WeasyPrint. If `weasyprint`
+is not found locally, make sure the virtual environment is installed and prepended to
+`PATH` when building:
 
 ```sh
 PATH="$PWD/.venv/bin:$PATH" npm run build
