@@ -1,61 +1,35 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import matter from 'gray-matter'
-import { marked } from 'marked'
-import Entry from '../content/Entry'
-import { contentSchema } from '../content/schemas/content'
+import type { MarkdownSource } from './contentLayers'
 
-const formatPath = (path: PropertyKey[]): string => {
-	if (path.length === 0) {
-		return 'frontmatter'
-	}
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+	typeof value === 'object' && value !== null && !Array.isArray(value)
 
-	return path.join('.')
-}
-
-const validateContent = (fileName: string, data: unknown): void => {
-	const result = contentSchema.safeParse(data)
-
-	if (result.success) {
-		return
-	}
-
-	const issues = result.error.issues
-		.map(issue => `- ${formatPath(issue.path)}: ${issue.message}`)
-		.join('\n')
-
-	throw new Error(`Invalid frontmatter in ${fileName}:\n${issues}`)
-}
-
-const loadMarkdown = async function* (cwd: string): AsyncIterable<Entry> {
-	const fileNames = []
-	for await (const fileName of fs.glob('**/*.md', { cwd })) {
+const loadMarkdown = async (
+	contentDir: string,
+	sourceDirectory = contentDir,
+): Promise<MarkdownSource[]> => {
+	const fileNames: string[] = []
+	for await (const fileName of fs.glob('**/*.md', { cwd: contentDir })) {
 		fileNames.push(fileName)
 	}
-
 	fileNames.sort((fileNameA, fileNameB) => fileNameA.localeCompare(fileNameB))
 
-	for (const fileName of fileNames) {
-		const filePath = path.join(cwd, fileName)
-		const file = await fs.readFile(filePath, { encoding: 'utf8' })
-		const { data, content } = matter(file)
-		if (!data.published) {
-			continue
-		}
+	return Promise.all(
+		fileNames.map(async name => {
+			const filePath = path.join(contentDir, name)
+			const file = await fs.readFile(filePath, 'utf8')
+			const { data, content } = matter(file)
+			if (!isRecord(data)) {
+				throw new Error(
+					`Invalid frontmatter in ${name} (from ${sourceDirectory}): expected an object.`,
+				)
+			}
 
-		validateContent(fileName, data)
-
-		const html = await marked.parse(content)
-		const [category] = path.dirname(fileName).split('/', 2)
-
-		yield {
-			category,
-			data,
-			html,
-			markdown: content,
-			name: fileName,
-		}
-	}
+			return { data, markdown: content, name, sourceDirectory }
+		}),
+	)
 }
 
 export default loadMarkdown

@@ -1,4 +1,4 @@
-import { useResumeExperience, useResumeSectionTitle } from '../../content/resume'
+import { useResumeExperience } from '../../content/resume'
 import ExperienceEntry from '../../content/ExperienceEntry'
 import DateRangeText from '../DateText'
 import ResumeSection from './ResumeSection'
@@ -6,9 +6,13 @@ import ResumeSection from './ResumeSection'
 const hasResumeContent = (experience: ExperienceEntry): boolean =>
 	Boolean(experience.resumeSummary || experience.resumeHighlights.length > 0)
 
-const ResumeExperienceSection = () => {
-	const roles = useResumeExperience()
-	const title = useResumeSectionTitle('experience-section', 'Experience')
+interface ResumeExperienceSectionProps {
+	readonly limit?: number
+	readonly title: string
+}
+
+const ResumeExperienceSection = ({ limit, title }: ResumeExperienceSectionProps) => {
+	const roles = useResumeExperience(limit)
 
 	return (
 		<ResumeSection id="resume-experience" title={title}>

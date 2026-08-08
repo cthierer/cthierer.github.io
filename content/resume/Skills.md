@@ -1,7 +1,9 @@
 ---
 title: Skills
-archetype: skills
+archetype: resume-section
+kind: skills
 published: true
+order: 30
 
 groups:
   - label: Leadership

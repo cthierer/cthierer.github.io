@@ -1,8 +1,7 @@
-import { useResumeMetrics, useResumeSectionTitle } from '../../content/resume'
+import type { ResumeMetricsSection } from '../../content/resume'
 
-const ResumeMetrics = () => {
-	const metrics = useResumeMetrics()
-	const title = useResumeSectionTitle('metrics', 'At a glance')
+const ResumeMetrics = ({ section }: { readonly section: ResumeMetricsSection }) => {
+	const { metrics, title } = section
 
 	if (metrics.length === 0) {
 		return null

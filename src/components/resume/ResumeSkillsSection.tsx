@@ -1,9 +1,8 @@
-import { useResumeSectionTitle, useResumeSkills } from '../../content/resume'
+import type { ResumeSkillsSection as ResumeSkillsSectionData } from '../../content/resume'
 import ResumeSection from './ResumeSection'
 
-const ResumeSkillsSection = () => {
-	const skills = useResumeSkills()
-	const title = useResumeSectionTitle('skills', 'Skills')
+const ResumeSkillsSection = ({ section }: { readonly section: ResumeSkillsSectionData }) => {
+	const { groups: skills, title } = section
 
 	if (skills.length === 0) {
 		return null

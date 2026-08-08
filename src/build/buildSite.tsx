@@ -1,0 +1,135 @@
+import path from 'node:path'
+import { type ReactElement } from 'react'
+import ContentProvider from '../content/ContentProvider'
+import type Entry from '../content/Entry'
+import type Config from '../config/Config'
+import ConfigProvider from '../config/ConfigProvider'
+import Page from '../layouts/Page'
+import createProfileJsonLd from '../metadata/profileJsonLd'
+import Home from '../pages/Home'
+import Privacy from '../pages/Privacy'
+import Resume from '../pages/Resume'
+import type Route from './Route'
+import buildCSS from './buildCSS'
+import { cleanOutput } from './cleanOutput'
+import { resolveMarkdownLayers } from './contentLayers'
+import copyPublic from './copyPublic'
+import loadMarkdown from './loadMarkdown'
+import loadYaml from './loadYaml'
+import writePage from './writePage'
+import writePDF from './writePDF'
+import writeSitemap from './writeSitemap'
+import { schema as configSchema } from '../config/Config'
+
+export interface BuildSiteOptions {
+	/** Enables third-party analytics in rendered HTML. Defaults to the public-site behavior. */
+	readonly analyticsEnabled?: boolean
+	readonly configFile: string
+	readonly contentDirs: readonly string[]
+	readonly cwd: string
+	readonly outputDir: string
+	/** Selects the cleanup boundary for a public or private-resume build. */
+	readonly outputMode?: 'public' | 'resume'
+	readonly pageKeys?: readonly string[]
+}
+
+const getElementForKey = (key: string): ReactElement => {
+	switch (key) {
+		case 'home':
+			return <Home />
+		case 'resume':
+			return <Resume />
+		case 'privacy':
+			return <Privacy />
+	}
+
+	throw new Error(`unknown page key: "${key}"`)
+}
+
+const selectPages = (config: Config, pageKeys?: readonly string[]): Config => {
+	if (!pageKeys) {
+		return config
+	}
+
+	const selectedPageKeys = new Set<string>(pageKeys)
+	const pages = config.pages.filter(page => selectedPageKeys.has(page.key))
+	if (pages.length !== pageKeys.length) {
+		const available = new Set<string>(pages.map(page => page.key))
+		const missing = pageKeys.filter(key => !available.has(key))
+		throw new Error(`Missing configured page keys: ${missing.join(', ')}`)
+	}
+
+	return { ...config, pages }
+}
+
+const createRoutes = (config: Config, content: Entry[]): readonly Route[] =>
+	config.pages.map(
+		({ key, title, path: outputPath, canonicalPath = outputPath, description, pdf }) => ({
+			outputPath,
+			canonicalPath,
+			title,
+			description,
+			formats: ['html' as const, ...(pdf ? ['pdf' as const] : [])],
+			element: getElementForKey(key),
+			structuredData:
+				key === 'home'
+					? context => createProfileJsonLd({ title, description, config, content, ...context })
+					: undefined,
+		}),
+	)
+
+export const buildSite = async ({
+	analyticsEnabled = true,
+	configFile,
+	contentDirs,
+	cwd,
+	outputDir,
+	outputMode,
+	pageKeys,
+}: BuildSiteOptions): Promise<void> => {
+	await cleanOutput({
+		cwd,
+		outputDir,
+		outputMode,
+		protectedPaths: [configFile, path.join(cwd, 'src'), path.join(cwd, 'public'), ...contentDirs],
+	})
+
+	const contentLayers = await Promise.all(
+		contentDirs.map(contentDir => loadMarkdown(contentDir, path.relative(cwd, contentDir) || '.')),
+	)
+	const content = await resolveMarkdownLayers(contentLayers)
+	const config = selectPages(await loadYaml(configFile, configSchema), pageKeys)
+
+	await copyPublic(path.join(cwd, 'public'), outputDir)
+	await buildCSS(path.join(cwd, 'src'), outputDir)
+
+	const routes = createRoutes(config, content)
+	for (const route of routes) {
+		await writePage(
+			outputDir,
+			route.outputPath,
+			<ConfigProvider config={config}>
+				<ContentProvider content={content}>
+					<Page
+						analyticsEnabled={analyticsEnabled}
+						title={route.title}
+						description={route.description}
+						path={route.canonicalPath}
+						structuredData={route.structuredData}
+					>
+						{route.element}
+					</Page>
+				</ContentProvider>
+			</ConfigProvider>,
+		)
+
+		if (route.formats.includes('pdf')) {
+			await writePDF(cwd, outputDir, route.outputPath)
+		}
+	}
+
+	await writeSitemap(
+		outputDir,
+		routes.map(route => new URL(route.canonicalPath, config.siteUrl).toString()),
+	)
+}

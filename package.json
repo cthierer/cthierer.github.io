@@ -8,9 +8,9 @@
 		"node": ">=26"
 	},
 	"scripts": {
-		"prebuild": "npm run clean",
 		"build": "tsx src/build/build.tsx",
-		"check": "npm run typecheck && npm run lint && npm run format:check",
+		"build:resume": "tsx src/build/build.tsx --resume",
+		"check": "npm run typecheck && npm run lint && npm run format:check && npm test",
 		"clean": "rm -rf dist",
 		"dev": "npm run build && concurrently -k -n build,serve -c yellow,cyan \"npm run watch\" \"npm run serve\"",
 		"format": "prettier --write .",
@@ -19,6 +19,7 @@
 		"prepare": "husky",
 		"precommit": "lint-staged",
 		"serve": "serve dist -l 3000",
+		"test": "node --import tsx --test src/**/*.test.ts",
 		"typecheck": "tsc --noEmit",
 		"watch": "chokidar \"src/**/*\" \"content/**/*\" \"public/**/*\" config.yaml -c \"npm run build\""
 	},

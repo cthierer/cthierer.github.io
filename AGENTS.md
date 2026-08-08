@@ -51,9 +51,9 @@ Configured routes:
 - `/privacy.html` from `src/pages/Privacy.tsx` when the `privacy` page is configured.
 - `/sitemap.xml` from the configured routes' canonical URLs.
 
-`src/build/build.tsx` orchestrates public asset copying, CSS bundling, HTML rendering,
-configured PDF generation, and sitemap generation. `npm run build` cleans `dist/` through
-the `prebuild` script before running this pipeline.
+`src/build/build.tsx` resolves public-build and resume-preset options. `src/build/buildSite.tsx`
+handles safe output cleanup, content layers, public asset copying, CSS bundling, HTML
+rendering, configured PDF generation, and sitemap generation.
 
 ## Content Model
 
@@ -62,21 +62,22 @@ Markdown files are loaded from `content/**/*.md` by `src/build/loadMarkdown.ts`.
 Top-level content directories become entry categories:
 
 - `content/singles/` for homepage hero, current focus, and profile detail copy.
-- `content/resume/` for resume profile, metrics, and skill groups.
+- `content/resume/` for ordered resume sections such as profile, metrics, skills, experience, and education.
 - `content/experience/` for work history. These entries reference `content/organizations/` by `organization` slug.
 - `content/education/` for degrees and certificates.
 - `content/contact/` and `content/social/` for links. The `areas` field controls placement such as `header`, `footer`, `cta`, and `resume`.
 - `content/organizations/` for organization display names, locations, logos, and slugs.
 
-Resume inclusion defaults are implemented in `src/content/ExperienceEntry.tsx` and `src/content/EducationEntry.ts`. Use explicit `resumeInclude: false` only when an otherwise valid entry should stay off the resume.
+Resume inclusion defaults are implemented in `src/content/ExperienceEntry.tsx` and `src/content/EducationEntry.ts`. Use explicit `resumeInclude: false` only when an otherwise valid entry should stay off the resume. Resume body layout is driven by ordered `resume-section` entries; use `kind: prose` for additional Markdown sections rather than adding a new archetype.
 
 When changing content shape, update the matching schema in `src/content/schemas/`, the typed wrapper or selector in `src/content/`, and the relevant maintenance notes in `docs/maintenance.md`.
 
 ## Development Commands
 
 - `npm run dev` starts the rebuild/watch and local static server.
-- `npm run build` cleans `dist/`, then builds HTML, CSS, public assets, the sitemap, and any configured PDFs.
-- `npm run check` runs typecheck, lint, and formatting checks.
+- `npm run build` builds HTML, CSS, public assets, the sitemap, and any configured PDFs. It accepts `--configFile`, repeated `--contentDir`, `--outputDir`, repeated `--page`, and `--analytics` or `--no-analytics`; outputs must be `dist/` or beneath it.
+- `npm run build:resume -- <lowercase-slug>` is a private resume preset. It infers `content/` and `variants/<slug>/`, accepts additional ordered `--contentDir` layers, disables analytics by default, and writes to `variants/output/<slug>/` unless an override beneath `variants/output/` is supplied.
+- `npm run check` runs typecheck, lint, formatting, and tests.
 - `npm run format` applies Prettier.
 
 When any page has `pdf: true`, local builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:

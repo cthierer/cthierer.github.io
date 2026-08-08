@@ -21,6 +21,7 @@ Common updates:
 - Resume name, headline, location, and summary: `content/resume/Profile.md`.
 - Resume metrics: `content/resume/At A Glance.md`.
 - Resume skills: `content/resume/Skills.md`.
+- Resume section order, including Experience and Education: `content/resume/*.md`.
 - Work history: `content/experience/*.md`.
 - Education: `content/education/*.md`.
 - Email, website, and social links: `content/contact/*.md` and `content/social/*.md`.
@@ -42,10 +43,7 @@ published: true
 The `archetype` selects the schema:
 
 - `article`: freeform body content used for homepage singles.
-- `profile`: resume profile fields, including `name`, `headline`, and `location`.
-- `metrics`: resume metric cards with `metrics`.
-- `skills`: resume skill groups with `groups`.
-- `experience-section`: optional resume experience heading and positive integer `limit`.
+- `resume-section`: an ordered resume section. It requires a `kind`, `title`, and numeric `order`; supported kinds are `profile`, `metrics`, `skills`, `prose`, `experience`, and `education`.
 - `experience`: work entries with organization slug, job title, role, location, type, dates, and optional resume summary/highlights.
 - `degree` or `certificate`: education entries with an organization slug, program, dates, and optional degree details.
 - `link`: contact or social links with `href`, `label`, `slug`, `areas`, and optional `icon` and `order`.
@@ -57,12 +55,10 @@ Dates should stay ISO-like, such as `2023-06-20`, so sorting remains predictable
 
 The resume page is generated from shared content rather than a separate document.
 
-- `content/resume/Profile.md` feeds the header/profile summary.
-- `content/resume/At A Glance.md` feeds the metric strip.
-- `content/resume/Skills.md` feeds skill groups.
-- The `title` in each of those three files controls its resume section heading.
-- Optional `article` entries in a resume content directory render as freeform sections after the profile. Their `title` controls the section heading, and an optional numeric `order` controls their sequence.
-- An optional `resume/Experience.md` entry with archetype `experience-section` controls the Experience heading and can limit the newest-first list with a positive integer `limit`. Without it, every included experience entry renders.
+- Every rendered body section is a `resume-section` entry in `content/resume/` and appears in ascending `order`. Baseline files use increments of ten, leaving room for a variant to insert a section without renumbering the baseline.
+- The `profile` section feeds both the resume header and its body section. `metrics` has `metrics`, `skills` has `groups`, `prose` uses its Markdown body, `experience` may set a positive integer `limit`, and `education` has no additional payload.
+- Exactly one section order may be used for each rendered section. `profile`, `metrics`, `skills`, `experience`, and `education` may appear at most once; a resume can have multiple `prose` sections.
+- Section titles always come from their Markdown frontmatter. Keep the Experience and Education files even when their titles are unchanged so that all resume ordering is visible in one directory.
 - `content/experience/*.md` feeds resume experience when included by `src/content/ExperienceEntry.tsx`.
 - `content/education/*.md` feeds resume education when included by `src/content/EducationEntry.ts`. Education entries reference `content/organizations/*.md` with `organization` slugs; organization titles are the full institution names, and organization labels are the compact homepage labels.
 - Links with `areas: [resume]` in `content/contact/` or `content/social/` appear in the resume header.
@@ -77,6 +73,36 @@ resume:
 ```
 
 Use `resumeInclude: false` to keep an entry off the resume while leaving it available elsewhere.
+
+## Private Resume Variants
+
+Private role-specific resumes use the same public Markdown baseline and remain local under the ignored `variants/` directory. They are never deployed or committed. Back up that directory separately if the material must be preserved.
+
+Build an existing variant with:
+
+```sh
+PATH="$PWD/.venv/bin:$PATH" npm run build:resume -- umbc-adjunct \
+  --contentDir variants/content-sensitive
+```
+
+The resume preset infers its shared baseline and role-specific layer. Add any shared private material explicitly in its desired order:
+
+```sh
+PATH="$PWD/.venv/bin:$PATH" npm run build:resume -- umbc-adjunct \
+  --contentDir variants/content-sensitive \
+  --contentDir variants/umbc-adjunct
+```
+
+That command resolves the layers as `content/`, `variants/content-sensitive/`, and `variants/umbc-adjunct/`. If `content/` or `variants/<variant>/` is already specified, the preset does not add it twice; every other supplied layer retains its order. Without `--outputDir`, it writes local HTML, assets, sitemap, and the submission PDF to `variants/output/<variant>/`; the PDF is `variants/output/<variant>/resume.pdf`. A supplied `--outputDir` must remain below `variants/output/`. Analytics are disabled by default, but `--analytics` explicitly enables them.
+
+The relative Markdown path is the overlay identity. For example, `variants/umbc-adjunct/resume/Skills.md` patches `content/resume/Skills.md`; if a baseline file is renamed, rename every matching patch. A patch can provide only changed frontmatter fields. Plain objects merge recursively, arrays and scalar values replace inherited values, and `null` removes an inherited field. A blank patch body inherits baseline Markdown; a nonblank body replaces it. Set `published: false` to suppress an inherited entry entirely.
+
+To add a variant:
+
+1. Create `variants/<lowercase-slug>/` and add only the files that differ from the baseline.
+2. Add sensitive links, such as a phone number, under `variants/content-sensitive/` when they are appropriate for more than one private variant, and pass that directory with `--contentDir`.
+3. Add a full `resume-section` file for a new section, choosing an unused order.
+4. Build it with `npm run build:resume -- <lowercase-slug>` and inspect its HTML and PDF before submitting.
 
 ## Link Placement
 
@@ -102,18 +128,20 @@ When replacing images, keep filenames stable if possible. If a filename changes,
 
 ## Build Pipeline
 
-`src/build/build.tsx` owns the complete site build. A normal `npm run build` cleans
-`dist/` through the `prebuild` script, then:
+`src/build/build.tsx` resolves options before the shared build pipeline safely cleans the
+selected output directory, then:
 
 1. Loads and validates `config.yaml` and the published Markdown content.
-2. Copies `public/` into `dist/`.
-3. Bundles and minifies `src/styles/main.css` into `dist/assets/main.css`.
+2. Copies `public/` into the selected output directory.
+3. Bundles and minifies `src/styles/main.css` into the selected output directory's `assets/` folder.
 4. Renders each configured page to HTML.
 5. Generates a PDF for each page configured with `pdf: true`.
 6. Writes the sitemap from the configured routes.
 
 PDF generation uses WeasyPrint and therefore requires the project virtual environment
 on `PATH` locally. Pages without `pdf: true` do not produce a PDF.
+
+The reusable build pipeline is in `src/build/buildSite.tsx`. Both commands use the same resolved options and cleanup lifecycle. Public `npm run build` defaults to `config.yaml`, `content/`, `dist/`, all configured pages, and analytics enabled; its explicit `--contentDir` values become the complete ordered layer list. `build:resume` is only a convenience preset over those same options. Cleanup accepts only `dist/` or its descendants for public builds, and strict descendants of `variants/output/` for resume builds; for example, `npm run build -- --outputDir dist/application`. It also rejects output paths that overlap source, configuration, or selected content, as well as symlinked paths.
 
 ## Dependency Updates
 
@@ -144,6 +172,8 @@ PATH="$PWD/.venv/bin:$PATH" npm run dev
 
 The dev script builds the site, watches `src/**/*`, `content/**/*`, `public/**/*`, and
 `config.yaml`, and serves `dist/` at `http://localhost:3000`.
+
+Private variant source changes are not watched. Re-run `npm run build:resume -- <variant>` after editing a private resume.
 
 ## Deployment
 

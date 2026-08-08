@@ -3,11 +3,11 @@ import { YearText } from '../DateText'
 import { formatEducationLabel } from './format'
 import ResumeSection from './ResumeSection'
 
-const ResumeEducationSection = () => {
+const ResumeEducationSection = ({ title }: { readonly title: string }) => {
 	const education = useResumeEducation()
 
 	return (
-		<ResumeSection id="resume-education" title="Education">
+		<ResumeSection id="resume-education" title={title}>
 			<div className="resume-education-list">
 				{education.map(entry => (
 					<section className="resume-education" key={entry.name}>
