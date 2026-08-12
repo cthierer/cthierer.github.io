@@ -10,6 +10,7 @@
 	"scripts": {
 		"build": "tsx src/build/build.tsx",
 		"build:resume": "tsx src/build/build.tsx --resume",
+		"build:application": "tsx src/build/build.tsx --application",
 		"check": "npm run typecheck && npm run lint && npm run format:check && npm test",
 		"clean": "rm -rf dist",
 		"dev": "npm run build && concurrently -k -n build,serve -c yellow,cyan \"npm run watch\" \"npm run serve\"",

@@ -42,15 +42,15 @@ const isWithin = (parent: string, candidate: string): boolean => {
 	)
 }
 
-const validateOutputDirForMode = (cwd: string, outputDir: string, resumePreset: boolean): void => {
-	const allowedOutputRoot = resumePreset
+const validateOutputDirForMode = (cwd: string, outputDir: string, privatePreset: boolean): void => {
+	const allowedOutputRoot = privatePreset
 		? path.join(cwd, 'variants', 'output')
 		: path.join(cwd, 'dist')
-	const validOutputDir = resumePreset
+	const validOutputDir = privatePreset
 		? outputDir !== allowedOutputRoot && isWithin(allowedOutputRoot, outputDir)
 		: isWithin(allowedOutputRoot, outputDir)
 	if (!validOutputDir) {
-		const allowedLocation = resumePreset ? 'a descendant of variants/output/' : 'dist/'
+		const allowedLocation = privatePreset ? 'a descendant of variants/output/' : 'dist/'
 		throw new Error(`Build output must be ${allowedLocation}: ${outputDir}`)
 	}
 }
@@ -87,6 +87,8 @@ const validateContentDirs = async (contentDirs: readonly string[]): Promise<void
 
 export interface ResolvedBuildOptions extends BuildSiteOptions {
 	readonly resumePreset: boolean
+	readonly applicationPreset?: boolean
+	readonly coverLetterRequired?: boolean
 }
 
 /** Parses explicit CLI arguments and applies the public or resume-preset defaults. */
@@ -95,7 +97,7 @@ export const resolveBuildOptions = async (
 	argv: readonly string[],
 ): Promise<ResolvedBuildOptions> => {
 	const {
-		values: { analytics, configFile, contentDir, outputDir, page, resume },
+		values: { analytics, application, configFile, contentDir, outputDir, page, resume },
 		positionals,
 	} = parseArgs({
 		args: argv,
@@ -103,6 +105,7 @@ export const resolveBuildOptions = async (
 		allowPositionals: true,
 		options: {
 			analytics: { type: 'boolean' },
+			application: { type: 'boolean' },
 			configFile: { type: 'string', short: 'c' },
 			contentDir: { type: 'string', multiple: true },
 			outputDir: { type: 'string', short: 'o' },
@@ -112,11 +115,24 @@ export const resolveBuildOptions = async (
 	})
 
 	const resumePreset = resume === true
-	if (!resumePreset && positionals.length > 0) {
+	const applicationPreset = application === true
+	if (resumePreset && applicationPreset) throw new Error('Choose either --resume or --application.')
+	const privatePreset = resumePreset || applicationPreset
+	if (applicationPreset) {
+		const unsupportedPages = (page ?? []).filter(key => key !== 'resume' && key !== 'cover-letter')
+		if (unsupportedPages.length > 0) {
+			throw new Error(
+				`Application builds support only resume and cover-letter pages: ${unsupportedPages.join(', ')}`,
+			)
+		}
+	}
+	if (!privatePreset && positionals.length > 0) {
 		throw new Error('npm run build does not accept positional arguments.')
 	}
-	if (resumePreset && positionals.length !== 1) {
-		throw new Error('Usage: npm run build:resume -- <lowercase-slug> [options]')
+	if (privatePreset && positionals.length !== 1) {
+		throw new Error(
+			`Usage: npm run build:${applicationPreset ? 'application' : 'resume'} -- <lowercase-slug> [options]`,
+		)
 	}
 
 	const pageKeys = page ?? []
@@ -127,13 +143,13 @@ export const resolveBuildOptions = async (
 	const resolvedOutputDir = resolveArgPath(
 		cwd,
 		outputDir ??
-			(resumePreset
+			(privatePreset
 				? path.join('variants', 'output', validateVariantName(positionals[0]))
 				: 'dist'),
 	)
-	validateOutputDirForMode(cwd, resolvedOutputDir, resumePreset)
+	validateOutputDirForMode(cwd, resolvedOutputDir, privatePreset)
 
-	if (!resumePreset) {
+	if (!privatePreset) {
 		const contentDirs =
 			explicitContentDirs.length > 0 ? explicitContentDirs : [path.join(cwd, 'content')]
 		await validateContentDirs(contentDirs)
@@ -161,13 +177,16 @@ export const resolveBuildOptions = async (
 	await validateContentDirs(contentDirs)
 
 	return {
-		analyticsEnabled: analytics ?? false,
+		analyticsEnabled: applicationPreset ? false : (analytics ?? false),
 		configFile: resolvedConfigFile,
 		contentDirs,
 		cwd,
 		outputDir: resolvedOutputDir,
-		outputMode: 'resume',
-		pageKeys: pageKeys.length > 0 ? pageKeys : ['resume'],
-		resumePreset: true,
+		outputMode: applicationPreset ? 'application' : 'resume',
+		pageKeys:
+			pageKeys.length > 0 ? pageKeys : applicationPreset ? ['resume', 'cover-letter'] : ['resume'],
+		resumePreset,
+		applicationPreset,
+		coverLetterRequired: applicationPreset && pageKeys.includes('cover-letter'),
 	}
 }

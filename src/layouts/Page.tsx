@@ -13,6 +13,7 @@ interface PageProps {
 	description: string
 	path: string
 	structuredData?: (context: StructuredDataContext) => JsonLdValue
+	privateDocument?: boolean
 	children: React.ReactNode
 }
 
@@ -22,6 +23,7 @@ const Page = ({
 	description,
 	path,
 	structuredData,
+	privateDocument = false,
 	children,
 }: PageProps) => {
 	const renderTime = new Date().toISOString()
@@ -33,11 +35,13 @@ const Page = ({
 	const socialImage = new URL(socialImagePath, siteUrl).toString()
 	const profileImage = new URL(profileImagePath, siteUrl).toString()
 	const canonicalUrl = new URL(path, siteUrl).toString()
-	const jsonLd = structuredData?.({
-		canonicalUrl,
-		dateModified: renderTime,
-		profileImage,
-	})
+	const jsonLd = privateDocument
+		? undefined
+		: structuredData?.({
+				canonicalUrl,
+				dateModified: renderTime,
+				profileImage,
+			})
 
 	return (
 		<html lang="en" data-theme="light">
@@ -47,22 +51,28 @@ const Page = ({
 				<meta name="description" content={description} />
 				<meta name="last-modified" content={renderTime} />
 				<meta httpEquiv="last-modified" content={renderTime} />
-				<meta property="og:type" content="website" />
-				<meta property="og:title" content={title} />
-				<meta property="og:description" content={description} />
-				<meta property="og:url" content={canonicalUrl} />
-				<meta property="og:image" content={socialImage} />
-				<meta property="og:updated_time" content={renderTime} />
-				<meta name="twitter:card" content="summary_large_image" />
-				<meta name="twitter:title" content={title} />
-				<meta name="twitter:description" content={description} />
-				<meta name="twitter:image" content={socialImage} />
+				{privateDocument ? (
+					<meta name="robots" content="noindex, nofollow" />
+				) : (
+					<>
+						<meta property="og:type" content="website" />
+						<meta property="og:title" content={title} />
+						<meta property="og:description" content={description} />
+						<meta property="og:url" content={canonicalUrl} />
+						<meta property="og:image" content={socialImage} />
+						<meta property="og:updated_time" content={renderTime} />
+						<meta name="twitter:card" content="summary_large_image" />
+						<meta name="twitter:title" content={title} />
+						<meta name="twitter:description" content={description} />
+						<meta name="twitter:image" content={socialImage} />
+					</>
+				)}
 				<title>{title}</title>
-				<link rel="canonical" href={canonicalUrl} />
+				{privateDocument ? null : <link rel="canonical" href={canonicalUrl} />}
 				<link rel="icon" href={favIcon} type="image/svg+xml" />
 				<link rel="stylesheet" href="assets/main.css" />
 				{jsonLd ? <JsonLd data={jsonLd} /> : null}
-				{analyticsEnabled && umamiWebsiteId ? (
+				{!privateDocument && analyticsEnabled && umamiWebsiteId ? (
 					<script
 						defer
 						src="https://cloud.umami.is/script.js"
