@@ -19,7 +19,7 @@ export const coverLetterSchema = z.looseObject({
 		message: 'Cover letter date must be a valid date.',
 	}),
 	recipient: recipientSchema,
-	sender: senderSchema,
+	sender: senderSchema.optional(),
 	greeting: z.string().min(1),
 	subject: z.string().min(1).optional(),
 	closing: z.string().min(1).optional(),
