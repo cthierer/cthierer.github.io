@@ -5,6 +5,7 @@ import { experienceSchema } from './experience'
 import { linkSchema } from './link'
 import { organizationSchema } from './organization'
 import { resumeSectionSchema } from './resumeSection'
+import { coverLetterSchema } from './coverLetter'
 
 export const contentSchema = z.discriminatedUnion('archetype', [
 	articleSchema,
@@ -13,4 +14,5 @@ export const contentSchema = z.discriminatedUnion('archetype', [
 	linkSchema,
 	organizationSchema,
 	resumeSectionSchema,
+	coverLetterSchema,
 ])

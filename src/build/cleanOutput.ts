@@ -30,7 +30,7 @@ const lstatIfExists = async (
 export interface CleanOutputOptions {
 	readonly cwd: string
 	readonly outputDir: string
-	readonly outputMode?: 'public' | 'resume'
+	readonly outputMode?: 'public' | 'resume' | 'application'
 	/** Files or directories which an output path must neither be nor contain. */
 	readonly protectedPaths: readonly string[]
 }
@@ -64,13 +64,18 @@ export const cleanOutput = async ({
 	}
 
 	const outputRoot =
-		outputMode === 'resume' ? path.join(realCwd, 'variants', 'output') : path.join(realCwd, 'dist')
+		outputMode === 'resume' || outputMode === 'application'
+			? path.join(realCwd, 'variants', 'output')
+			: path.join(realCwd, 'dist')
 	const validOutputDir =
-		outputMode === 'resume'
+		outputMode === 'resume' || outputMode === 'application'
 			? isStrictlyWithin(outputRoot, resolvedOutputDir)
 			: isWithin(outputRoot, resolvedOutputDir)
 	if (!validOutputDir) {
-		const allowedLocation = outputMode === 'resume' ? 'a descendant of variants/output/' : 'dist/'
+		const allowedLocation =
+			outputMode === 'resume' || outputMode === 'application'
+				? 'a descendant of variants/output/'
+				: 'dist/'
 		throw new Error(`Build output must be ${allowedLocation}: ${resolvedOutputDir}`)
 	}
 

@@ -74,9 +74,47 @@ resume:
 
 Use `resumeInclude: false` to keep an entry off the resume while leaving it available elsewhere.
 
-## Private Resume Variants
+## Private Application Packages
 
-Private role-specific resumes use the same public Markdown baseline and remain local under the ignored `variants/` directory. They are never deployed or committed. Back up that directory separately if the material must be preserved.
+Private role-specific application material uses the same public Markdown baseline and remains local under the ignored `variants/` directory. It is never deployed or committed. Back up that directory separately if the material must be preserved.
+
+Build an application package (resume plus an optional cover letter) with:
+
+```sh
+PATH="$PWD/.venv/bin:$PATH" npm run build:application -- umbc-adjunct
+```
+
+This writes `resume.html`, `resume.pdf`, and, when present, `cover-letter.html` and
+`cover-letter.pdf` under `variants/output/umbc-adjunct/`. Application documents are
+private: analytics, sitemap, canonical/social metadata, and JSON-LD are omitted and
+they include `noindex, nofollow`. Use `--page resume` or `--page cover-letter` to
+narrow the build; explicitly requesting a missing cover letter fails.
+
+Add `variants/<slug>/cover-letter/Letter.md` for a role-specific letter. Its body is
+the letter text and it uses this frontmatter:
+
+```yaml
+---
+title: Application cover letter
+archetype: cover-letter
+published: true
+date: 2026-08-12
+recipient:
+  organization: Example Company
+  name: Hiring Manager # optional
+  title: Engineering Director # optional
+  address: # optional
+    - 123 Main Street
+greeting: Dear Hiring Manager,
+subject: Application for Engineering Leader # optional
+closing: Sincerely, # optional; this is the default
+---
+```
+
+There may be only one published cover-letter entry after content layers are resolved.
+An unpublished or absent letter is skipped by the package build.
+
+## Private Resume Variants
 
 Build an existing variant with:
 

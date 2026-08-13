@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import type Entry from '../content/Entry'
 import { validateResumeSections } from '../content/validateResumeSections'
+import { getCoverLetter } from '../content/coverLetter'
 import { mergeFrontmatter, resolveMarkdownLayers, type MarkdownSource } from './contentLayers'
 
 const source = (
@@ -104,5 +105,41 @@ test('resume sections reject duplicate orders and singleton kinds', () => {
 				entry('resume/About.md', 30, 'profile'),
 			]),
 		/Duplicate resume section kind "profile"/,
+	)
+})
+
+test('cover letters accept parser dates, default their closing, and reject duplicates', async () => {
+	const letter = (name: string, date: Date | string) =>
+		source(
+			name,
+			{
+				archetype: 'cover-letter',
+				date,
+				greeting: 'Dear team,',
+				published: true,
+				recipient: { organization: 'Example' },
+				title: 'Letter',
+			},
+			'Hello.',
+		)
+	const content = await resolveMarkdownLayers([
+		[letter('cover-letter/Letter.md', new Date('2026-08-12T00:00:00.000Z'))],
+	])
+	assert.equal(content[0]?.data.date instanceof Date, true)
+	assert.equal(getCoverLetter(content)?.closing, 'Sincerely,')
+	await assert.rejects(
+		resolveMarkdownLayers([
+			[letter('cover-letter/One.md', '2026-08-12'), letter('cover-letter/Two.md', '2026-08-13')],
+		]),
+		/Only one published cover letter/,
+	)
+	await assert.rejects(
+		resolveMarkdownLayers([[letter('cover-letter/Letter.md', 'not-a-date')]]),
+		/Cover letter date must be a valid date/,
+	)
+	const blankLetter = letter('cover-letter/Letter.md', '2026-08-12')
+	await assert.rejects(
+		resolveMarkdownLayers([[{ ...blankLetter, markdown: '   ' }]]),
+		/Published cover letter must have a Markdown body/,
 	)
 })

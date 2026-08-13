@@ -1,10 +1,4 @@
-const ResumePrintScript = () => (
-	<script
-		dangerouslySetInnerHTML={{
-			__html:
-				"document.querySelector('[data-print-resume]')?.addEventListener('click', () => window.print());",
-		}}
-	/>
-)
+import { DocumentPrintScript } from '../document/DocumentActions'
+const ResumePrintScript = DocumentPrintScript
 
 export default ResumePrintScript

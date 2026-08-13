@@ -9,6 +9,7 @@ import createProfileJsonLd from '../metadata/profileJsonLd'
 import Home from '../pages/Home'
 import Privacy from '../pages/Privacy'
 import Resume from '../pages/Resume'
+import CoverLetter from '../pages/CoverLetter'
 import type Route from './Route'
 import buildCSS from './buildCSS'
 import { cleanOutput } from './cleanOutput'
@@ -28,9 +29,12 @@ export interface BuildSiteOptions {
 	readonly contentDirs: readonly string[]
 	readonly cwd: string
 	readonly outputDir: string
-	/** Selects the cleanup boundary for a public or private-resume build. */
-	readonly outputMode?: 'public' | 'resume'
+	/** Selects the cleanup boundary for a public or private-document build. */
+	readonly outputMode?: 'public' | 'resume' | 'application'
 	readonly pageKeys?: readonly string[]
+	readonly privateDocument?: boolean
+	readonly coverLetterEnabled?: boolean
+	readonly coverLetterRequired?: boolean
 }
 
 const getElementForKey = (key: string): ReactElement => {
@@ -41,21 +45,30 @@ const getElementForKey = (key: string): ReactElement => {
 			return <Resume />
 		case 'privacy':
 			return <Privacy />
+		case 'cover-letter':
+			return <CoverLetter />
 	}
 
 	throw new Error(`unknown page key: "${key}"`)
 }
 
-const selectPages = (config: Config, pageKeys?: readonly string[]): Config => {
+const selectPages = (
+	config: Config,
+	pageKeys?: readonly string[],
+	allowCoverLetter = false,
+): Config => {
 	if (!pageKeys) {
 		return config
 	}
 
 	const selectedPageKeys = new Set<string>(pageKeys)
 	const pages = config.pages.filter(page => selectedPageKeys.has(page.key))
-	if (pages.length !== pageKeys.length) {
+	const specialPages = allowCoverLetter ? pageKeys.filter(key => key === 'cover-letter') : []
+	if (pages.length + specialPages.length !== pageKeys.length) {
 		const available = new Set<string>(pages.map(page => page.key))
-		const missing = pageKeys.filter(key => !available.has(key))
+		const missing = pageKeys.filter(
+			key => !available.has(key) && !(allowCoverLetter && key === 'cover-letter'),
+		)
 		throw new Error(`Missing configured page keys: ${missing.join(', ')}`)
 	}
 
@@ -86,6 +99,9 @@ export const buildSite = async ({
 	outputDir,
 	outputMode,
 	pageKeys,
+	privateDocument = false,
+	coverLetterEnabled = false,
+	coverLetterRequired = false,
 }: BuildSiteOptions): Promise<void> => {
 	await cleanOutput({
 		cwd,
@@ -98,12 +114,28 @@ export const buildSite = async ({
 		contentDirs.map(contentDir => loadMarkdown(contentDir, path.relative(cwd, contentDir) || '.')),
 	)
 	const content = await resolveMarkdownLayers(contentLayers)
-	const config = selectPages(await loadYaml(configFile, configSchema), pageKeys)
+	const config = selectPages(await loadYaml(configFile, configSchema), pageKeys, coverLetterEnabled)
 
 	await copyPublic(path.join(cwd, 'public'), outputDir)
 	await buildCSS(path.join(cwd, 'src'), outputDir)
 
-	const routes = createRoutes(config, content)
+	const routes = [...createRoutes(config, content)]
+	if (coverLetterEnabled && pageKeys?.includes('cover-letter')) {
+		const coverLetter = content.find(entry => entry.data.archetype === 'cover-letter')
+		if (!coverLetter) {
+			if (coverLetterRequired)
+				throw new Error('A cover letter was requested but no published cover letter was found.')
+		} else {
+			routes.push({
+				outputPath: '/cover-letter.html',
+				canonicalPath: '/cover-letter.html',
+				title: String(coverLetter.data.title),
+				description: 'Cover letter',
+				formats: ['html', 'pdf'],
+				element: getElementForKey('cover-letter'),
+			})
+		}
+	}
 	for (const route of routes) {
 		await writePage(
 			outputDir,
@@ -116,6 +148,7 @@ export const buildSite = async ({
 						description={route.description}
 						path={route.canonicalPath}
 						structuredData={route.structuredData}
+						privateDocument={privateDocument}
 					>
 						{route.element}
 					</Page>
@@ -128,8 +161,9 @@ export const buildSite = async ({
 		}
 	}
 
-	await writeSitemap(
-		outputDir,
-		routes.map(route => new URL(route.canonicalPath, config.siteUrl).toString()),
-	)
+	if (!privateDocument)
+		await writeSitemap(
+			outputDir,
+			routes.map(route => new URL(route.canonicalPath, config.siteUrl).toString()),
+		)
 }

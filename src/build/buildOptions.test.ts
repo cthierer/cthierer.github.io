@@ -153,6 +153,41 @@ test('resume variants accept only lowercase slug names and require their content
 	)
 })
 
+test('application preset builds a private resume package with an optional cover letter', async t => {
+	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'application-options-'))
+	t.after(() => fs.rm(cwd, { recursive: true, force: true }))
+	await fs.mkdir(path.join(cwd, 'content'))
+	await fs.mkdir(path.join(cwd, 'variants', 'example-role'), { recursive: true })
+	const defaults = await resolveBuildOptions(cwd, ['--application', 'example-role'])
+	assert.equal(defaults.outputMode, 'application')
+	assert.equal(defaults.analyticsEnabled, false)
+	assert.deepEqual(defaults.pageKeys, ['resume', 'cover-letter'])
+	assert.equal(defaults.coverLetterRequired, false)
+	assert.equal(defaults.outputDir, path.join(cwd, 'variants/output/example-role'))
+	const letterOnly = await resolveBuildOptions(cwd, [
+		'--application',
+		'example-role',
+		'--page',
+		'cover-letter',
+	])
+	assert.equal(letterOnly.coverLetterRequired, true)
+	assert.deepEqual(letterOnly.pageKeys, ['cover-letter'])
+	const forcedAnalytics = await resolveBuildOptions(cwd, [
+		'--application',
+		'example-role',
+		'--analytics',
+	])
+	assert.equal(forcedAnalytics.analyticsEnabled, false)
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--application', '--resume', 'example-role']),
+		/Choose either --resume or --application/,
+	)
+	await assert.rejects(
+		resolveBuildOptions(cwd, ['--application', 'example-role', '--page', 'privacy']),
+		/Application builds support only resume and cover-letter pages/,
+	)
+})
+
 test('build presets reject each other’s output roots while accepting their own overrides', async t => {
 	const cwd = await fs.mkdtemp(path.join(temporaryRoot, 'build-output-options-'))
 	t.after(() => fs.rm(cwd, { recursive: true, force: true }))

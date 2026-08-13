@@ -3,6 +3,7 @@ import { marked } from 'marked'
 import type Entry from '../content/Entry'
 import { validateResumeSections } from '../content/validateResumeSections'
 import { contentSchema } from '../content/schemas/content'
+import { getCoverLetter } from '../content/coverLetter'
 
 export interface MarkdownSource {
 	readonly data: Record<string, unknown>
@@ -114,5 +115,6 @@ export const resolveMarkdownLayers = async (
 	}
 
 	validateResumeSections(content)
+	getCoverLetter(content)
 	return content
 }
