@@ -10,11 +10,11 @@ const formatPath = (path: PropertyKey[]): string => {
 	return path.join('.')
 }
 
-const validate = <T>(fileName: string, data: unknown, schema: z.ZodType<T>): data is T => {
+const validate = <T>(fileName: string, data: unknown, schema: z.ZodType<T>): T => {
 	const result = schema.safeParse(data)
 
 	if (result.success) {
-		return true
+		return result.data
 	}
 
 	const issues = result.error.issues
@@ -28,11 +28,7 @@ const loadYaml = async <T>(fileName: string, schema: z.ZodType<T>): Promise<T> =
 	const file = await fs.readFile(fileName, { encoding: 'utf8' })
 	const { data } = matter(`---\n${file}\n---\n`)
 
-	if (!validate(fileName, data, schema)) {
-		throw new Error(`Invalid YAML in ${fileName}`)
-	}
-
-	return data
+	return validate(fileName, data, schema)
 }
 
 export default loadYaml
