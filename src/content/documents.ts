@@ -240,20 +240,30 @@ export const formatEducation = (entry: EducationEntry): string =>
 const proseTokensText = (tokens: readonly Token[]): string =>
 	tokens
 		.flatMap((token: Token) => {
-			const value = token as Token & { text?: string; tokens?: Token[]; items?: Token[] }
+			const value = token as Token & {
+				text?: string
+				tokens?: Token[]
+				items?: Token[]
+				ordered?: boolean
+				start?: number | ''
+			}
 			if (value.type === 'space' || value.type === 'def') return []
 			if (value.type === 'list' && value.items)
 				return [
 					value.items
-						.map(item => {
+						.map((item, index) => {
 							const itemValue = item as unknown as { text?: string; tokens?: Token[] }
 							const lines = proseTokensText(itemValue.tokens ?? Lexer.lex(itemValue.text ?? ''))
 								.split('\n')
 								.filter(
-									(line, index, values) => line !== '' || !values[index + 1]?.startsWith('- '),
+									(line, lineIndex, values) =>
+										line !== '' || !/^(?:-|\d+\.) /.test(values[lineIndex + 1] ?? ''),
 								)
+							const marker = value.ordered
+								? `${(typeof value.start === 'number' ? value.start : 1) + index}.`
+								: '-'
 							return [
-								`- ${lines[0] ?? ''}`,
+								`${marker} ${lines[0] ?? ''}`,
 								...lines.slice(1).map(line => (line === '' ? line : `  ${line}`)),
 							].join('\n')
 						})

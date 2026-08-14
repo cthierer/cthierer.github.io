@@ -98,13 +98,7 @@ require('node:fs').writeFileSync(process.argv.at(-1), 'test PDF')
 	)
 	await fs.chmod(fakeWeasyPrint, 0o755)
 	process.env.PATH = `${binDir}${path.delimiter}${originalPath ?? ''}`
-	await fs.writeFile(
-		configFile,
-		testConfig.replace(
-			'description: Test resume',
-			'description: Test resume\n    formats: [html, pdf, md, txt]',
-		),
-	)
+	await fs.writeFile(configFile, testConfig)
 
 	await buildSite({
 		analyticsEnabled: false,
@@ -254,7 +248,7 @@ test('application cover letter remains optional unless explicitly required', asy
 
 test('application package emits all eight private resume and cover-letter documents', async t => {
 	const cwd = process.cwd()
-	const root = await fs.mkdtemp(path.join(cwd, 'dist', '.application-package-'))
+	const root = await fs.mkdtemp(path.join(cwd, 'variants', 'output', '.application-package-'))
 	const contentDir = await fs.mkdtemp(path.join('/tmp', 'application-package-content-'))
 	const bin = await fs.mkdtemp(path.join('/tmp', 'application-package-bin-'))
 	const outputDir = path.join(root, 'output')
@@ -279,13 +273,7 @@ test('application package emits all eight private resume and cover-letter docume
 	await fs.chmod(path.join(bin, 'weasyprint'), 0o755)
 	process.env.PATH = `${bin}${path.delimiter}${originalPath ?? ''}`
 	const configFile = path.join(root, 'config.yaml')
-	await fs.writeFile(
-		configFile,
-		testConfig.replace(
-			'description: Test resume',
-			'description: Test resume\n    formats: [html, pdf, md, txt]',
-		),
-	)
+	await fs.writeFile(configFile, testConfig)
 	await buildSite({
 		analyticsEnabled: false,
 		configFile,
@@ -294,6 +282,7 @@ test('application package emits all eight private resume and cover-letter docume
 		coverLetterRequired: true,
 		cwd,
 		outputDir,
+		outputMode: 'application',
 		pageKeys: ['resume', 'cover-letter'],
 		privateDocument: true,
 	})
@@ -310,6 +299,7 @@ test('application package emits all eight private resume and cover-letter docume
 		await fs.access(path.join(outputDir, name))
 	const html = await fs.readFile(path.join(outputDir, 'resume.html'), 'utf8')
 	assert.doesNotMatch(html, /cloud\.umami\.is|rel="canonical"|property="og:/)
+	assert.match(html, /href="\/resume\.pdf"[^>]*data-umami-event="resume-download"/)
 	assert.match(await fs.readFile(path.join(outputDir, 'resume.md'), 'utf8'), /## Profile/)
 	assert.match(await fs.readFile(path.join(outputDir, 'cover-letter.txt'), 'utf8'), /Letter body/)
 	await assert.rejects(fs.access(path.join(outputDir, 'sitemap.xml')), /ENOENT/)

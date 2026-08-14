@@ -84,6 +84,15 @@ const selectPages = (
 	return { ...config, pages }
 }
 
+const applicationResumeFormats: Config['pages'][number]['formats'] = ['html', 'pdf', 'md', 'txt']
+
+const forceApplicationResumeFormats = (config: Config): Config => ({
+	...config,
+	pages: config.pages.map(page =>
+		page.key === 'resume' ? { ...page, formats: [...applicationResumeFormats] } : page,
+	),
+})
+
 const createRoutes = (config: Config, content: Entry[]): readonly Route[] =>
 	config.pages.map(
 		({ key, title, path: outputPath, canonicalPath = outputPath, description, formats }) => ({
@@ -124,7 +133,13 @@ export const buildSite = async ({
 		contentDirs.map(contentDir => loadMarkdown(contentDir, path.relative(cwd, contentDir) || '.')),
 	)
 	const content = await resolveMarkdownLayers(contentLayers)
-	const config = selectPages(await loadYaml(configFile, configSchema), pageKeys, coverLetterEnabled)
+	const selectedConfig = selectPages(
+		await loadYaml(configFile, configSchema),
+		pageKeys,
+		coverLetterEnabled,
+	)
+	const config =
+		outputMode === 'application' ? forceApplicationResumeFormats(selectedConfig) : selectedConfig
 
 	await copyPublic(path.join(cwd, 'public'), outputDir)
 	await buildCSS(path.join(cwd, 'src'), outputDir)

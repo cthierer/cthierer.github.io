@@ -106,6 +106,12 @@ test('text serializer exactly preserves visible contact and link conventions', (
 	)
 	assert.equal(serializeText('- parent\n  - child\n- sibling'), '- parent\n  - child\n- sibling')
 	assert.equal(serializeText('- one\n  - two\n    - three'), '- one\n  - two\n    - three')
+	assert.equal(
+		serializeText(
+			'3. third\n   - child\n     7. seventh\n        - deep\n     8. eighth\n   - sibling\n4. fourth',
+		),
+		'3. third\n  - child\n    7. seventh\n      - deep\n    8. eighth\n  - sibling\n4. fourth',
+	)
 })
 
 test('resume Markdown and text serializers have an exact all-section golden', () => {
