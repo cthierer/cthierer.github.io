@@ -1,8 +1,8 @@
 import {
 	type ResumeProseSection,
 	type ResumeSection as ResumeSectionData,
-	useResumeSections,
 } from '../../content/resume'
+import type { ResumeDocument } from '../../content/documents'
 import ResumeEducationSection from './ResumeEducationSection'
 import ResumeExperienceSection from './ResumeExperienceSection'
 import ResumeMetrics from './ResumeMetrics'
@@ -22,8 +22,8 @@ const ResumeProse = ({ section }: { readonly section: ResumeProseSection }) => (
 	</ResumeSection>
 )
 
-const ResumeSections = () => {
-	const sections = useResumeSections()
+const ResumeSections = ({ document }: { readonly document: ResumeDocument }) => {
+	const sections = document.sections
 
 	return sections.map(section => {
 		switch (section.kind) {
@@ -39,12 +39,18 @@ const ResumeSections = () => {
 				return (
 					<ResumeExperienceSection
 						key={section.entryName}
-						limit={section.limit}
+						roles={section.roles}
 						title={section.title}
 					/>
 				)
 			case 'education':
-				return <ResumeEducationSection key={section.entryName} title={section.title} />
+				return (
+					<ResumeEducationSection
+						key={section.entryName}
+						education={section.education}
+						title={section.title}
+					/>
+				)
 		}
 	})
 }

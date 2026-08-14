@@ -16,6 +16,7 @@ export interface CoverLetter {
 	readonly subject?: string
 	readonly closing: string
 	readonly html: string
+	readonly markdown: string
 }
 
 export const getCoverLetter = (content: ReturnType<typeof useContent>): CoverLetter | undefined => {
@@ -31,7 +32,12 @@ export const getCoverLetter = (content: ReturnType<typeof useContent>): CoverLet
 		throw new Error(`Published cover letter must have a Markdown body: ${entry.name}`)
 	}
 	const data = entry.data as CoverLetter & Record<string, unknown>
-	return { ...data, closing: data.closing ?? 'Sincerely,', html: entry.html }
+	return {
+		...data,
+		closing: data.closing ?? 'Sincerely,',
+		html: entry.html,
+		markdown: entry.markdown,
+	}
 }
 
 export const useCoverLetter = (): CoverLetter | undefined => getCoverLetter(useContent())

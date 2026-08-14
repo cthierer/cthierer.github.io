@@ -1,11 +1,15 @@
-import { useResumeEducation } from '../../content/resume'
+import type EducationEntry from '../../content/EducationEntry'
 import { YearText } from '../DateText'
 import { formatEducationLabel } from './format'
 import ResumeSection from './ResumeSection'
 
-const ResumeEducationSection = ({ title }: { readonly title: string }) => {
-	const education = useResumeEducation()
-
+const ResumeEducationSection = ({
+	title,
+	education,
+}: {
+	readonly title: string
+	readonly education: readonly EducationEntry[]
+}) => {
 	return (
 		<ResumeSection id="resume-education" title={title}>
 			<div className="resume-education-list">
