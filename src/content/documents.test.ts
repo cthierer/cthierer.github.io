@@ -62,6 +62,41 @@ test('serializers preserve Markdown tokens, normalize ASCII text, and reject uns
 	assert.throws(() => serializeText('emoji 😀'), /ASCII-normalized/)
 })
 
+test('text serializer renders inline and block HTML tokens as visible text', () => {
+	assert.equal(
+		serializeText(
+			'Platform Reliability Team (<abbr title="Platform Reliability Team">PRT</abbr>) uses <strong>nested <em>HTML</em></strong> &amp; numeric entities: &#38; and &#x26;.',
+		),
+		'Platform Reliability Team (PRT) uses nested HTML & numeric entities: & and &.',
+	)
+	assert.equal(
+		serializeText(
+			'<p><abbr>PRT</abbr> &amp; <strong>nested <em>text</em></strong></p><p>Next paragraph.</p>',
+		),
+		'PRT & nested text\n\nNext paragraph.',
+	)
+	assert.throws(() => serializeText('Malformed numeric entity: &#x110000;.'), /ASCII-normalized/)
+	assert.throws(
+		() => serializeText('Use <abbr title="A > B">PRT</abbr> &amp; &#0;.'),
+		/ASCII-normalized/,
+	)
+	assert.throws(() => serializeText('<span>&copy;</span>'), /ASCII-normalized/)
+	assert.throws(() => serializeText('&reg;'), /ASCII-normalized/)
+	assert.throws(() => serializeText('&notARealEntity;'), /ASCII-normalized/)
+	assert.equal(serializeText('&madeup; R&D;'), '&madeup; R&D;')
+	assert.equal(
+		serializeText('`&amp; &copy; &reg;`\n\n```\n&amp; &copy; &reg;\n```'),
+		'&amp; &copy; &reg;\n\n&amp; &copy; &reg;',
+	)
+	assert.equal(
+		serializeText(
+			'Visible <script type="text/plain">hidden &amp;</script><style>.hidden { color: red; }</style> text.',
+		),
+		'Visible text.',
+	)
+	assert.equal(serializeText('**Visible <script>hidden</script> text.**'), 'Visible text.')
+})
+
 test('text serializer exactly preserves visible contact and link conventions', () => {
 	assert.equal(
 		serializeText(

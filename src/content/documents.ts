@@ -1,4 +1,5 @@
 import { Lexer, type Token } from 'marked'
+import { decodeHTML } from 'entities'
 import type Config from '../config/Config'
 import type Entry from './Entry'
 import EducationEntry from './EducationEntry'
@@ -258,9 +259,7 @@ const proseTokensText = (tokens: readonly Token[]): string =>
 						})
 						.join('\n'),
 				]
-			return value.tokens
-				? [value.tokens.map(token => inlineText(token)).join('')]
-				: [value.text ?? '']
+			return [value.tokens ? inlineTokensText(value.tokens) : inlineText(token)]
 		})
 		.join('\n\n')
 		.replace(/\n{3,}/g, '\n\n')
@@ -268,15 +267,59 @@ const proseTokensText = (tokens: readonly Token[]): string =>
 
 const proseText = (markdown: string): string => proseTokensText(Lexer.lex(markdown))
 
+const isRawHtmlStart = (value: string): boolean => /^<(?:script|style)\b/i.test(value)
+const isRawHtmlEnd = (value: string): boolean => /^<\/(?:script|style)\s*>/i.test(value)
+const inlineTokensText = (tokens: readonly Token[]): string => {
+	let rawHtml = false
+	let skipLeadingWhitespace = false
+	return tokens
+		.map(token => {
+			const value = token as Token & { text?: string }
+			if (value.type === 'html' && isRawHtmlStart(value.text ?? '')) {
+				rawHtml = true
+				return ''
+			}
+			if (value.type === 'html' && rawHtml && isRawHtmlEnd(value.text ?? '')) {
+				rawHtml = false
+				skipLeadingWhitespace = true
+				return ''
+			}
+			if (rawHtml) return ''
+			const text = inlineText(token)
+			if (!skipLeadingWhitespace) return text
+			skipLeadingWhitespace = false
+			return text.replace(/^[ \t]+/, '')
+		})
+		.join('')
+}
+
+const decodeHtmlEntities = (value: string): string => decodeHTML(value)
+
+const htmlText = (value: string): string =>
+	decodeHtmlEntities(
+		value
+			.replace(/<!--[\s\S]*?-->/g, '')
+			.replace(/<(script|style)\b(?:"[^"]*"|'[^']*'|[^'">])*>[\s\S]*?<\/\1\s*>/gi, '')
+			.replace(
+				/<\/?(?:address|article|aside|blockquote|div|dl|dt|dd|fieldset|figcaption|figure|footer|form|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|table|tbody|td|tfoot|th|thead|tr|ul)\b(?:"[^"]*"|'[^']*'|[^'">])*>/gi,
+				'\n',
+			)
+			.replace(/<br\b(?:"[^"]*"|'[^']*'|[^'">])*>/gi, '\n')
+			.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, ''),
+	).replace(/[ \t]*\n[ \t]*/g, '\n')
+
 const inlineText = (token: Token): string => {
 	const value = token as Token & { text?: string; href?: string; tokens?: Token[] }
 	if (value.type === 'link') {
-		const label = value.tokens?.map(inlineText).join('') ?? value.text ?? ''
+		const label = value.tokens ? inlineTokensText(value.tokens) : (value.text ?? '')
 		if (value.href?.startsWith('mailto:')) return value.href.slice('mailto:'.length)
 		if (value.href?.startsWith('tel:') || value.href?.startsWith('geo:')) return label
 		return label === value.href ? label : `${label} (${value.href})`
 	}
-	return value.tokens?.map(inlineText).join('') ?? value.text ?? ''
+	if (value.type === 'html') return htmlText(value.text ?? '')
+	if (value.type === 'text')
+		return value.tokens ? inlineTokensText(value.tokens) : decodeHtmlEntities(value.text ?? '')
+	return value.tokens ? inlineTokensText(value.tokens) : (value.text ?? '')
 }
 
 const ascii = (value: string): string => {
