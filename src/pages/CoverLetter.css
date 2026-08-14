@@ -53,17 +53,24 @@
 	}
 }
 @media print {
+	@page cover-letter {
+		size: letter;
+		margin: 0;
+	}
+
 	.cover-letter-page {
 		display: block;
 		padding: 0;
-		background: var(--site-surface);
+		background: #fff;
 	}
 	.cover-letter-document {
 		width: auto;
+		background: #fff;
 		border: 0;
 		box-shadow: none;
 	}
 	.cover-letter-sheet {
+		page: cover-letter;
 		width: 8.5in;
 		min-height: 11in;
 		padding: 0.6in 0.7in;
