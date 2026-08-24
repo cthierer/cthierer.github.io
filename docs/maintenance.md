@@ -26,7 +26,7 @@ Common updates:
 - Education: `content/education/*.md`.
 - Email, website, and social links: `content/contact/*.md` and `content/social/*.md`.
 - Organization names, display labels, locations, and optional logos: `content/organizations/*.md`.
-- Site URL, favicon, social image, resume download path, and generated pages: `config.yaml`. Pages are configured in the `pages` list. Each entry has a supported `key` (`home`, `resume`, or `privacy`), `title`, `description`, and output `path`; `canonicalPath` is optional and defaults to `path`. Omit a page entry to exclude its HTML page. Set `pdf: true` on an HTML page entry to generate a PDF with the same basename, such as `dist/resume.pdf` from `/resume.html`.
+- Site URL, favicon, social image, resume download path, and generated pages: `config.yaml`. Pages use a `formats` array of `html`, `pdf`, `md`, and `txt`; it defaults to HTML, must be nonempty/unique, and include HTML. Resume Markdown/text are direct serializations of resolved content, not HTML conversions. The application cover letter emits all four formats when present.
 
 ## Frontmatter Quick Reference
 
@@ -84,8 +84,7 @@ Build an application package (resume plus an optional cover letter) with:
 PATH="$PWD/.venv/bin:$PATH" npm run build:application -- umbc-adjunct
 ```
 
-This writes `resume.html`, `resume.pdf`, and, when present, `cover-letter.html` and
-`cover-letter.pdf` under `variants/output/umbc-adjunct/`. Application documents are
+This writes `resume.html`, `resume.pdf`, `resume.md`, and `resume.txt`, plus (when present) `cover-letter.html`, `cover-letter.pdf`, `cover-letter.md`, and `cover-letter.txt` under `variants/output/umbc-adjunct/`: eight document artifacts when the cover letter exists. Application documents are
 private: analytics, sitemap, canonical/social metadata, and JSON-LD are omitted and
 they include `noindex, nofollow`. Use `--page resume` or `--page cover-letter` to
 narrow the build; explicitly requesting a missing cover letter fails.
@@ -131,7 +130,7 @@ PATH="$PWD/.venv/bin:$PATH" npm run build:resume -- umbc-adjunct \
   --contentDir variants/umbc-adjunct
 ```
 
-That command resolves the layers as `content/`, `variants/content-sensitive/`, and `variants/umbc-adjunct/`. If `content/` or `variants/<variant>/` is already specified, the preset does not add it twice; every other supplied layer retains its order. Without `--outputDir`, it writes local HTML, assets, sitemap, and the submission PDF to `variants/output/<variant>/`; the PDF is `variants/output/<variant>/resume.pdf`. A supplied `--outputDir` must remain below `variants/output/`. Analytics are disabled by default, but `--analytics` explicitly enables them.
+That command resolves the layers as `content/`, `variants/content-sensitive/`, and `variants/umbc-adjunct/`. Without `--outputDir`, it writes resume HTML, PDF, Markdown, and text artifacts to `variants/output/<variant>/`. `build:resume` disables analytics by default but otherwise retains normal metadata and sitemap behavior; `build:application` is the noindex/private package mode. A supplied `--outputDir` must remain below `variants/output/`.
 
 The relative Markdown path is the overlay identity. For example, `variants/umbc-adjunct/resume/Skills.md` patches `content/resume/Skills.md`; if a baseline file is renamed, rename every matching patch. A patch can provide only changed frontmatter fields. Plain objects merge recursively, arrays and scalar values replace inherited values, and `null` removes an inherited field. A blank patch body inherits baseline Markdown; a nonblank body replaces it. Set `published: false` to suppress an inherited entry entirely.
 
@@ -140,7 +139,7 @@ To add a variant:
 1. Create `variants/<lowercase-slug>/` and add only the files that differ from the baseline.
 2. Add sensitive links, such as a phone number, under `variants/content-sensitive/` when they are appropriate for more than one private variant, and pass that directory with `--contentDir`.
 3. Add a full `resume-section` file for a new section, choosing an unused order.
-4. Build it with `npm run build:resume -- <lowercase-slug>` and inspect its HTML and PDF before submitting.
+4. Build it with `npm run build:resume -- <lowercase-slug>` and inspect its HTML, PDF, Markdown, and text artifacts before submitting.
 
 ## Link Placement
 
@@ -173,11 +172,11 @@ selected output directory, then:
 2. Copies `public/` into the selected output directory.
 3. Bundles and minifies `src/styles/main.css` into the selected output directory's `assets/` folder.
 4. Renders each configured page to HTML.
-5. Generates a PDF for each page configured with `pdf: true`.
+5. Generates each configured sibling format; `pdf` uses WeasyPrint and resume `md`/`txt` are direct document serializations.
 6. Writes the sitemap from the configured routes.
 
 PDF generation uses WeasyPrint and therefore requires the project virtual environment
-on `PATH` locally. Pages without `pdf: true` do not produce a PDF.
+on `PATH` locally. Pages whose formats omit `pdf` do not produce a PDF.
 
 The reusable build pipeline is in `src/build/buildSite.tsx`. Both commands use the same resolved options and cleanup lifecycle. Public `npm run build` defaults to `config.yaml`, `content/`, `dist/`, all configured pages, and analytics enabled; its explicit `--contentDir` values become the complete ordered layer list. `build:resume` is only a convenience preset over those same options. Cleanup accepts only `dist/` or its descendants for public builds, and strict descendants of `variants/output/` for resume builds; for example, `npm run build -- --outputDir dist/application`. It also rejects output paths that overlap source, configuration, or selected content, as well as symlinked paths.
 

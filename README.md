@@ -48,7 +48,7 @@ PATH="$PWD/.venv/bin:$PATH" npm run dev
 ```
 
 Build the site. The TypeScript build script renders HTML, bundles CSS, copies public
-assets, writes the sitemap, and generates PDFs for pages configured with `pdf: true`:
+assets, writes the sitemap, and generates the configured document formats:
 
 ```sh
 PATH="$PWD/.venv/bin:$PATH" npm run build
@@ -56,12 +56,18 @@ PATH="$PWD/.venv/bin:$PATH" npm run build
 
 Build a private role-specific resume variant (for example, the ignored UMBC adjunct
 variant). The preset infers the shared baseline and variant directory, builds only the
-resume with analytics disabled, and writes its local submission PDF to
-`variants/output/<variant>/resume.pdf`:
+resume with analytics disabled, and writes HTML, PDF, Markdown, and text artifacts to
+`variants/output/<variant>/`:
 
 ```sh
 PATH="$PWD/.venv/bin:$PATH" npm run build:resume -- umbc-adjunct \
   --contentDir variants/content-sensitive
+```
+
+Build a private application package with an optional cover letter. When present, it writes `resume.html/pdf/md/txt` and `cover-letter.html/pdf/md/txt` under `variants/output/<variant>/`; it omits analytics, sitemap, canonical/social metadata, and adds `noindex`.
+
+```sh
+PATH="$PWD/.venv/bin:$PATH" npm run build:application -- umbc-adjunct
 ```
 
 Run the maintenance checks:
@@ -97,8 +103,8 @@ Private resume patches belong under ignored `variants/`, where they can override
 
 ## Architecture
 
-- `src/build/build.tsx` resolves the public-build or resume-preset command options, while `src/build/buildSite.tsx` provides their shared pipeline: it cleans the selected safe output directory, loads configuration and resolved Markdown layers, copies public assets, bundles CSS, renders React pages to static HTML, generates configured PDFs, and writes a sitemap.
-- `config.yaml` controls generated pages through its `pages` list. Add `pdf: true` to an HTML page entry to generate a PDF alongside it; for example, `/resume.html` produces `/resume.pdf`.
+- `src/build/build.tsx` resolves the public-build or resume-preset command options, while `src/build/buildSite.tsx` provides their shared pipeline: it cleans the selected safe output directory, loads configuration and resolved Markdown layers, copies public assets, bundles CSS, renders static HTML, generates configured PDF/Markdown/text artifacts, and writes a sitemap.
+- `config.yaml` controls generated pages through its `pages` list. Use a `formats` array; resume may emit `html`, `pdf`, `md`, and `txt` siblings.
 - `src/styles/main.css` is bundled and minified by Lightning CSS.
 - `src/pages/` contains page-level composition for the homepage and resume.
 - `src/components/` contains reusable page, profile, hero, link, site, and resume components.
@@ -111,7 +117,7 @@ GitHub Pages deployment is handled by `.github/workflows/pages.yml` on pushes to
 
 ## Troubleshooting
 
-If a configured page has `pdf: true`, the build requires WeasyPrint. If `weasyprint`
+If a configured page includes `pdf` in `formats`, the build requires WeasyPrint. If `weasyprint`
 is not found locally, make sure the virtual environment is installed and prepended to
 `PATH` when building:
 

@@ -1,4 +1,4 @@
-import { useResumeExperience } from '../../content/resume'
+import type { ResumeRole } from '../../content/documents'
 import ExperienceEntry from '../../content/ExperienceEntry'
 import DateRangeText from '../DateText'
 import ResumeSection from './ResumeSection'
@@ -7,13 +7,11 @@ const hasResumeContent = (experience: ExperienceEntry): boolean =>
 	Boolean(experience.resumeSummary || experience.resumeHighlights.length > 0)
 
 interface ResumeExperienceSectionProps {
-	readonly limit?: number
+	readonly roles: readonly ResumeRole[]
 	readonly title: string
 }
 
-const ResumeExperienceSection = ({ limit, title }: ResumeExperienceSectionProps) => {
-	const roles = useResumeExperience(limit)
-
+const ResumeExperienceSection = ({ roles, title }: ResumeExperienceSectionProps) => {
 	return (
 		<ResumeSection id="resume-experience" title={title}>
 			<div className="resume-timeline">

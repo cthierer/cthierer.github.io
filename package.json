@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"@picocss/pico": "^2.1.1",
+		"entities": "^8.0.0",
 		"lucide-react": "^1.24.0",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
