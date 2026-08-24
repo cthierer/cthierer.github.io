@@ -58,16 +58,16 @@
 }
 
 @media print {
-	@page {
+	@page resume {
 		size: letter;
-		margin: 0;
+		margin: 0.42in 0.46in;
 	}
 
 	html,
 	body {
 		width: 8.5in;
 		min-height: 11in;
-		background: var(--site-surface);
+		background: #fff;
 	}
 
 	body {
@@ -77,7 +77,7 @@
 	.resume-page {
 		display: block;
 		padding: 0;
-		background: var(--site-surface);
+		background: #fff;
 	}
 
 	.resume-document {
@@ -93,9 +93,10 @@
 	}
 
 	.resume-sheet {
-		width: 8.5in;
-		min-height: 11in;
-		padding: 0.42in 0.46in;
+		page: resume;
+		width: 7.58in;
+		min-height: 10.16in;
+		padding: 0;
 		border: 0;
 		border-radius: 0;
 		box-shadow: none;

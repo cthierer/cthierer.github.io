@@ -49,6 +49,26 @@
 }
 
 @media print {
+	.resume-section[data-resume-section='resume-experience'] {
+		display: block;
+		break-inside: auto;
+
+		> h2 {
+			width: auto;
+			margin-bottom: 0.28rem;
+		}
+
+		> .resume-timeline {
+			display: block;
+			break-inside: auto;
+			margin-left: 7.5rem;
+		}
+
+		.resume-role + .resume-role {
+			margin-top: 0.46rem;
+		}
+	}
+
 	.resume-timeline {
 		gap: 0.46rem;
 	}

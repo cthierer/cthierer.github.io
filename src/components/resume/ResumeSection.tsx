@@ -5,7 +5,7 @@ interface ResumeSectionProps {
 }
 
 const ResumeSection = ({ id, title, children }: ResumeSectionProps) => (
-	<section className="resume-section" aria-labelledby={id}>
+	<section className="resume-section" data-resume-section={id} aria-labelledby={id}>
 		<h2 id={id}>{title}</h2>
 		{children}
 	</section>
