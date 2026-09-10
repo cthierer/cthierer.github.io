@@ -6,6 +6,7 @@ published: true
 organization: zmi
 type: fte
 startDate: 2023-06-20
+endDate: 2026-09-04
 location: Rockville, MD
 role: Engineering Manager
 jobTitle: Engineering Manager II
