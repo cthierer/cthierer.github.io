@@ -3,7 +3,7 @@ import path from 'node:path'
 import { parseArgs } from 'node:util'
 import type { BuildSiteOptions } from './buildSite'
 
-const variantNamePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+const variantNamePattern = /^[a-z0-9]+(?:(-|\/)[a-z0-9]+)*$/
 
 export const validateVariantName = (variantName: string | undefined): string => {
 	if (!variantName || !variantNamePattern.test(variantName)) {
