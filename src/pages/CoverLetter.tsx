@@ -1,19 +1,14 @@
 import DocumentActions, { DocumentPrintScript } from '../components/document/DocumentActions'
 import ResumeHeader from '../components/resume/ResumeHeader'
-import { useCoverLetter } from '../content/coverLetter'
-import { useResumeProfile } from '../content/resume'
-
-const formatDate = (value: Date | string) => {
-	const date =
-		value instanceof Date ? value : new Date(value.length === 10 ? `${value}T00:00:00Z` : value)
-	return new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(date)
-}
+import { useContent } from '../content/ContentContext'
+import { useConfig } from '../config/ConfigContext'
+import { createCoverLetterDocument, formatCoverLetterDate } from '../content/documents'
 
 const CoverLetter = () => {
-	const letter = useCoverLetter()
-	const profile = useResumeProfile()
-	if (!letter)
+	const document = createCoverLetterDocument(useContent(), useConfig())
+	if (!document)
 		throw new Error('A cover letter was requested but no published cover letter was found.')
+	const { letter, profile } = document
 	return (
 		<>
 			<main className="cover-letter-page" aria-labelledby="resume-title">
@@ -24,8 +19,8 @@ const CoverLetter = () => {
 						eventPrefix="cover-letter"
 					/>
 					<article className="cover-letter-sheet">
-						<ResumeHeader />
-						<p className="cover-letter-date">{formatDate(letter.date)}</p>
+						<ResumeHeader document={{ ...document, sections: [] }} />
+						<p className="cover-letter-date">{formatCoverLetterDate(letter.date)}</p>
 						<address className="cover-letter-recipient">
 							{letter.recipient.name ? <div>{letter.recipient.name}</div> : null}
 							{letter.recipient.title ? <div>{letter.recipient.title}</div> : null}

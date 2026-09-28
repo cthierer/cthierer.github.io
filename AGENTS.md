@@ -27,7 +27,7 @@ The site should stay simple, semantic, accessible, and easy to revisit after lon
 - CSS is bundled with Lightning CSS from `src/styles/main.css`.
 - Pico CSS provides a lightweight base layer; local CSS should own the site's specific visual language.
 - Public assets live in `public/` and are copied into `dist/`.
-- PDF output is generated with WeasyPrint for HTML pages configured with `pdf: true`.
+- PDF output is generated with WeasyPrint for HTML pages whose `formats` include `pdf`.
 - Generated output in `dist/` should not be treated as source.
 
 Current source organization:
@@ -44,10 +44,10 @@ Current source organization:
 
 Configured routes:
 
-- `config.yaml` controls generated routes through its `pages` list. Supported page keys are `home`, `resume`, and `privacy`; omit an entry to exclude its HTML page. Set `pdf: true` on an HTML page entry to generate a PDF with the same basename.
+- `config.yaml` controls generated routes through its `pages` list. Supported page keys are `home`, `resume`, and `privacy`; omit an entry to exclude its HTML page. `formats` may contain `html`, `pdf`, `md`, and `txt`, defaults to HTML, must be nonempty/unique, and include HTML. The legacy `pdf` field is rejected.
 - `/index.html` from `src/pages/Home.tsx` when the `home` page is configured.
 - `/resume.html` from `src/pages/Resume.tsx` when the `resume` page is configured.
-- `/resume.pdf` from `dist/resume.html` when the resume page has `pdf: true`.
+- `/resume.pdf`, `/resume.md`, and `/resume.txt` from `dist/resume.html` when configured.
 - `/privacy.html` from `src/pages/Privacy.tsx` when the `privacy` page is configured.
 - `/sitemap.xml` from the configured routes' canonical URLs.
 
@@ -75,12 +75,13 @@ When changing content shape, update the matching schema in `src/content/schemas/
 ## Development Commands
 
 - `npm run dev` starts the rebuild/watch and local static server.
-- `npm run build` builds HTML, CSS, public assets, the sitemap, and any configured PDFs. It accepts `--configFile`, repeated `--contentDir`, `--outputDir`, repeated `--page`, and `--analytics` or `--no-analytics`; outputs must be `dist/` or beneath it.
+- `npm run build` builds HTML, CSS, public assets, the sitemap, and configured document formats. It accepts `--configFile`, repeated `--contentDir`, `--outputDir`, repeated `--page`, and `--analytics` or `--no-analytics`; outputs must be `dist/` or beneath it.
 - `npm run build:resume -- <lowercase-slug>` is a private resume preset. It infers `content/` and `variants/<slug>/`, accepts additional ordered `--contentDir` layers, disables analytics by default, and writes to `variants/output/<slug>/` unless an override beneath `variants/output/` is supplied.
+- `npm run build:application -- <lowercase-slug>` builds private resume and optional cover-letter packages. Each present document emits HTML, PDF, Markdown, and text artifacts; analytics, sitemap, canonical/social metadata, and JSON-LD are omitted and output is noindex.
 - `npm run check` runs typecheck, lint, formatting, and tests.
 - `npm run format` applies Prettier.
 
-When any page has `pdf: true`, local builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
+When any page includes `pdf` in `formats`, local builds require WeasyPrint from `requirements.txt`. A project virtual environment keeps that dependency isolated:
 
 ```sh
 python3 -m venv .venv
@@ -164,6 +165,6 @@ Before finishing meaningful changes:
 - Run `npm run build` when changes affect rendering, CSS, assets, or build behavior.
 - Review generated HTML when changing document structure, metadata, navigation, or accessibility-sensitive markup.
 - For visual changes, sanity-check desktop and mobile layouts when feasible.
-- For resume or print changes, review both `dist/resume.html` and `dist/resume.pdf` when feasible.
+- For resume or print changes, review `dist/resume.html`, `dist/resume.pdf`, `dist/resume.md`, and `dist/resume.txt` when feasible.
 
 Keep final notes concise: describe what changed, what was verified, and any known follow-up.
