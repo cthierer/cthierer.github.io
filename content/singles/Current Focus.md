@@ -1,7 +1,7 @@
 ---
 title: Current Focus
 archetype: article
-published: true
+published: false
 ---
 
 I’m looking for a software engineering management role in the Baltimore–Washington, DC area, preferably in a hybrid or in-office environment. I’ve led distributed teams, but I value the collaboration and shared context that come from working together in person.

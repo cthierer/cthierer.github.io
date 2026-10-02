@@ -1,11 +1,11 @@
 ---
-title: Senior Developer
+title: Senior Developer, Aquilent
 archetype: experience
 published: true
 
 organization: aquilent
 type: fte
-startDate: 2011-05-23
+startDate: 2011-05-31
 endDate: 2016-07-22
 location: Laurel, MD
 role: Software Engineer
