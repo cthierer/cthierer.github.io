@@ -1,9 +1,8 @@
-import { useResumeLinks, useResumeProfile } from '../../content/resume'
+import type { ResumeDocument } from '../../content/documents'
 import { formatResumeLinkLabel } from './format'
 
-const ResumeHeader = () => {
-	const profile = useResumeProfile()
-	const links = useResumeLinks()
+const ResumeHeader = ({ document }: { readonly document: ResumeDocument }) => {
+	const { profile, links } = document
 
 	return (
 		<header className="resume-header">

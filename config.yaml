@@ -22,7 +22,7 @@ pages:
       Resume for Chris Thierer, a Baltimore/DC software engineering leader with
       experience across public-sector technology, web platforms, and video game live
       services.
-    pdf: true
+    formats: [html, pdf, md, txt]
 
   - key: privacy
     title: 'Privacy | Chris Thierer'

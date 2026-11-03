@@ -21,6 +21,15 @@ import writePage from './writePage'
 import writePDF from './writePDF'
 import writeSitemap from './writeSitemap'
 import { schema as configSchema } from '../config/Config'
+import {
+	createCoverLetterDocument,
+	createResumeDocument,
+	serializeCoverLetterText,
+	serializeResumeText,
+	serializeCoverLetterMarkdown,
+	serializeResumeMarkdown,
+} from '../content/documents'
+import { writeTextDocument } from './writeTextDocument'
 
 export interface BuildSiteOptions {
 	/** Enables third-party analytics in rendered HTML. Defaults to the public-site behavior. */
@@ -75,14 +84,24 @@ const selectPages = (
 	return { ...config, pages }
 }
 
+const applicationResumeFormats: Config['pages'][number]['formats'] = ['html', 'pdf', 'md', 'txt']
+
+const forceApplicationResumeFormats = (config: Config): Config => ({
+	...config,
+	pages: config.pages.map(page =>
+		page.key === 'resume' ? { ...page, formats: [...applicationResumeFormats] } : page,
+	),
+})
+
 const createRoutes = (config: Config, content: Entry[]): readonly Route[] =>
 	config.pages.map(
-		({ key, title, path: outputPath, canonicalPath = outputPath, description, pdf }) => ({
+		({ key, title, path: outputPath, canonicalPath = outputPath, description, formats }) => ({
+			key,
 			outputPath,
 			canonicalPath,
 			title,
 			description,
-			formats: ['html' as const, ...(pdf ? ['pdf' as const] : [])],
+			formats,
 			element: getElementForKey(key),
 			structuredData:
 				key === 'home'
@@ -114,7 +133,13 @@ export const buildSite = async ({
 		contentDirs.map(contentDir => loadMarkdown(contentDir, path.relative(cwd, contentDir) || '.')),
 	)
 	const content = await resolveMarkdownLayers(contentLayers)
-	const config = selectPages(await loadYaml(configFile, configSchema), pageKeys, coverLetterEnabled)
+	const selectedConfig = selectPages(
+		await loadYaml(configFile, configSchema),
+		pageKeys,
+		coverLetterEnabled,
+	)
+	const config =
+		outputMode === 'application' ? forceApplicationResumeFormats(selectedConfig) : selectedConfig
 
 	await copyPublic(path.join(cwd, 'public'), outputDir)
 	await buildCSS(path.join(cwd, 'src'), outputDir)
@@ -127,16 +152,21 @@ export const buildSite = async ({
 				throw new Error('A cover letter was requested but no published cover letter was found.')
 		} else {
 			routes.push({
+				key: 'cover-letter',
 				outputPath: '/cover-letter.html',
 				canonicalPath: '/cover-letter.html',
 				title: String(coverLetter.data.title),
 				description: 'Cover letter',
-				formats: ['html', 'pdf'],
+				formats: ['html', 'pdf', 'md', 'txt'],
 				element: getElementForKey('cover-letter'),
 			})
 		}
 	}
 	for (const route of routes) {
+		const resumeDocument =
+			route.key === 'resume' ? createResumeDocument(content, config) : undefined
+		const coverLetterDocument =
+			route.key === 'cover-letter' ? createCoverLetterDocument(content, config) : undefined
 		await writePage(
 			outputDir,
 			route.outputPath,
@@ -159,6 +189,22 @@ export const buildSite = async ({
 		if (route.formats.includes('pdf')) {
 			await writePDF(cwd, outputDir, route.outputPath)
 		}
+		const markdown = resumeDocument
+			? serializeResumeMarkdown(resumeDocument)
+			: coverLetterDocument
+				? serializeCoverLetterMarkdown(coverLetterDocument)
+				: undefined
+		if (markdown && route.formats.includes('md'))
+			await writeTextDocument(outputDir, route.outputPath, 'md', markdown)
+		if (markdown && route.formats.includes('txt'))
+			await writeTextDocument(
+				outputDir,
+				route.outputPath,
+				'txt',
+				resumeDocument
+					? serializeResumeText(resumeDocument)
+					: serializeCoverLetterText(coverLetterDocument!),
+			)
 	}
 
 	if (!privateDocument)

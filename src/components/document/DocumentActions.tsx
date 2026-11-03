@@ -1,5 +1,5 @@
 interface DocumentActionsProps {
-	readonly download: string
+	readonly download?: string
 	readonly label: string
 	readonly backHref?: string
 	readonly eventPrefix?: string
@@ -9,14 +9,16 @@ const DocumentActions = ({ download, label, backHref, eventPrefix }: DocumentAct
 	<nav className="document-actions container" aria-label={`${label} actions`}>
 		{backHref ? <a href={backHref}>Back</a> : null}
 		<div className="document-action-links">
-			<a
-				href={download}
-				download
-				type="application/pdf"
-				data-umami-event={eventPrefix ? `${eventPrefix}-download` : undefined}
-			>
-				PDF
-			</a>
+			{download ? (
+				<a
+					href={download}
+					download
+					type="application/pdf"
+					data-umami-event={eventPrefix ? `${eventPrefix}-download` : undefined}
+				>
+					PDF
+				</a>
+			) : null}
 			<button
 				type="button"
 				data-print-document
